@@ -1,0 +1,54 @@
+@startuml
+actor Buyer
+actor Seller
+
+
+Buyer -> WebApp_B : show asset details
+WebApp_B -> ContextBroker_S : get entity from context
+ContextBroker_S --> WebApp_B :entity in NGSI-LD
+WebApp_B -> DLTNode_B : get history for did
+DLTNode_B --> WebApp_B : events & transactions
+WebApp_B -> WebApp_B : verify claims
+WebApp_B -> WebApp_B : verify completeness
+WebApp_B --> Buyer : visualize asset details
+
+
+Buyer -> WebApp_B : add asset to own context
+WebApp_B -> TxMatcher_B : import entity (NGSI-LD)
+TxMatcher_B --> DLTNode_B : subscribe to did
+TxMatcher_B -> ContextBroker_B : create entity with claims in context
+ContextBroker_B --> TxMatcher_B : success (URL)
+TxMatcher_B --> WebApp_B : succes (URL)
+
+
+Buyer -> Seller : buy asset (did, recipient, newURL) *
+
+
+Seller -> WebApp_S : transfer asset(did, recipient, newURL)
+activate WebApp_S
+WebApp_S -> Wallet_S : init asset transfer transaction
+activate Wallet_S
+Wallet_S -> Seller : request signature
+Seller --> Wallet_S : sign transaction
+Wallet_S -> DLTNode_S : send signed transaction
+activate DLTNode_S
+DLTNode_S <-> DLTNode_B : reach consensus
+DLTNode_S --> TxMatcher_S : publish event
+DLTNode_B --> TxMatcher_B : publish event
+DLTNode_S --> Wallet_S : txhash
+deactivate DLTNode_S
+Wallet_S --> WebApp_S : txhash
+deactivate Wallet_S
+TxMatcher_B -> ContextBroker_B : change owner property of entity
+ContextBroker_B --> TxMatcher_B : success
+TxMatcher_S -> ContextBroker_S : change owner property of entity
+ContextBroker_S --> TxMatcher_S : success
+WebApp_S -> TxMatcher_S : unsubscribe to events for did
+activate TxMatcher_S
+TxMatcher_S -> DLTNode_S : unsubscribe to events for did
+TxMatcher_S --> WebApp_S : success
+deactivate TxMatcher_S
+WebApp_S --> Seller : success
+deactivate WebApp_S
+
+@enduml

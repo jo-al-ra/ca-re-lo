@@ -1,0 +1,28 @@
+@startuml
+actor User
+User -> WebApp : add claim to asset
+activate WebApp
+WebApp -> Wallet : init transaction with hashed claim
+activate Wallet
+Wallet -> User : request signature
+User --> Wallet : sign transaction
+Wallet -> DLTNode : send signed transaction
+activate DLTNode
+DLTNode --> TxMatcher : publish event
+DLTNode --> Wallet : txhash
+deactivate DLTNode
+Wallet --> WebApp : txhash
+deactivate Wallet
+WebApp -> WebApp : add txhash to claim
+WebApp -> TxMatcher : plain text claim
+activate TxMatcher
+TxMatcher -> TxMatcher : match plain text with DLT event
+TxMatcher -> ContextBroker : update entity in context
+activate ContextBroker
+ContextBroker --> TxMatcher : success
+deactivate ContextBroker
+TxMatcher --> WebApp : success
+deactivate TxMatcher
+WebApp --> User : success
+deactivate WebApp
+@enduml

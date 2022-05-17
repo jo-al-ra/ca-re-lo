@@ -1,0 +1,26 @@
+@startuml
+actor User
+User -> WebApp : create asset
+activate WebApp
+WebApp -> Wallet : init did creation transaction
+activate Wallet
+Wallet -> User : request signature
+User --> Wallet : sign transaction
+Wallet -> DLTNode : send signed transaction
+activate DLTNode
+DLTNode --> Wallet : did
+deactivate DLTNode
+Wallet --> WebApp : did
+deactivate Wallet
+WebApp -> TxMatcher : asset with did
+activate TxMatcher
+TxMatcher -> DLTNode : subscribe to events for did
+TxMatcher -> ContextBroker : create entity in context
+activate ContextBroker
+ContextBroker --> TxMatcher : success
+deactivate ContextBroker
+TxMatcher --> WebApp : success
+deactivate TxMatcher
+WebApp --> User : success
+deactivate WebApp
+@enduml
