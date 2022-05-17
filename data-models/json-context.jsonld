@@ -1,0 +1,1058 @@
+{
+    "@context": {
+        "type": "@type",
+        "id": "@id",
+        "ngsi-ld": "https://uri.etsi.org/ngsi-ld/",
+        "fiware": "https://uri.fiware.org/ns/data-models#",
+        "schema": "https://schema.org/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "Activity": "fiware:Activity",
+        "Actor": "fiware:Actor",
+        "Asset": "fiware:Asset",
+        "Certificate": "fiware:Certificate",
+        "DLTtxReceipt": "fiware:DLTtxReceipt",
+        "Female": "schema:Female",
+        "Male": "schema:Male",
+        "Person": "fiware:Person",
+        "Safeguard": "fiware:Safeguard",
+        "TxReceipts": "fiware:TxReceipts",
+        "additionalName": {
+            "@id": "schema:additionalName",
+            "@type": "xsd:string"
+        },
+        "address": "schema:address",
+        "addressCountry": {
+            "@id": "fiware:addressCountry",
+            "@type": "xsd:string"
+        },
+        "addressLocality": {
+            "@id": "fiware:addressLocality",
+            "@type": "xsd:string"
+        },
+        "addressRegion": {
+            "@id": "fiware:addressRegion",
+            "@type": "xsd:string"
+        },
+        "alternateName": {
+            "@id": "fiware:alternateName",
+            "@type": "xsd:string"
+        },
+        "areaServed": {
+            "@id": "fiware:areaServed",
+            "@type": "xsd:string"
+        },
+        "blockHash": {
+            "@id": "fiware:blockHash",
+            "@type": "xsd:string"
+        },
+        "blockNumber": {
+            "@id": "fiware:blockNumber",
+            "@type": "xsd:integer"
+        },
+        "carbonFootprint": {
+            "@id": "fiware:carbonFootprint",
+            "@type": "xsd:string"
+        },
+        "category": {
+            "@id": "fiware:category",
+            "@type": "xsd:string"
+        },
+        "consumedVia": {
+            "@id": "fiware:consumedVia",
+            "@type": "@id"
+        },
+        "consumes": {
+            "@id": "fiware:consumes",
+            "@type": "xsd:array"
+        },
+        "contractAddress": {
+            "@id": "fiware:contractAddress",
+            "@type": "xsd:string"
+        },
+        "cumulativeGasUsed": {
+            "@id": "fiware:cumulativeGasUsed",
+            "@type": "xsd:integer"
+        },
+        "dataProvider": {
+            "@id": "fiware:dataProvider",
+            "@type": "xsd:string"
+        },
+        "dateCreated": {
+            "@id": "fiware:dateCreated",
+            "@type": "xs:dateTime"
+        },
+        "dateModified": {
+            "@id": "fiware:dateModified",
+            "@type": "xs:dateTime"
+        },
+        "description": {
+            "@id": "fiware:description",
+            "@type": "xsd:undefined"
+        },
+        "dltType": {
+            "@id": "fiware:dltType",
+            "@type": "xsd:string"
+        },
+        "email": {
+            "@id": "schema:email",
+            "@type": "xsd:string"
+        },
+        "familyName": {
+            "@id": "schema:familyName",
+            "@type": "xsd:string"
+        },
+        "faxNumber": {
+            "@id": "schema:faxNumber",
+            "@type": "xsd:string"
+        },
+        "from": {
+            "@id": "fiware:from",
+            "@type": "xsd:string"
+        },
+        "gasUsed": {
+            "@id": "fiware:gasUsed",
+            "@type": "xsd:integer"
+        },
+        "gender": {
+            "@id": "schema:gender",
+            "@type": "@vocab"
+        },
+        "givenName": {
+            "@id": "schema:givenName",
+            "@type": "xsd:string"
+        },
+        "hasCertificates": {
+            "@id": "fiware:hasCertificates",
+            "@type": "xsd:array"
+        },
+        "honorificPrefix": {
+            "@id": "schema:honorificPrefix",
+            "@type": "xsd:string"
+        },
+        "honorificSuffix": {
+            "@id": "schema:honorificSuffix",
+            "@type": "xsd:string"
+        },
+        "isWastematerial": {
+            "@id": "fiware:isWastematerial",
+            "@type": "xsd:boolean"
+        },
+        "isicV4": {
+            "@id": "schema:isicV4",
+            "@type": "xsd:string"
+        },
+        "issuedBy": {
+            "@id": "fiware:issuedBy",
+            "@type": "@id"
+        },
+        "issuedFor": {
+            "@id": "fiware:issuedFor",
+            "@type": "@id"
+        },
+        "jobTitle": {
+            "@id": "schema:jobTitle",
+            "@type": "xsd:string"
+        },
+        "keys": {
+            "@id": "fiware:keys",
+            "@type": "xsd:array"
+        },
+        "logs": "fiware:logs",
+        "logsBloom": {
+            "@id": "fiware:logsBloom",
+            "@type": "xsd:string"
+        },
+        "name": {
+            "@id": "ngsi-ld:name",
+            "@type": "xsd:string"
+        },
+        "objectType": {
+            "@id": "fiware:objectType",
+            "@type": "xsd:string"
+        },
+        "ownedBy": {
+            "@id": "fiware:ownedBy",
+            "@type": "@id"
+        },
+        "owner": {
+            "@id": "fiware:owner",
+            "@type": "xsd:array"
+        },
+        "postOfficeBoxNumber": {
+            "@id": "fiware:postOfficeBoxNumber",
+            "@type": "xsd:string"
+        },
+        "postalCode": {
+            "@id": "fiware:postalCode",
+            "@type": "xsd:string"
+        },
+        "producedVia": {
+            "@id": "fiware:producedVia",
+            "@type": "@id"
+        },
+        "produces": {
+            "@id": "fiware:produces",
+            "@type": "xsd:array"
+        },
+        "publicKey": {
+            "@id": "fiware:publicKey",
+            "@type": "xsd:string"
+        },
+        "refEntity": {
+            "@id": "fiware:refEntity",
+            "@type": "@id"
+        },
+        "references": {
+            "@id": "fiware:references",
+            "@type": "@id"
+        },
+        "seeAlso": {
+            "@id": "fiware:seeAlso",
+            "@type": "xsd:string"
+        },
+        "solidCarbonContent": {
+            "@id": "fiware:solidCarbonContent",
+            "@type": "xsd:string"
+        },
+        "source": {
+            "@id": "fiware:source",
+            "@type": "xsd:string"
+        },
+        "status": {
+            "@id": "fiware:status",
+            "@type": "xsd:boolean"
+        },
+        "storageType": {
+            "@id": "fiware:storageType",
+            "@type": "xsd:string"
+        },
+        "streetAddress": {
+            "@id": "fiware:streetAddress",
+            "@type": "xsd:string"
+        },
+        "taxID": {
+            "@id": "schema:taxID",
+            "@type": "xsd:string"
+        },
+        "telephone": {
+            "@id": "schema:telephone",
+            "@type": "xsd:string"
+        },
+        "to": {
+            "@id": "fiware:to",
+            "@type": "xsd:string"
+        },
+        "transactionHash": {
+            "@id": "fiware:transactionHash",
+            "@type": "xsd:string"
+        },
+        "transactionIndex": {
+            "@id": "fiware:transactionIndex",
+            "@type": "xsd:integer"
+        },
+        "usedFor": {
+            "@id": "fiware:usedFor",
+            "@type": "@id"
+        },
+        "usedTools": {
+            "@id": "fiware:usedTools",
+            "@type": "xsd:array"
+        },
+        "vatID": {
+            "@id": "schema:vatID",
+            "@type": "xsd:string"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "fiware:DLTtxReceipt",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Description of a DLT receipt storing some of the attributes (keys) of a transaction."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "DLTtxReceipt"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Activity",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Activity"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Asset",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Asset"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Certificate",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Certificate"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Actor",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Actor"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Safeguard",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Safeguard"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Person",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Person"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:TxReceipts",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Transaction Receipt"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "TxReceipts"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:address",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The mailing address"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "address"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:alternateName",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "An alternative name for this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "alternateName"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:areaServed",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The geographic area where a service or offered item is provided"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "areaServed"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dataProvider",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters identifying the provider of the harmonised data entity."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dataProvider"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateCreated",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity creation timestamp. This will usually be allocated by the storage platform."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateCreated"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:dateModified",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Timestamp of the last modification of the entity. This will usually be allocated by the storage platform."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "dateModified"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A description of this item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:id",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Unique identifier of the entity"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "id"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:location",
+            "@type": "ngsi-ld:Geoproperty",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "location"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "The name of this item."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:owner",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "owner"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:refEntity",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity persisted in the DLT"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "refEntity"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:seeAlso",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "list of uri pointing to additional resources about the item"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "seeAlso"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:source",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "source"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:usedTools",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "usedTools"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:ownedBy",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "ownedBy"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:produces",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "produces"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:consumes",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "consumes"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:ownedBy",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "ownedBy"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:hasCertificates",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "hasCertificates"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:producedVia",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity, that represents the production of this asset (e.g. manufacturing or chemical activity)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "producedVia"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:consumedVia",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity, that represents the consumption of this asset (e.g. manufacturing or chemical activity)"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "consumedVia"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:usedFor",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entities, that this asset was used for (e.g. as a tool for an activity) without significant degradation of the asset itself."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "usedFor"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:solidCarbonContent",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "solidCarbonContent"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:carbonFootprint",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "carbonFootprint"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:isWastematerial",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "isWastematerial"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:issuedFor",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity, that this certificate is about"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "issuedFor"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:issuedBy",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity, that issued the certificate"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "issuedBy"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:name",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "name"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:publicKey",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "publicKey"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:description",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "description"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:seeAlso",
+            "@type": "ngsi-ld:Property",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": ""
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "seeAlso"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:ownedBy",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity, that controls the safeguard"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "ownedBy"
+                }
+            ]
+        },
+        {
+            "@id": "fiware:references",
+            "@type": "ngsi-ld:Relationship",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Entity the Safeguard references"
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "references"
+                }
+            ]
+        }
+    ]
+}
