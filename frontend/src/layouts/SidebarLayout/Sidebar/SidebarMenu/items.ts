@@ -41,6 +41,16 @@ const menuItems: MenuItems[] = [
     ]
   },
   {
+    heading: 'Ca-re-lo',
+    items: [
+      {
+        name: 'Assets',
+        link: '/carelo/assets',
+        icon: BrightnessLowTwoToneIcon
+      }
+    ]
+  },
+  {
     heading: 'Dashboards',
     items: [
       {

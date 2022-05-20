@@ -18,6 +18,18 @@
 #
 version: "3.8"
 services:
+  reverse-proxy:
+    labels:
+      org.fiware: "tutorial"
+    image: nicks-reverse-proxy
+    hostname: orion-reverse-proxy
+    container_name: nginx-reverse-proxy
+    depends_on:
+      - fiware-orion
+    networks:
+      - default
+    ports:
+      - 80:80
   # Orion is the context broker
   orion:
     labels:

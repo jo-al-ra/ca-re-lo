@@ -13,6 +13,12 @@ const Loader = (Component) => (props) => (
   </Suspense>
 );
 
+//Ca-re-lo
+
+
+const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
+const AssetDetails = Loader(lazy(() => import('src/content/applications/AssetDetails')));
+
 // Pages
 
 const Overview = Loader(lazy(() => import('src/content/overview')));
@@ -99,6 +105,31 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
+      },
+    ]
+  },
+  {
+    path: '/carelo',
+    element: (
+      <SidebarLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: (
+          <Navigate
+            to="/carelo/assets"
+            replace
+          />
+        )
+      },
+      {
+        path: 'assets',
+        element: <Assets />
+      },
+      {
+        path: 'assets/:id',
+        element: <AssetDetails />
       },
     ]
   },
