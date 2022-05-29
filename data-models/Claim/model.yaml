@@ -1,0 +1,47 @@
+Claim:
+  title: Claim
+  description: >-
+    Claims issued for other subjects, describing properties of entities and
+    enabling more granular data sharing
+  type: object
+  required:
+    - id
+    - type
+  allOf:
+    - $ref: >-
+        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons
+    - $ref: >-
+        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/Location-Commons
+    - properties:
+        type:
+          type: string
+          enum:
+            - Claim
+          description: Property. NSGI Entity Type. it has to be Claim
+        solidCarbonContent:
+          type: number
+          minimum: 0
+          description: >-
+            Property. Model:'https://schema.org/Number'. Solid carbon content of
+            the referenced entity in kg.
+        carbonFootprint:
+          type: number
+          description: >-
+            Property. Model:'https://schema.org/Number'. Carbon footprint of the
+            referenced entity in t CO2e.
+        isWasteMaterial:
+          type: boolean
+          description: >-
+            Property. Model:'https://schema.org/Boolean'. True, if the referenced
+            entity is an unwanted byproduct, which has to be disposed.
+        refersTo:
+          anyOf:
+            - type: string
+              minLength: 1
+              maxLength: 256
+              pattern: '^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$'
+              description: Property. Identifier format of any NGSI entity
+            - type: string
+              format: uri
+              description: Property. Identifier format of any NGSI entity
+          description: Relationship. Reference to the subject (entity) this claim refers to.

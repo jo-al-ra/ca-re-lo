@@ -15,10 +15,14 @@
             "$ref": "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons"
         },
         {
-            "$ref": "https://smart-data-models.github.io/data-models/common-schema.json#/definitions/Location-Commons"
-        },
-        {
             "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "Safeguard"
+                    ],
+                    "description": "Property. NSGI Entity Type. it has to be Safeguard"
+                },
                 "refersTo": {
                     "anyOf": [
                         {

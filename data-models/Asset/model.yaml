@@ -1,0 +1,45 @@
+Asset:
+  # $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Asset/schemaManualModified.json"
+  title: Asset
+  description: Representation of an asset in a supply chain.
+  type: object
+  required:
+    - id
+    - type
+  allOf:
+    - $ref: >-
+        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons
+    - $ref: >-
+        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/Location-Commons
+    - properties:
+        type:
+          type: string
+          enum:
+            - Asset
+          description: Property. NSGI Entity Type. it has to be Asset
+        producedVia:
+          anyOf:
+            - type: string
+              minLength: 1
+              maxLength: 256
+              pattern: '^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$'
+              description: Property. Identifier format of any NGSI entity
+            - type: string
+              format: uri
+              description: Property. Identifier format of any NGSI entity
+          description: >-
+            Relationship. Reference to the entity, that documents the production
+            of this entity
+        consumedVia:
+          anyOf:
+            - type: string
+              minLength: 1
+              maxLength: 256
+              pattern: '^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$'
+              description: Property. Identifier format of any NGSI entity
+            - type: string
+              format: uri
+              description: Property. Identifier format of any NGSI entity
+          description: >-
+            Relationship. Reference to the entity, that documents the consumption
+            of this entity
