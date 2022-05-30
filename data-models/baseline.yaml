@@ -6,129 +6,12 @@ components:
       $ref: "https://raw.githubusercontent.com/smart-data-models/dataModel.DistributedLedgerTech/master/DLTtxReceipt/model.yaml#/DLTtxReceipt"
 
     Activity:
-      allOf:
-        - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/Common"
-      properties:
-        description:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/description"
-        usedTools:
-          type: array
-          items:
-            $ref: "#/components/schemas/Asset"
-        ownedBy:
-          type: array
-          items:
-            $ref: "#/components/schemas/Actor"
-        produces:
-          type: array
-          items:
-            $ref: "#/components/schemas/Asset"
-        consumes:
-          type: array
-          items:
-            $ref: "#/components/schemas/Asset"
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Activity/model.yaml#/Activity"
 
     Asset:
-      allOf:
-        - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/Common"
-      properties:
-        description:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/description"
-        name:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/name"
-        ownedBy:
-          $ref: "#/components/schemas/Actor"
-        hasCertificates:
-          type: array
-          items:
-            $ref: "#/components/schemas/Certificate"
-        producedVia:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity, that represents the production of this asset (e.g. manufacturing or chemical activity)"
-          x-ngsi:
-            type: Relationship
-        consumedVia:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity, that represents the consumption of this asset (e.g. manufacturing or chemical activity)"
-          x-ngsi:
-            type: Relationship
-        usedFor:
-          type: array
-          items:
-            anyOf:
-              - description: "Property. Identifier format of any NGSI entity"
-                maxLength: 256
-                minLength: 1
-                pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-                type: string
-              - description: "Property. Identifier format of any NGSI entity"
-                format: uri
-                type: string
-          description: "Entities, that this asset was used for (e.g. as a tool for an activity) without significant degradation of the asset itself."
-          x-ngsi:
-            type: Relationship
-
-    Certificate:
-      allOf:
-        - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/Common"
-      properties:
-        description:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/description"
-        name:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/name"
-        solidCarbonContent:
-          type: string
-        carbonFootprint:
-          type: string
-        isWastematerial:
-          type: boolean
-        issuedFor:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity, that this certificate is about"
-          x-ngsi:
-            type: Relationship
-        issuedBy:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity, that issued the certificate"
-          x-ngsi:
-            type: Relationship
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Asset/model.yaml#/Asset"
+    Claim:
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Claim/model.yaml#/Claim"
 
     Actor:
       allOf:
@@ -144,46 +27,7 @@ components:
           type: string
 
     Safeguard:
-      allOf:
-        - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/Common"
-      properties:
-        description:
-          allOf:
-            - $ref: "https://raw.githubusercontent.com/smart-data-models/data-models/master/ngsi-ld.yaml#/description"
-        category:
-          type: string
-          enum:
-            - verification
-            - validation
-            - appeal
-        seeAlso:
-          type: string
-        ownedBy:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity, that controls the safeguard"
-          x-ngsi:
-            type: Relationship
-        references:
-          anyOf:
-            - description: "Property. Identifier format of any NGSI entity"
-              maxLength: 256
-              minLength: 1
-              pattern: ^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$
-              type: string
-            - description: "Property. Identifier format of any NGSI entity"
-              format: uri
-              type: string
-          description: "Entity the Safeguard references"
-          x-ngsi:
-            type: Relationship
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Safeguard/model.yaml#/Safeguard"
 
     # This is a defintion of a person.
     Person:
