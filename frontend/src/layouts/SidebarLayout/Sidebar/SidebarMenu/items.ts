@@ -47,6 +47,11 @@ const menuItems: MenuItems[] = [
         name: 'Assets',
         link: '/carelo/assets',
         icon: BrightnessLowTwoToneIcon
+      },
+      {
+        name: 'Create Entity',
+        link: '/carelo/create/entity',
+        icon: BrightnessLowTwoToneIcon
       }
     ]
   },
