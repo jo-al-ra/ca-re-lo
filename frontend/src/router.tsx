@@ -17,8 +17,8 @@ const Loader = (Component) => (props) => (
 
 
 const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
-const AssetDetails = Loader(lazy(() => import('src/content/applications/AssetDetails')));
 const CreateEntity = Loader(lazy(() => import('src/content/applications/CreateEntity')));
+const Canvas = Loader(lazy(() => import('src/content/applications/Canvas')));
 
 // Pages
 
@@ -131,6 +131,10 @@ const routes: RouteObject[] = [
       {
         path: 'create/entity',
         element: <CreateEntity />
+      },
+      {
+        path: 'canvas',
+        element: <Canvas />
       },
     ]
   },

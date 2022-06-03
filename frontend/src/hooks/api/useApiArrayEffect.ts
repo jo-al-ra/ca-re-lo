@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
-export const useGetApiArray = (config: AxiosRequestConfig) => {
+export const useApiArrayEffect = (config: AxiosRequestConfig) => {
   const [state, setState] = useState<{ error: any; loading: boolean; data: any[] }>({
     error: null,
     loading: true,

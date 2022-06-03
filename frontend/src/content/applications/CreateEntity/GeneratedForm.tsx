@@ -24,7 +24,7 @@ const GeneratedForm: FC<FormProps> = ({ schemaURL }) => {
     useEffect(() => {
         $RefParser.dereference(schemaURL).then(res =>
             setSchema(res));
-    }, []);
+    }, [schemaURL]);
 
     if (resolvedSchema === undefined) {
         return <div> Loading... </div>

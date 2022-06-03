@@ -5,22 +5,12 @@ import Footer from 'src/components/Footer';
 import GeneratedForm from './GeneratedForm';
 import PageHeader from './PageHeader';
 import { useState } from 'react';
-import { usePostEntity } from 'src/hooks/api/ngsi-ld/usePostEntity';
+import schemas from 'src/utils/ngsi-ld/config';
 
 const placeholderText = "Select schema";
 
 
 function CreateEntity() {
-
-    const t = {
-        "Building": "https://smart-data-models.github.io/dataModel.Building/Building/schema.json",
-        "Asset": "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Asset/schemaManualModified.json",
-        "Activity": "https://smart-data-models.github.io/dataModel.Building/Building/schema.json",
-        "Safeguard": "https://smart-data-models.github.io/dataModel.Building/Building/schema.json",
-        "Claim": "https://smart-data-models.github.io/dataModel.Building/Building/schema.json",
-        "Actor": "https://smart-data-models.github.io/dataModel.Building/Building/schema.json",
-
-    }
 
     const [schemaName, setSchemaName] = useState<string>(placeholderText);
 
@@ -30,7 +20,7 @@ function CreateEntity() {
                 <title>Create Entity</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader availableSchemas={Object.keys(t)} selectedSchemaName={schemaName} handleChangeSchema={(s) => setSchemaName(s)} />
+                <PageHeader availableSchemas={Object.keys(schemas)} selectedSchemaName={schemaName} handleChangeSchema={(s) => setSchemaName(s)} />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid
@@ -41,7 +31,7 @@ function CreateEntity() {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        {schemaName === placeholderText ? <></> : <GeneratedForm schemaURL={t[`${schemaName}`]} />}
+                        {schemaName === placeholderText ? <></> : <GeneratedForm schemaURL={schemas[`${schemaName}`]} />}
                     </Grid>
                 </Grid>
             </Container>

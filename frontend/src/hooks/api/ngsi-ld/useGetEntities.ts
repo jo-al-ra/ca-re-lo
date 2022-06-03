@@ -1,8 +1,8 @@
 
-import { useGetApiArray } from '../useGetApiArray';
+import { useApiArrayEffect } from '../useApiArrayEffect';
 
 export const useGetEntities = <EntityType,>(type: string, linkHeader: string): { data: EntityType[]; error: any; loading: boolean; refresh: () => void } => {
-  return useGetApiArray({
+  return useApiArrayEffect({
     url: (process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/ngsi-ld/v1') + '/entities',
     params: {
       type: type,

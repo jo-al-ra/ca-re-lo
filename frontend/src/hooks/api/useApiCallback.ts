@@ -1,15 +1,15 @@
 // use-api.js
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
-export const usePostApi = <EntityType,>(config: AxiosRequestConfig) => {
+export const useApiCallback = () => {
     const [state, setState] = useState<{ responseStatus: number; error: any; loading: boolean }>({
         responseStatus: 0,
         error: null,
         loading: false,
     });
 
-    const makeRequest = async (data: EntityType) => {
+    const makeRequest = useCallback(async (config: AxiosRequestConfig) => {
         setState({
             ...state,
             error: null,
@@ -24,8 +24,6 @@ export const usePostApi = <EntityType,>(config: AxiosRequestConfig) => {
                     // Add the Authorization header to the existing headers
                     //   Authorization: `Bearer ${accessToken}`,
                 },
-                method: "post",
-                data: data
             });
             console.log(response.status, typeof response.status);
             setState({
@@ -45,7 +43,7 @@ export const usePostApi = <EntityType,>(config: AxiosRequestConfig) => {
                 responseStatus: 0,
             });
         }
-    };
+    }, [])
 
     return {
         ...state,
