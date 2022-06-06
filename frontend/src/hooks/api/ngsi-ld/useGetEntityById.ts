@@ -2,7 +2,7 @@
 import { useApiCallback } from '../useApiCallback';
 
 export const useGetEntityById = (linkHeader: string): {
-    makeRequest: (entityId: string) => Promise<any>;
+    makeRequest: (entityId: string, keyValues?: boolean) => Promise<any>;
     responseStatus: number;
     error: any;
     loading: boolean;
