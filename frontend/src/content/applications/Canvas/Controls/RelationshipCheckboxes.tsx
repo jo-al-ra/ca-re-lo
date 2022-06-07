@@ -1,13 +1,15 @@
-import { FormControl, FormLabel, FormGroup, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
+import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Button } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
+import { IncomingRelationshipParameter } from '../types';
 
-interface RelationshipCheckboxProps {
+interface RelationshipCheckboxesProps {
     className?: string;
     relationshipNames: string[];
+    onSubmit: (outgoing: string[], incoming: IncomingRelationshipParameter[]) => void
 }
 
 
-const RelationshipCheckboxes: FC<RelationshipCheckboxProps> = ({ relationshipNames }) => {
+const RelationshipCheckboxes: FC<RelationshipCheckboxesProps> = ({ relationshipNames, onSubmit }) => {
     const [state, setState] = useState({});
     useEffect(() => {
         setState({
@@ -40,6 +42,11 @@ const RelationshipCheckboxes: FC<RelationshipCheckboxProps> = ({ relationshipNam
             <FormLabel component="legend">Select outgoing relationships</FormLabel>
             <FormGroup>
                 {renderCheckboxes()}
+                <Button onClick={() => {
+                    onSubmit(Object.keys(state).filter(key => state[key]), [])
+                }}>
+                    Load Relationships
+                </Button>
             </FormGroup>
         </FormControl>
     );
