@@ -5,12 +5,12 @@ import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import { useCallback, useEffect, useState } from 'react';
-import Form from '@rjsf/material-ui/v5';
 import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema';
 import VisNetwork from './Network';
 import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
 import { Edge } from "vis-network/standalone/esm/vis-network";
+import Details from './Details';
 
 
 function Canvas() {
@@ -109,28 +109,7 @@ function Canvas() {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Card style={{ flex: 1, width: '100%', padding: 15 }}>
-                            {schema === undefined ? <div> Loading... </div> :
-                                <Form
-                                    readonly
-                                    schema={schema}
-                                    formData={data}
-                                    onSubmit={(event) => {
-                                        console.log(data)
-                                    }}
-                                    uiSchema={
-                                        {
-                                            "ui:submitButtonOptions": {
-                                                props: {
-                                                    disabled: true
-                                                },
-                                                norender: true,
-                                                submitText: "Update"
-                                            }
-                                        }} />
-                            }
-
-                        </Card>
+                        <Details node={selectedNode} />
                     </Grid>
                     <Grid item xs={6}>
                         <Card style={{ flex: 1, width: '100%', height: 600, padding: 15 }}>
