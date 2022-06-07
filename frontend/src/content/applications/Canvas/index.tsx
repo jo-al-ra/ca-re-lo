@@ -4,8 +4,7 @@ import { Grid, Container, Card } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
-import { useCallback, useEffect, useState } from 'react';
-import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema';
+import { useCallback, useState } from 'react';
 import VisNetwork from './Network';
 import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
@@ -16,20 +15,9 @@ import Details from './Details';
 function Canvas() {
 
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
-    const [data, setData] = useState<any>();
-    const [schema, setSchema] = useState<any>();
     const [nodes, setNodes] = useState<CustomNode[]>([])
     const [edges, setEdges] = useState<Edge[]>([])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
-
-    useEffect(() => {
-        if (!data) {
-            return undefined
-        } else {
-            resolveContextToSchema("http://context/ngsi-context.jsonld", data?.type).then(res =>
-                setSchema(res));
-        }
-    }, [data])
 
     const addNodes = (newNodes: CustomNode[]) => {
         setNodes([...nodes, ...newNodes])
@@ -40,35 +28,32 @@ function Canvas() {
     }
 
     const onSetSelectedNode = useCallback((node: CustomNode) => {
-        console.log(node)
         setSelectedNode(node)
     }, [])
 
     const loadRelationships = async (node: CustomNode, outgoing: string[], incoming: IncomingRelationshipParameter[]) => {
+        let nodes = [];
+        let edges = [];
         for (let i = 0; i < outgoing.length; i++) {
             const entity = await makeRequest(node.ngsiObject[outgoing[i]].object)
-            const relationship = {
+            nodes.push({
+                id: entity.id,
+                label: entity.id,
+                title: entity.name,
+                shape: "box",
+                ngsiObject: entity
+            })
+            nodes.push({
                 id: `${node.id}_${outgoing[i]}`,
                 label: outgoing[i],
                 shape: "ellipse",
                 ngsiObject: node.ngsiObject[outgoing[i]]
-
-            }
-            addNodes([
-                {
-                    id: entity.id,
-                    label: entity.id,
-                    title: entity.name,
-                    shape: "box",
-                    ngsiObject: entity
-                }
-                , relationship
-            ])
-            addEdges([
-                { from: node.id, to: `${node.id}_${outgoing[i]}`, arrows: { to: true } },
-                { from: `${node.id}_${outgoing[i]}`, to: entity.id, arrows: { to: true } }
-            ])
+            })
+            edges.push({ from: node.id, to: `${node.id}_${outgoing[i]}`, arrows: { to: true } })
+            edges.push({ from: `${node.id}_${outgoing[i]}`, to: entity.id, arrows: { to: true } })
         }
+        addNodes(nodes)
+        addEdges(edges)
         //add incoming relationships
     }
 
@@ -79,7 +64,6 @@ function Canvas() {
             </Helmet>
             <PageTitleWrapper>
                 <PageHeader onSubmit={(entityId) => makeRequest(entityId).then(data => {
-                    // setData(data)
                     addNodes([
                         {
                             id: data.id,

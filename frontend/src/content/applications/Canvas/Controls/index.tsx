@@ -5,8 +5,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CustomNode, IncomingRelationshipParameter } from './types';
-import RelationshipCheckboxes from './Controls/RelationshipCheckboxes';
+import { CustomNode, IncomingRelationshipParameter } from '../types';
+import RelationshipCheckboxes from './RelationshipCheckboxes';
 
 interface ControlsProps {
     className?: string;
@@ -42,13 +42,11 @@ const Controls: FC<ControlsProps> = ({ onLoadRelationships, selectedNode }) => {
                         <Typography>Load data</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <RelationshipCheckboxes relationshipNames={initialOutgoingRelationships} />
-                        <Button onClick={() => {
-                            console.log(initialOutgoingRelationships)
-                            onLoadRelationships(["producedVia"], [])
-                        }}>
-                            Load Relationships
-                        </Button>
+                        <RelationshipCheckboxes
+                            relationshipNames={initialOutgoingRelationships}
+                            onSubmit={(outgoing, incoming) => {
+                                onLoadRelationships(outgoing, incoming)
+                            }} />
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
