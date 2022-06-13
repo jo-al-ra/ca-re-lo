@@ -34,14 +34,13 @@ export const useApiCallback = () => {
             });
             return response.data;
         } catch (error) {
-            console.log(JSON.stringify(error));
-
             setState({
                 ...state,
                 error,
                 loading: false,
-                responseStatus: 0,
+                responseStatus: error.response.status ?? 0,
             });
+            return Promise.reject(error)
         }
     }, [])
 

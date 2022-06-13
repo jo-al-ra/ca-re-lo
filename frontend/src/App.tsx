@@ -5,6 +5,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
 
 const App = () => {
 
@@ -12,10 +13,12 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <CssBaseline />
-        {content}
-      </LocalizationProvider>
+      <SnackbarProvider maxSnack={3}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <CssBaseline />
+          {content}
+        </LocalizationProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
