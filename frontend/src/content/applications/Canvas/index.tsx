@@ -36,23 +36,31 @@ function Canvas() {
     const loadRelationships = async (node: CustomNode, outgoing: string[], incoming: IncomingRelationshipParameter[]) => {
         let nodes = [];
         let edges = [];
+        const createEntityNode = (entity) => ({
+            id: entity.id,
+            label: entity.id,
+            title: entity.name,
+            shape: "box",
+            ngsiObject: entity
+        })
+        const createRelationshipNode = (source, relationshipName) => ({
+            id: `${source.id}_${relationshipName}`,
+            label: relationshipName,
+            shape: "ellipse",
+            ngsiObject: source[relationshipName]
+
+        })
+        const createEdge = (sourceId, targetId) => ({
+            from: sourceId,
+            to: targetId,
+            arrows: { to: true }
+        })
         for (let i = 0; i < outgoing.length; i++) {
             const entity = await makeRequest(node.ngsiObject[outgoing[i]].object)
-            nodes.push({
-                id: entity.id,
-                label: entity.id,
-                title: entity.name,
-                shape: "box",
-                ngsiObject: entity
-            })
-            nodes.push({
-                id: `${node.id}_${outgoing[i]}`,
-                label: outgoing[i],
-                shape: "ellipse",
-                ngsiObject: node.ngsiObject[outgoing[i]]
-            })
-            edges.push({ from: node.id, to: `${node.id}_${outgoing[i]}`, arrows: { to: true } })
-            edges.push({ from: `${node.id}_${outgoing[i]}`, to: entity.id, arrows: { to: true } })
+            nodes.push(createEntityNode(entity))
+            nodes.push(createRelationshipNode(node.ngsiObject, outgoing[i]))
+            edges.push(createEdge(node.id, `${node.id}_${outgoing[i]}`))
+            edges.push(createEdge(`${node.id}_${outgoing[i]}`, entity.id))
         }
         //add incoming relationships
         for (let i = 0; i < incoming.length; i++) {
@@ -69,41 +77,17 @@ function Canvas() {
                     latestEntity = entities[j]
                 } else if (incoming[i].type != "DLTtxReceipt") {
                     latestEntity = undefined;
-                    nodes.push({
-                        id: entities[j].id,
-                        label: entities[j].id,
-                        title: entities[j].name,
-                        shape: "box",
-                        ngsiObject: entities[j]
-
-                    })
-                    nodes.push({
-                        id: `${entities[j].id}_${incoming[i].relationshipName}`,
-                        label: incoming[i].relationshipName,
-                        shape: "ellipse",
-                        ngsiObject: entities[j][incoming[i].relationshipName]
-                    })
-                    edges.push({ from: entities[j].id, to: `${entities[j].id}_${incoming[i].relationshipName}`, arrows: { to: true } })
-                    edges.push({ from: `${entities[j].id}_${incoming[i].relationshipName}`, to: node.id, arrows: { to: true } })
+                    nodes.push(createEntityNode(entities[j]))
+                    nodes.push(createRelationshipNode(entities[j], incoming[i].relationshipName))
+                    edges.push(createEdge(entities[j].id, `${entities[j].id}_${incoming[i].relationshipName}`))
+                    edges.push(createEdge(`${entities[j].id}_${incoming[i].relationshipName}`, node.id))
                 }
             }
             if (latestEntity) {
-                nodes.push({
-                    id: latestEntity.id,
-                    label: latestEntity.id,
-                    title: latestEntity.name,
-                    shape: "box",
-                    ngsiObject: latestEntity
-
-                })
-                nodes.push({
-                    id: `${latestEntity.id}_${incoming[i].relationshipName}`,
-                    label: incoming[i].relationshipName,
-                    shape: "ellipse",
-                    ngsiObject: latestEntity[incoming[i].relationshipName]
-                })
-                edges.push({ from: latestEntity.id, to: `${latestEntity.id}_${incoming[i].relationshipName}`, arrows: { to: true } })
-                edges.push({ from: `${latestEntity.id}_${incoming[i].relationshipName}`, to: node.id, arrows: { to: true } })
+                nodes.push(createEntityNode(latestEntity))
+                nodes.push(createRelationshipNode(latestEntity, incoming[i].relationshipName))
+                edges.push(createEdge(latestEntity.id, `${latestEntity.id}_${incoming[i].relationshipName}`))
+                edges.push(createEdge(`${latestEntity.id}_${incoming[i].relationshipName}`, node.id))
             }
         }
 
