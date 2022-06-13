@@ -9,5 +9,5 @@ export interface CustomNode extends Node {
 export interface IncomingRelationshipParameter {
     type: string,
     context?: string,
-    relationShipname: string
+    relationshipName: string
 }

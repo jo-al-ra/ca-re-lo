@@ -10,11 +10,13 @@ import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
 import { Edge } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
+import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 
 
 function Canvas() {
 
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const loadIncomingCallback = useGetEntitiesByQuery();
     const [nodes, setNodes] = useState<CustomNode[]>([])
     const [edges, setEdges] = useState<Edge[]>([])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
@@ -52,9 +54,61 @@ function Canvas() {
             edges.push({ from: node.id, to: `${node.id}_${outgoing[i]}`, arrows: { to: true } })
             edges.push({ from: `${node.id}_${outgoing[i]}`, to: entity.id, arrows: { to: true } })
         }
+        //add incoming relationships
+        for (let i = 0; i < incoming.length; i++) {
+            const entities = await loadIncomingCallback.makeRequest(
+                incoming[i].type,
+                `${incoming[i].relationshipName}=="${selectedNode.id}"`,
+                incoming[i].context)
+            let latestEntity;
+            for (let j = 0; j < entities.length; j++) {
+                if (incoming[i].type == "DLTtxReceipt"
+                    && !(entities[j].TxReceipts.value.blockNumber < latestEntity?.value?.blockNumber)
+                    && entities[j].TxReceipts.value.statusOK
+                ) {
+                    latestEntity = entities[j]
+                } else if (incoming[i].type != "DLTtxReceipt") {
+                    latestEntity = undefined;
+                    nodes.push({
+                        id: entities[j].id,
+                        label: entities[j].id,
+                        title: entities[j].name,
+                        shape: "box",
+                        ngsiObject: entities[j]
+
+                    })
+                    nodes.push({
+                        id: `${entities[j].id}_${incoming[i].relationshipName}`,
+                        label: incoming[i].relationshipName,
+                        shape: "ellipse",
+                        ngsiObject: entities[j][incoming[i].relationshipName]
+                    })
+                    edges.push({ from: entities[j].id, to: `${entities[j].id}_${incoming[i].relationshipName}`, arrows: { to: true } })
+                    edges.push({ from: `${entities[j].id}_${incoming[i].relationshipName}`, to: node.id, arrows: { to: true } })
+                }
+            }
+            if (latestEntity) {
+                nodes.push({
+                    id: latestEntity.id,
+                    label: latestEntity.id,
+                    title: latestEntity.name,
+                    shape: "box",
+                    ngsiObject: latestEntity
+
+                })
+                nodes.push({
+                    id: `${latestEntity.id}_${incoming[i].relationshipName}`,
+                    label: incoming[i].relationshipName,
+                    shape: "ellipse",
+                    ngsiObject: latestEntity[incoming[i].relationshipName]
+                })
+                edges.push({ from: latestEntity.id, to: `${latestEntity.id}_${incoming[i].relationshipName}`, arrows: { to: true } })
+                edges.push({ from: `${latestEntity.id}_${incoming[i].relationshipName}`, to: node.id, arrows: { to: true } })
+            }
+        }
+
         addNodes(nodes)
         addEdges(edges)
-        //add incoming relationships
     }
 
     return (
