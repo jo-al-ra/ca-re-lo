@@ -15,7 +15,7 @@ export const useGetEntityById = (linkHeader: string): {
         makeRequest: (entityId: string, keyValues: boolean = false) => {
             const keyValueOption = keyValues ? { options: "keyValues" } : {};
             return hook.makeRequest({
-                url: (process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/ngsi-ld/v1') + '/entities/' + entityId,
+                url: (process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/orion/ngsi-ld/v1') + '/entities/' + entityId,
                 params: {
                     ...keyValueOption
                 },

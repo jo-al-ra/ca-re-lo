@@ -1,11 +1,12 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { CustomNode } from '../types';
 import ReactJson from 'react-json-view'
-import { Card, CardContent, CardHeader, Tab, Tabs } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Tab, Tabs } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import Form from '@rjsf/material-ui/v5';
 import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
+import { usePostEntity } from 'src/hooks/api/canis-major/usePostEntity';
 
 interface DetailsProps {
     className?: string;
@@ -23,6 +24,7 @@ const Details: FC<DetailsProps> = ({ node }) => {
     const [schema, setSchema] = useState<any>();
     const [needsLoading, setNeedsLoading] = useState(true);
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const postDLTHook = usePostEntity("http://context/ngsi-context.jsonld")
 
     useEffect(() => {
         console.log(keyValues)
@@ -91,6 +93,13 @@ const Details: FC<DetailsProps> = ({ node }) => {
                         }
                     </TabPanel>
                 </CardContent>
+                <CardActions>
+                    <Button size="small" onClick={() => {
+                        postDLTHook.makeRequest(node.ngsiObject)
+                            .then(res => console.log(res))
+                            .catch(error => console.error(error))
+                    }}>Persist on DLT</Button>
+                </CardActions>
             </TabContext>
 
         </Card>

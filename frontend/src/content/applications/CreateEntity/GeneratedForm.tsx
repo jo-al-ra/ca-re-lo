@@ -5,21 +5,20 @@ import {
 
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import Form from '@rjsf/material-ui/v5';
-import { usePostEntity } from 'src/hooks/api/ngsi-ld/usePostEntity';
 import { normalize } from 'src/utils/ngsi-ld/normalize';
 
 
 interface FormProps {
     className?: string;
     schemaURL: string;
+    onSubmit: (ngsiLdObject: any) => void
 }
 
 
-const GeneratedForm: FC<FormProps> = ({ schemaURL }) => {
+const GeneratedForm: FC<FormProps> = ({ schemaURL, onSubmit }) => {
 
     const [data, setData] = useState({});
     const [resolvedSchema, setSchema] = useState<any>();
-    const { makeRequest, error, loading, responseStatus } = usePostEntity("http://context/ngsi-context.jsonld")
 
     useEffect(() => {
         $RefParser.dereference(schemaURL).then(res =>
@@ -35,9 +34,7 @@ const GeneratedForm: FC<FormProps> = ({ schemaURL }) => {
             <Form schema={resolvedSchema}
                 formData={data}
                 onSubmit={(event) => {
-                    console.log(resolvedSchema)
-                    console.log(event.formData)
-                    makeRequest(normalize(event.formData, ["producedVia", "consumedVia"]))
+                    onSubmit(normalize(event.formData, ["producedVia", "consumedVia"]))
                 }} />
         </Card>
     )
