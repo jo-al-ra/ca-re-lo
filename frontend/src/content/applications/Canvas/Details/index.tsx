@@ -27,13 +27,24 @@ const Details: FC<DetailsProps> = ({ node }) => {
     const postDLTHook = usePostEntity("http://context/ngsi-context.jsonld")
 
     useEffect(() => {
-        console.log(keyValues)
         if (value !== "1" && needsLoading) {
-            makeRequest(node.ngsiObject.id, true).then(res =>
-                setkeyValues(res))
-            resolveContextToSchema("http://context/ngsi-context.jsonld", node.ngsiObject?.type).then(res =>
-                setSchema(res));
-            setNeedsLoading(false);
+            resolveContextToSchema("http://context/ngsi-context.jsonld", node.ngsiObject?.type).then(res1 => {
+                setSchema(res1)
+
+                makeRequest(node.ngsiObject.id, true).then(res2 => {
+                    let keyValueObject = { ...res2 };
+                    //convert single objects to arrays according to schema definition
+                    res1.allOf?.forEach(allOf => {
+                        Object.keys(allOf.properties).forEach(propertyKey => {
+                            if (allOf?.properties[propertyKey]?.type == "array" && res2[propertyKey] && !Array.isArray(res2[propertyKey])) {
+                                keyValueObject[propertyKey] = [res2[propertyKey]]
+                            }
+                        })
+                    })
+                    setkeyValues(keyValueObject)
+                    setNeedsLoading(false);
+                })
+            });
         }
     }, [value, needsLoading])
 

@@ -2,13 +2,14 @@ import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-import GeneratedForm from './GeneratedForm';
 import PageHeader from './PageHeader';
 import { useState } from 'react';
-import schemas from 'src/utils/ngsi-ld/config';
 import { usePostEntity as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntity';
 import { usePostEntity as useCaMaCallback } from 'src/hooks/api/canis-major/usePostEntity';
 import { useSnackbar } from 'notistack';
+import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
+import { useNavigate } from 'react-router';
+import { formConfig } from 'src/utils/ngsi-ld/config';
 
 const placeholderText = "Select schema";
 
@@ -19,6 +20,7 @@ function CreateEntity() {
     const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
     const postCaMaCallback = useCaMaCallback("http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -26,7 +28,7 @@ function CreateEntity() {
                 <title>Create Entity</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader availableSchemas={Object.keys(schemas)} selectedSchemaName={schemaName} handleChangeSchema={(s) => setSchemaName(s)} />
+                <PageHeader availableSchemas={Object.keys(formConfig)} selectedSchemaName={schemaName} handleChangeSchema={(s) => setSchemaName(s)} />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid
@@ -39,31 +41,29 @@ function CreateEntity() {
                     <Grid item xs={12}>
                         {schemaName === placeholderText ? <></>
                             :
-                            <GeneratedForm
-                                schemaURL={schemas[`${schemaName}`]}
-                                onSubmit={(object) => {
-                                    postCaMaCallback.makeRequest(object).then(res1 => {
-                                        enqueueSnackbar("DLTtxReceipt created", {
+                            <NgsiLDForm type={schemaName} onSubmit={(object) => {
+                                postCaMaCallback.makeRequest(object).then(res1 => {
+                                    enqueueSnackbar("DLTtxReceipt created", {
+                                        variant: "success"
+                                    })
+                                    postCoBrCallback.makeRequest(object).then(res2 => {
+                                        enqueueSnackbar("Entity created in Context Broker", {
                                             variant: "success"
                                         })
-                                        postCoBrCallback.makeRequest(object).then(res2 => {
-                                            enqueueSnackbar("Entity created in Context Broker", {
-                                                variant: "success"
-                                            })
-                                        }).catch(e2 => {
-                                            console.log(e2)
-                                            enqueueSnackbar("Failed to create entity in Context Broker", {
-                                                variant: "error"
-                                            })
-                                        })
-                                    }).catch(e1 => {
-                                        console.log(e1)
-                                        enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                        navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
+                                    }).catch(e2 => {
+                                        console.log(e2)
+                                        enqueueSnackbar("Failed to create entity in Context Broker", {
                                             variant: "error"
                                         })
                                     })
-                                }}
-                            />}
+                                }).catch(e1 => {
+                                    console.log(e1)
+                                    enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                        variant: "error"
+                                    })
+                                })
+                            }} />}
                     </Grid>
                 </Grid>
             </Container>

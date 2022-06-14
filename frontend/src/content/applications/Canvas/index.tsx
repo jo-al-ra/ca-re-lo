@@ -4,14 +4,19 @@ import { Grid, Container, Card } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import VisNetwork from './Network';
 import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
 import { Edge } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
+import { useLocation } from 'react-router-dom';
 
+
+interface LocationState {
+    initialEntityId: string
+}
 
 function Canvas() {
 
@@ -20,6 +25,19 @@ function Canvas() {
     const [nodes, setNodes] = useState<CustomNode[]>([])
     const [edges, setEdges] = useState<Edge[]>([])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state) {
+            const { initialEntityId } = location.state as LocationState;
+            if (initialEntityId) {
+                makeRequest(initialEntityId).then(data => {
+                    addNodes([createEntityNode(data)])
+                    onSetSelectedNode({ ngsiObject: data, id: data.id })
+                })
+            }
+        }
+    }, [location])
 
     const addNodes = (newNodes: CustomNode[]) => {
         setNodes([...nodes, ...newNodes])
@@ -33,16 +51,18 @@ function Canvas() {
         setSelectedNode(node)
     }, [])
 
+
+    const createEntityNode = (entity) => ({
+        id: entity.id,
+        label: entity.id,
+        title: entity.name,
+        shape: "box",
+        ngsiObject: entity
+    })
+
     const loadRelationships = async (node: CustomNode, outgoing: string[], incoming: IncomingRelationshipParameter[]) => {
         let nodes = [];
         let edges = [];
-        const createEntityNode = (entity) => ({
-            id: entity.id,
-            label: entity.id,
-            title: entity.name,
-            shape: "box",
-            ngsiObject: entity
-        })
         const createRelationshipNode = (source, relationshipName) => ({
             id: `${source.id}_${relationshipName}`,
             label: relationshipName,
@@ -102,15 +122,7 @@ function Canvas() {
             </Helmet>
             <PageTitleWrapper>
                 <PageHeader onSubmit={(entityId) => makeRequest(entityId).then(data => {
-                    addNodes([
-                        {
-                            id: data.id,
-                            label: data.id,
-                            title: data.name,
-                            shape: "box",
-                            ngsiObject: data
-                        }
-                    ])
+                    addNodes([createEntityNode(data)])
                 })} />
             </PageTitleWrapper>
             <Container maxWidth="lg">
