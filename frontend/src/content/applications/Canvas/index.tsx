@@ -31,13 +31,17 @@ function Canvas() {
         if (location.state) {
             const { initialEntityId } = location.state as LocationState;
             if (initialEntityId) {
-                makeRequest(initialEntityId).then(data => {
-                    addNodes([createEntityNode(data)])
-                    onSetSelectedNode({ ngsiObject: data, id: data.id })
-                })
+                loadEntityById(initialEntityId)
             }
         }
     }, [location])
+
+    const loadEntityById = (entityId) => {
+        makeRequest(entityId).then(data => {
+            addNodes([createEntityNode(data)])
+            onSetSelectedNode({ ngsiObject: data, id: data.id })
+        })
+    }
 
     const addNodes = (newNodes: CustomNode[]) => {
         setNodes([...nodes, ...newNodes])
@@ -84,10 +88,13 @@ function Canvas() {
         }
         //add incoming relationships
         for (let i = 0; i < incoming.length; i++) {
-            const entities = await loadIncomingCallback.makeRequest(
-                incoming[i].type,
-                `${incoming[i].relationshipName}=="${selectedNode.id}"`,
-                incoming[i].context)
+            const entities = await loadIncomingCallback.makeRequest({
+                linkHeader: incoming[i].context,
+                ...(incoming[i].type == "DLTtxReceipt") ? { ngsiLdTenant: "orion" } : {},
+                type: incoming[i].type,
+                query: `${incoming[i].relationshipName}=="${selectedNode.id}"`
+            }
+            )
             let latestEntity;
             for (let j = 0; j < entities.length; j++) {
                 if (incoming[i].type == "DLTtxReceipt"
@@ -121,9 +128,7 @@ function Canvas() {
                 <title>Canvas</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader onSubmit={(entityId) => makeRequest(entityId).then(data => {
-                    addNodes([createEntityNode(data)])
-                })} />
+                <PageHeader onSubmit={(entityId) => loadEntityById(entityId)} />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid
@@ -140,6 +145,9 @@ function Canvas() {
                                 return loadRelationships(selectedNode, outgoing, incoming)
                             }}
                             selectedNode={selectedNode}
+                            onLoadEntityById={(entityId => {
+                                loadEntityById(entityId)
+                            })}
                         />
                     </Grid>
                     <Grid item xs={6}>

@@ -24,7 +24,6 @@ const Details: FC<DetailsProps> = ({ node }) => {
     const [schema, setSchema] = useState<any>();
     const [needsLoading, setNeedsLoading] = useState(true);
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
-    const postDLTHook = usePostEntity("http://context/ngsi-context.jsonld")
 
     useEffect(() => {
         if (value !== "1" && needsLoading) {
@@ -106,10 +105,9 @@ const Details: FC<DetailsProps> = ({ node }) => {
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={() => {
-                        postDLTHook.makeRequest(node.ngsiObject)
-                            .then(res => console.log(res))
-                            .catch(error => console.error(error))
-                    }}>Persist on DLT</Button>
+                        console.log("switch to edit mode")
+                        setValue("3")
+                    }}>Edit</Button>
                 </CardActions>
             </TabContext>
 
