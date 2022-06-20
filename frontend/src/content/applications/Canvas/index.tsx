@@ -42,17 +42,9 @@ function Canvas() {
 
     const loadEntityById = (entityId) => {
         makeRequest(entityId).then(data => {
-            addNodes([createEntityNode(data)])
+            nodes.update([createEntityNode(data)])
             onSetSelectedNode({ ngsiObject: data, id: data.id })
         })
-    }
-
-    const addNodes = (newNodes: CustomNode[]) => {
-        nodes.update(newNodes)
-    }
-
-    const addEdges = (newEdges: Edge[]) => {
-        edges.update(newEdges)
     }
 
     const onSetSelectedNode = useCallback((node: CustomNode) => {
@@ -69,8 +61,8 @@ function Canvas() {
     })
 
     const loadRelationships = async (node: CustomNode, outgoing: string[], incoming: IncomingRelationshipParameter[]) => {
-        let nodes = [];
-        let edges = [];
+        let _nodes = [];
+        let _edges = [];
         const createRelationshipNode = (source, relationshipName) => ({
             id: `${source.id}_${relationshipName}`,
             label: relationshipName,
@@ -86,10 +78,10 @@ function Canvas() {
         })
         for (let i = 0; i < outgoing.length; i++) {
             const entity = await makeRequest(node.ngsiObject[outgoing[i]].object)
-            nodes.push(createEntityNode(entity))
-            nodes.push(createRelationshipNode(node.ngsiObject, outgoing[i]))
-            edges.push(createEdge(node.id, `${node.id}_${outgoing[i]}`))
-            edges.push(createEdge(`${node.id}_${outgoing[i]}`, entity.id))
+            _nodes.push(createEntityNode(entity))
+            _nodes.push(createRelationshipNode(node.ngsiObject, outgoing[i]))
+            _edges.push(createEdge(node.id, `${node.id}_${outgoing[i]}`))
+            _edges.push(createEdge(`${node.id}_${outgoing[i]}`, entity.id))
         }
         //add incoming relationships
         for (let i = 0; i < incoming.length; i++) {
@@ -109,22 +101,22 @@ function Canvas() {
                     latestEntity = entities[j]
                 } else if (incoming[i].type != "DLTtxReceipt") {
                     latestEntity = undefined;
-                    nodes.push(createEntityNode(entities[j]))
-                    nodes.push(createRelationshipNode(entities[j], incoming[i].relationshipName))
-                    edges.push(createEdge(entities[j].id, `${entities[j].id}_${incoming[i].relationshipName}`))
-                    edges.push(createEdge(`${entities[j].id}_${incoming[i].relationshipName}`, node.id))
+                    _nodes.push(createEntityNode(entities[j]))
+                    _nodes.push(createRelationshipNode(entities[j], incoming[i].relationshipName))
+                    _edges.push(createEdge(entities[j].id, `${entities[j].id}_${incoming[i].relationshipName}`))
+                    _edges.push(createEdge(`${entities[j].id}_${incoming[i].relationshipName}`, node.id))
                 }
             }
             if (latestEntity) {
-                nodes.push(createEntityNode(latestEntity))
-                nodes.push(createRelationshipNode(latestEntity, incoming[i].relationshipName))
-                edges.push(createEdge(latestEntity.id, `${latestEntity.id}_${incoming[i].relationshipName}`))
-                edges.push(createEdge(`${latestEntity.id}_${incoming[i].relationshipName}`, node.id))
+                _nodes.push(createEntityNode(latestEntity))
+                _nodes.push(createRelationshipNode(latestEntity, incoming[i].relationshipName))
+                _edges.push(createEdge(latestEntity.id, `${latestEntity.id}_${incoming[i].relationshipName}`))
+                _edges.push(createEdge(`${latestEntity.id}_${incoming[i].relationshipName}`, node.id))
             }
         }
 
-        addNodes(nodes)
-        addEdges(edges)
+        nodes.update(_nodes)
+        edges.update(_edges)
     }
 
     return (
