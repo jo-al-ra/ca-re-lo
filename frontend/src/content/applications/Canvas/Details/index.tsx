@@ -28,7 +28,6 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     useEffect(() => {
-        console.log(inEditMode)
         if (value === "2") {
             makeRequest(node.ngsiObject.id, true).then(res2 => {
                 setkeyValues(res2)
@@ -70,7 +69,6 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                             type={node.ngsiObject.type}
                             initialNgsiObject={node.ngsiObject}
                             onSubmit={(object) => {
-                                console.log(object)
                                 postCaMaCallback.makeRequest(object).then(res1 => {
                                     enqueueSnackbar("DLTtxReceipt created", {
                                         variant: "success"
@@ -79,7 +77,8 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                                         enqueueSnackbar("Entity updated in Context Broker", {
                                             variant: "success"
                                         })
-                                        // reload();
+                                        setInEditMode(false)
+                                        reload();
                                     }).catch(e2 => {
                                         console.log(e2)
                                         enqueueSnackbar("Failed to update entity in Context Broker", {
@@ -94,25 +93,6 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                                 })
                             }}
                         />
-                        {/* {schema === undefined || keyValues === undefined ? <div> Loading... </div> :
-                            <Form
-                                readonly
-                                schema={schema}
-                                formData={keyValues}
-                                onSubmit={(event) => {
-                                    console.log(event)
-                                }}
-                                uiSchema={
-                                    {
-                                        "ui:submitButtonOptions": {
-                                            props: {
-                                                disabled: true
-                                            },
-                                            norender: true,
-                                            submitText: "Update"
-                                        }
-                                    }} />
-                        } */}
                     </TabPanel>
                 </CardContent>
                 <CardActions>

@@ -4,11 +4,11 @@ import { Grid, Container, Card } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import VisNetwork from './Network';
 import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
-import { Edge } from "vis-network/standalone/esm/vis-network";
+import { Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 import { useLocation } from 'react-router-dom';
@@ -22,8 +22,12 @@ function Canvas() {
 
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
     const loadIncomingCallback = useGetEntitiesByQuery();
-    const [nodes, setNodes] = useState<CustomNode[]>([])
-    const [edges, setEdges] = useState<Edge[]>([])
+    const nodes = useMemo(() => {
+        return new DataSet<CustomNode>()
+    }, [])
+    const edges = useMemo(() => {
+        return new DataSet<Edge>()
+    }, [])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
     const location = useLocation()
 
@@ -44,11 +48,11 @@ function Canvas() {
     }
 
     const addNodes = (newNodes: CustomNode[]) => {
-        setNodes([...nodes, ...newNodes])
+        nodes.update(newNodes)
     }
 
     const addEdges = (newEdges: Edge[]) => {
-        setEdges([...edges, ...newEdges])
+        edges.update(newEdges)
     }
 
     const onSetSelectedNode = useCallback((node: CustomNode) => {
@@ -75,6 +79,7 @@ function Canvas() {
 
         })
         const createEdge = (sourceId, targetId) => ({
+            id: `${sourceId}_${targetId}`,
             from: sourceId,
             to: targetId,
             arrows: { to: true }
@@ -151,7 +156,7 @@ function Canvas() {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <Details node={selectedNode} />
+                        <Details node={selectedNode} reload={() => { loadEntityById(selectedNode.id) }} />
                     </Grid>
                     <Grid item xs={6}>
                         <Card style={{ flex: 1, width: '100%', height: 600, padding: 15 }}>
