@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, Card } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useState } from 'react';
@@ -41,29 +41,35 @@ function CreateEntity() {
                     <Grid item xs={12}>
                         {schemaName === placeholderText ? <></>
                             :
-                            <NgsiLDForm type={schemaName} onSubmit={(object) => {
-                                postCaMaCallback.makeRequest(object).then(res1 => {
-                                    enqueueSnackbar("DLTtxReceipt created", {
-                                        variant: "success"
-                                    })
-                                    postCoBrCallback.makeRequest(object).then(res2 => {
-                                        enqueueSnackbar("Entity created in Context Broker", {
-                                            variant: "success"
+                            <Card style={{ flex: 1, width: '100%', padding: 15 }}>
+                                <NgsiLDForm
+                                    type={schemaName}
+                                    onSubmit={(object) => {
+                                        postCaMaCallback.makeRequest(object).then(res1 => {
+                                            enqueueSnackbar("DLTtxReceipt created", {
+                                                variant: "success"
+                                            })
+                                            postCoBrCallback.makeRequest(object).then(res2 => {
+                                                enqueueSnackbar("Entity created in Context Broker", {
+                                                    variant: "success"
+                                                })
+                                                navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
+                                            }).catch(e2 => {
+                                                console.log(e2)
+                                                enqueueSnackbar("Failed to create entity in Context Broker", {
+                                                    variant: "error"
+                                                })
+                                            })
+                                        }).catch(e1 => {
+                                            console.log(e1)
+                                            enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                                variant: "error"
+                                            })
                                         })
-                                        navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
-                                    }).catch(e2 => {
-                                        console.log(e2)
-                                        enqueueSnackbar("Failed to create entity in Context Broker", {
-                                            variant: "error"
-                                        })
-                                    })
-                                }).catch(e1 => {
-                                    console.log(e1)
-                                    enqueueSnackbar("Failed to create DLTtxReceipt", {
-                                        variant: "error"
-                                    })
-                                })
-                            }} />}
+                                    }}
+                                />
+                            </Card>}
+
                     </Grid>
                 </Grid>
             </Container>

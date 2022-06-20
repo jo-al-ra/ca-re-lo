@@ -1,57 +1,40 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { CustomNode } from '../types';
 import ReactJson from 'react-json-view'
-import { Button, Card, CardActions, CardContent, CardHeader, Tab, Tabs } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import Form from '@rjsf/material-ui/v5';
-import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
-import { usePostEntity } from 'src/hooks/api/canis-major/usePostEntity';
+import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
+import { usePostEntityAttrs as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntityAttrs';
+import { usePostEntityAttrs as useCaMaCallback } from 'src/hooks/api/canis-major/usePostEntityAttrs';
+import { useSnackbar } from 'notistack';
 
 interface DetailsProps {
     className?: string;
     node: CustomNode;
+    reload: () => void;
 }
 
-const Details: FC<DetailsProps> = ({ node }) => {
+const Details: FC<DetailsProps> = ({ node, reload }) => {
     const [value, setValue] = useState("1");
-
     const handleChange = (event: SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
-
     const [keyValues, setkeyValues] = useState<any>();
-    const [schema, setSchema] = useState<any>();
-    const [needsLoading, setNeedsLoading] = useState(true);
+    const [inEditMode, setInEditMode] = useState<boolean>(false)
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const postCaMaCallback = useCaMaCallback(node?.id as string, "http://context/ngsi-context.jsonld");
+    const postCoBrCallback = useCoBrCallback(node?.id as string, "http://context/ngsi-context.jsonld");
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     useEffect(() => {
-        if (value !== "1" && needsLoading) {
-            resolveContextToSchema("http://context/ngsi-context.jsonld", node.ngsiObject?.type).then(res1 => {
-                setSchema(res1)
-
-                makeRequest(node.ngsiObject.id, true).then(res2 => {
-                    let keyValueObject = { ...res2 };
-                    //convert single objects to arrays according to schema definition
-                    res1.allOf?.forEach(allOf => {
-                        Object.keys(allOf.properties).forEach(propertyKey => {
-                            if (allOf?.properties[propertyKey]?.type == "array" && res2[propertyKey] && !Array.isArray(res2[propertyKey])) {
-                                keyValueObject[propertyKey] = [res2[propertyKey]]
-                            }
-                        })
-                    })
-                    setkeyValues(keyValueObject)
-                    setNeedsLoading(false);
-                })
-            });
+        console.log(inEditMode)
+        if (value === "2") {
+            makeRequest(node.ngsiObject.id, true).then(res2 => {
+                setkeyValues(res2)
+            })
         }
-    }, [value, needsLoading])
-
-    useEffect(() => {
-        if (node) {
-            setNeedsLoading(true)
-        }
-    }, [node])
+    }, [value])
 
     if (!node) {
         return (
@@ -82,7 +65,36 @@ const Details: FC<DetailsProps> = ({ node }) => {
                         <ReactJson src={keyValues} />
                     </TabPanel>
                     <TabPanel value={"3"}>
-                        {schema === undefined || keyValues === undefined ? <div> Loading... </div> :
+                        <NgsiLDForm
+                            readonly={!inEditMode}
+                            type={node.ngsiObject.type}
+                            initialNgsiObject={node.ngsiObject}
+                            onSubmit={(object) => {
+                                console.log(object)
+                                postCaMaCallback.makeRequest(object).then(res1 => {
+                                    enqueueSnackbar("DLTtxReceipt created", {
+                                        variant: "success"
+                                    })
+                                    postCoBrCallback.makeRequest(object).then(res2 => {
+                                        enqueueSnackbar("Entity updated in Context Broker", {
+                                            variant: "success"
+                                        })
+                                        // reload();
+                                    }).catch(e2 => {
+                                        console.log(e2)
+                                        enqueueSnackbar("Failed to update entity in Context Broker", {
+                                            variant: "error"
+                                        })
+                                    })
+                                }).catch(e1 => {
+                                    console.log(e1)
+                                    enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                        variant: "error"
+                                    })
+                                })
+                            }}
+                        />
+                        {/* {schema === undefined || keyValues === undefined ? <div> Loading... </div> :
                             <Form
                                 readonly
                                 schema={schema}
@@ -100,14 +112,25 @@ const Details: FC<DetailsProps> = ({ node }) => {
                                             submitText: "Update"
                                         }
                                     }} />
-                        }
+                        } */}
                     </TabPanel>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" onClick={() => {
-                        console.log("switch to edit mode")
-                        setValue("3")
-                    }}>Edit</Button>
+                    {inEditMode ?
+                        <Button size="small" onClick={() => {
+                            setInEditMode(false)
+                        }}>
+                            Cancel
+                        </Button>
+                        :
+                        <Button size="small" onClick={() => {
+                            setValue("3")
+                            setInEditMode(true)
+                        }}>
+                            Edit
+                        </Button>
+                    }
+
                 </CardActions>
             </TabContext>
 
