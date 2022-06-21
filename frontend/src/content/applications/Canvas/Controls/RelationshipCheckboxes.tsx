@@ -79,7 +79,7 @@ const RelationshipCheckboxes: FC<RelationshipCheckboxesProps> = ({ relationshipN
                     }))
                 )
             }}>
-                Load Relationships
+                Load
             </Button>
         </Box>
     );

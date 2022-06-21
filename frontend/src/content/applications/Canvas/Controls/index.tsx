@@ -7,16 +7,17 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CustomNode, IncomingRelationshipParameter } from '../types';
 import RelationshipCheckboxes from './RelationshipCheckboxes';
+import EntityTable from './EntityTable';
 
 interface ControlsProps {
     className?: string;
     onLoadRelationships: (outgoing: string[], incoming: IncomingRelationshipParameter[]) => void;
     selectedNode?: CustomNode;
-
+    onLoadEntityById: (entityId: string) => void;
 }
 
 
-const Controls: FC<ControlsProps> = ({ onLoadRelationships, selectedNode }) => {
+const Controls: FC<ControlsProps> = ({ onLoadRelationships, selectedNode, onLoadEntityById }) => {
     const initialOutgoingRelationships = useMemo(() => selectedNode ?
         Object.keys(selectedNode.ngsiObject)
             .filter(key => {
@@ -39,7 +40,7 @@ const Controls: FC<ControlsProps> = ({ onLoadRelationships, selectedNode }) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography>Load data</Typography>
+                        <Typography>Load Relationships</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <RelationshipCheckboxes
@@ -55,13 +56,10 @@ const Controls: FC<ControlsProps> = ({ onLoadRelationships, selectedNode }) => {
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                     >
-                        <Typography>Arrange graph</Typography>
+                        <Typography>Owned Entities</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                            malesuada lacus ex, sit amet blandit leo lobortis eget.
-                        </Typography>
+                        <EntityTable onSelectRow={(entityId) => { onLoadEntityById(entityId) }} />
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>

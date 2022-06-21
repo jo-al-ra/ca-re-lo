@@ -4,13 +4,13 @@ import {
   Card,
   CardHeader
 } from '@mui/material';
-import { SmartDataModelsXXXdataModelXXXSchema } from 'src/models/SmartDataModelsXXXdataModelXXXSchema ';
+import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 
 interface RecentOrdersTableProps {
   className?: string;
-  assets: SmartDataModelsXXXdataModelXXXSchema[];
+  assets: BaseModel[];
 }
 
 
@@ -18,7 +18,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ assets }) => {
 
   const navigate = useNavigate();
 
-  const columns: GridColDef<SmartDataModelsXXXdataModelXXXSchema>[] = [
+  const columns: GridColDef<BaseModel>[] = [
     { field: 'id', headerName: 'ID', flex: 1 },
     {
       field: 'name',
@@ -37,14 +37,19 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ assets }) => {
     },
   ]
   return (
-    <Card style={{ height: 400, width: '100%' }}>
+    <Card style={{ width: '100%' }}>
       <CardHeader title="Assets" />
       <Divider />
-      <DataGrid rows={assets} pageSize={5} rowsPerPageOptions={[5]} columns={columns} onRowClick={(params) => {
-        navigate(`./${params.id}`)
-        console.log(params)
-      }} />
-    </Card>
+      <DataGrid
+        autoHeight
+        rows={assets}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        columns={columns}
+        onRowClick={(params) => {
+          navigate(`./${params.id}`)
+        }} />
+    </Card >
   )
 };
 

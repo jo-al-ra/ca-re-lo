@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
-import { Network, Options, Edge } from "vis-network/standalone/esm/vis-network";
+import { Network, Options, Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import { CustomNode } from "./types";
 
 
 
 interface VisNetworkProps {
-    nodes: CustomNode[],
-    edges: Edge[],
+    nodes: DataSet<CustomNode, "id">,
+    edges: DataSet<Edge>,
     setSelectedNode: (node: CustomNode) => void
 }
 
@@ -21,8 +21,7 @@ const VisNetwork: React.FC<VisNetworkProps> = ({ nodes, edges, setSelectedNode }
 
     const onClick = useCallback((clickEvent) => {
         if (clickEvent.nodes && clickEvent.nodes.length === 1) {
-            console.log(nodes)
-            setSelectedNode(nodes.find((node) => node.id === clickEvent.nodes[0]))
+            setSelectedNode(nodes.get(clickEvent.nodes)[0])
         } else {
             setSelectedNode(undefined)
         }

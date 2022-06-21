@@ -1,5 +1,5 @@
 import $RefParser from "@apidevtools/json-schema-ref-parser";
-import schemas from "./config"
+import { formConfig } from "./config"
 
 export const resolveContextToSchema = async (context: string, type: string) => {
 
@@ -9,5 +9,5 @@ export const resolveContextToSchema = async (context: string, type: string) => {
     //resolve to URL based on type from context
 
     //dereference schema    
-    return $RefParser.dereference(schemas[`${type}`])
+    return $RefParser.dereference(formConfig[type].schema)
 }
