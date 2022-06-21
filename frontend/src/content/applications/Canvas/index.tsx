@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container, Card } from '@mui/material';
+import { Grid, Container, Card, Button } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
@@ -12,6 +12,8 @@ import { Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 import { useLocation } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
+import { NetworkConnector } from '@web3-react/network-connector'
 
 
 interface LocationState {
@@ -19,7 +21,7 @@ interface LocationState {
 }
 
 function Canvas() {
-
+    const { active, account, library, activate, deactivate } = useWeb3React()
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
     const loadIncomingCallback = useGetEntitiesByQuery();
     const nodes = useMemo(() => {
@@ -39,6 +41,13 @@ function Canvas() {
             }
         }
     }, [location])
+
+    useEffect(() => {
+        activate(new NetworkConnector({ urls: { 1: "localhost:8545" } }))
+            .catch(ex => {
+                console.log(ex)
+            });
+    }, [])
 
     const loadEntityById = (entityId) => {
         makeRequest(entityId).then(data => {
@@ -119,6 +128,12 @@ function Canvas() {
         edges.update(_edges)
     }
 
+    const checkIntegrity = (node: CustomNode) => {
+        //TODO read latest dltTxReceipt/hash from chain
+        //TODO canonize and hash ngsiObject locally
+        //TODO compare
+    }
+
     return (
         <>
             <Helmet>
@@ -157,6 +172,7 @@ function Canvas() {
                                 edges={edges}
                                 setSelectedNode={onSetSelectedNode} />
                         </Card>
+                        <Button onClick={() => { checkIntegrity(selectedNode) }}>Check integrity</Button>
                     </Grid>
                 </Grid>
             </Container>
