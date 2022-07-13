@@ -1,4 +1,3 @@
-// use-api.js
 import { useCallback, useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 

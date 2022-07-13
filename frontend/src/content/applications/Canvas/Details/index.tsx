@@ -8,6 +8,7 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { usePostEntityAttrs as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntityAttrs';
 import { usePostEntityAttrs as useCaMaCallback } from 'src/hooks/api/canis-major/usePostEntityAttrs';
 import { useSnackbar } from 'notistack';
+import { useUpdateContenthash } from 'src/hooks/eth/ens/useUpdateContenthash';
 
 interface DetailsProps {
     className?: string;
@@ -23,7 +24,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     const [keyValues, setkeyValues] = useState<any>();
     const [inEditMode, setInEditMode] = useState<boolean>(false)
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
-    const postCaMaCallback = useCaMaCallback(node?.id as string, "http://context/ngsi-context.jsonld");
+    const { updateContenthash } = useUpdateContenthash();
     const postCoBrCallback = useCoBrCallback(node?.id as string, "http://context/ngsi-context.jsonld");
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -69,7 +70,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                             type={node.ngsiObject.type}
                             initialNgsiObject={node.ngsiObject}
                             onSubmit={(object) => {
-                                postCaMaCallback.makeRequest(object).then(res1 => {
+                                updateContenthash(object).then(res1 => {
                                     enqueueSnackbar("DLTtxReceipt created", {
                                         variant: "success"
                                     })
@@ -86,8 +87,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                                         })
                                     })
                                 }).catch(e1 => {
-                                    console.log(e1)
-                                    enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                    enqueueSnackbar(e1.message ?? "Failed to create DLTtxReceipt", {
                                         variant: "error"
                                     })
                                 })

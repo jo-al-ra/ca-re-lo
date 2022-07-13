@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -59,13 +60,30 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
+  const web3WithWallet = useWeb3MetaMask()
+  const [user, setUser] = useState({
+    name: "Dummy",
+    avatar: "Dummy",
+    ethAddress: "Dummy",
+    loaded: false
+  })
 
-  const user =
-  {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
-  };
+  const fetchAccountDetails = async (ethAddress: string) => {
+    return ({
+      name: await web3WithWallet.library.lookupAddress(ethAddress) ?? "Unnamed User",
+      avatar: await web3WithWallet.library.getAvatar(ethAddress),
+      ethAddress: ethAddress,
+      loaded: true
+    })
+  }
+
+  useEffect(() => {
+    if (web3WithWallet.active && web3WithWallet.account) {
+      fetchAccountDetails(web3WithWallet.account).then(user => {
+        setUser(user)
+      })
+    }
+  }, [web3WithWallet.active, web3WithWallet.account])
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -78,6 +96,19 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  if (!web3WithWallet.active) {
+    return (
+      <Button
+        size="large"
+        variant="contained"
+        onClick={() => {
+          web3WithWallet.activate()
+        }}
+      >
+        Log in with MetaMask
+      </Button>)
+  }
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
@@ -86,7 +117,7 @@ function HeaderUserbox() {
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user.ethAddress}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -112,7 +143,7 @@ function HeaderUserbox() {
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user.ethAddress}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -141,7 +172,10 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={() => {
+            web3WithWallet.deactivate()
+            handleClose()
+          }}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

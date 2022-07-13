@@ -6,28 +6,22 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
-import { Web3ReactProvider } from '@web3-react/core';
-import Web3 from 'web3';
+
+// BaseRegistrar deployed to: 0xF7D495f4bA8d019a4f63Ff9b9272CAA0E36B3867
 
 const App = () => {
 
   const content = useRoutes(routes);
 
-  const getLibrary = (provider) => {
-    return new Web3(provider)
-  }
-
   return (
     <ThemeProvider>
       <SnackbarProvider maxSnack={3}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <CssBaseline />
-            {content}
-          </Web3ReactProvider>
+          <CssBaseline />
+          {content}
         </LocalizationProvider>
       </SnackbarProvider>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 export default App;

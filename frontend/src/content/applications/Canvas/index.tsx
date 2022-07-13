@@ -12,8 +12,8 @@ import { Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 import { useLocation } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
-import { NetworkConnector } from '@web3-react/network-connector'
+import { useReadContentHash } from 'src/hooks/eth/ens/useReadContenthash';
+import { keyValues2contenthash } from 'src/utils/ngsi-ld/conversion';
 
 
 interface LocationState {
@@ -21,7 +21,7 @@ interface LocationState {
 }
 
 function Canvas() {
-    const { active, account, library, activate, deactivate } = useWeb3React()
+    const { readContenthash } = useReadContentHash();
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
     const loadIncomingCallback = useGetEntitiesByQuery();
     const nodes = useMemo(() => {
@@ -41,13 +41,6 @@ function Canvas() {
             }
         }
     }, [location])
-
-    useEffect(() => {
-        activate(new NetworkConnector({ urls: { 1: "localhost:8545" } }))
-            .catch(ex => {
-                console.log(ex)
-            });
-    }, [])
 
     const loadEntityById = (entityId) => {
         makeRequest(entityId).then(data => {
@@ -128,10 +121,10 @@ function Canvas() {
         edges.update(_edges)
     }
 
-    const checkIntegrity = (node: CustomNode) => {
-        //TODO read latest dltTxReceipt/hash from chain
-        //TODO canonize and hash ngsiObject locally
-        //TODO compare
+    const checkIntegrity = async (node: CustomNode) => {
+        const storedContenthash = await readContenthash(node.ngsiObject.id)
+        const computedContenthash = await keyValues2contenthash(await makeRequest(node.ngsiObject.id, true), "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
+        return storedContenthash === computedContenthash
     }
 
     return (
@@ -172,7 +165,13 @@ function Canvas() {
                                 edges={edges}
                                 setSelectedNode={onSetSelectedNode} />
                         </Card>
-                        <Button onClick={() => { checkIntegrity(selectedNode) }}>Check integrity</Button>
+                        <Button onClick={() => {
+                            const isInteger = checkIntegrity(selectedNode)
+                            const color = isInteger ? "green" : "red"
+                            nodes.update({ ...selectedNode, color: { border: color, highlight: { border: color } } })
+                        }}>
+                            Check integrity
+                        </Button>
                     </Grid>
                 </Grid>
             </Container>
