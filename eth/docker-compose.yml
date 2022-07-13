@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  ganache_node:
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./ganache_data:/ganache_data
+    command: 'ganache-cli --account 0x509a822d698f01b0344a02841767350ba121bfb6a2027c5e2f7b99c23a2d4b97,9999999999999999999999999999 -n'

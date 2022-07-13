@@ -21,7 +21,7 @@ services:
   reverse-proxy:
     labels:
       org.fiware: "tutorial"
-    image: nicks-reverse-proxy
+    image: nginx-reverse-proxy:0.0.1
     hostname: orion-reverse-proxy
     container_name: nginx-reverse-proxy
     depends_on:
