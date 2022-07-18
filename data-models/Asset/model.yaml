@@ -8,8 +8,6 @@ Asset:
   allOf:
     - $ref: >-
         https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons
-    - $ref: >-
-        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/Location-Commons
     - properties:
         type:
           type: string
@@ -42,3 +40,16 @@ Asset:
           description: >-
             Relationship. Reference to the entity, that documents the consumption
             of this entity
+        category:
+          type: array
+          description: >-
+            Property. Category of the Asset. Enum:'biochar, biogas, biomass,
+            energy, CRC'
+          items:
+            type: string
+            enum:
+              - biochar
+              - biogas
+              - biomass
+              - energy
+              - CRC
