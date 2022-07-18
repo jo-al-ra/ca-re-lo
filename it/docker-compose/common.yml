@@ -54,32 +54,17 @@ services:
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
       interval: 5s
 
-  # Hashicorp vault as a wallet
-  vault-server:
-    image: ${VAULT_IMAGE:-quay.io/fiware/vault-ethereum:1.0.1}
-    hostname: vault
-    ports:
-      - "8200:8200"
-    environment:
-      VAULT_ADDR: "http://0.0.0.0:8200"
-      VAULT_DEV_ROOT_TOKEN_ID: "vault-plaintext-root-token"
-    cap_add:
-      - IPC_LOCK
-    networks:
-      - default
-
   #DLT setup
   # aei and eth
-  aei-contract:
-    image: quay.io/wi_stefan/py-contract:latest
-    hostname: aei-contract
+  ens-contract-deployment:
+    image: ens:0.0.1
+    hostname: ens-contract-deployment
     networks:
       - default
-    environment:
-      - RPC_ENDPOINT=ganache-cli
-      - RPC_PORT=8545
     depends_on:
       - ganache-cli
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY}
 
   ganache-cli:
     image: trufflesuite/ganache-cli:latest
@@ -88,7 +73,9 @@ services:
       - default
     ports:
       - "8545:8545"
-    command: ganache-cli -l 8000000 --gasPrice 0 --account '0x22aabb811efca4e6f4748bd18a46b502fa85549df9fa07da649c0a148d7d5530, 100000000000000000000'
+    volumes:
+      - ./ganache_data:/ganache_data
+    command: "ganache-cli -i 1337 -l 90071992547409 --gasPrice 0 --account 0x509a822d698f01b0344a02841767350ba121bfb6a2027c5e2f7b99c23a2d4b97,100000000000000000000 -n --db=/ganache_data"
 
 networks:
   default:

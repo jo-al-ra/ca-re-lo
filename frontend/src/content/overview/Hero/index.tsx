@@ -6,9 +6,10 @@ import {
   Typography
 } from '@mui/material';
 
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
+import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
@@ -78,13 +79,42 @@ const TsAvatar = styled(Box)(
 
 function Hero() {
 
+  const web3WithWallet = useWeb3MetaMask()
+  const navigate = useNavigate();
+
+  const ProceedWithWalletButton = () => {
+    if (web3WithWallet.active) {
+      return (<Button
+        size="large"
+        variant="contained"
+        onClick={() => {
+          navigate("/dashboards/crypto")
+        }}
+      >
+        Proceed with MetaMask
+      </Button>)
+    } else {
+      return (<Button
+        size="large"
+        variant="contained"
+        onClick={() => {
+          web3WithWallet.activate().then(() => {
+            navigate("/dashboards/crypto")
+          })
+        }}
+      >
+        Log in with MetaMask
+      </Button>)
+    }
+  }
+
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={10} lg={8} mx="auto">
           <LabelWrapper color="success">Version 1.1.0</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
-            Tokyo Free White React Admin Dashboard
+            CaReLo Dashboard
           </TypographyH1>
           <TypographyH2
             sx={{ lineHeight: 1.5, pb: 4 }}
@@ -92,26 +122,21 @@ function Hero() {
             color="text.secondary"
             fontWeight="normal"
           >
-            High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes
+            Manage and investigate the shared audit trails of carbon removal processes in the Carbon Removal Log (CaReLo)
           </TypographyH2>
-          <Button
-            component={RouterLink}
-            to="/dashboards/crypto"
-            size="large"
-            variant="contained"
-          >
-            Browse Live Preview
-          </Button>
+          <ProceedWithWalletButton />
           <Button
             sx={{ ml: 2 }}
-            component="a"
-            target="_blank"
-            rel="noopener"
-            href="https://bloomui.com/product/tokyo-free-white-react-typescript-material-ui-admin-dashboard"
             size="large"
             variant="text"
+            onClick={() => {
+              if (web3WithWallet.active) {
+                web3WithWallet.deactivate()
+              }
+              navigate("/dashboards/crypto")
+            }}
           >
-            Key Features
+            View as Guest
           </Button>
           <Grid container spacing={3} mt={5}>
             <Grid item md={6}>

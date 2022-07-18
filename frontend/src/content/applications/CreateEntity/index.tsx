@@ -5,11 +5,11 @@ import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
 import { useState } from 'react';
 import { usePostEntity as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntity';
-import { usePostEntity as useCaMaCallback } from 'src/hooks/api/canis-major/usePostEntity';
 import { useSnackbar } from 'notistack';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { formConfig } from 'src/utils/ngsi-ld/config';
+import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
 
 const placeholderText = "Select schema";
 
@@ -17,8 +17,8 @@ const placeholderText = "Select schema";
 function CreateEntity() {
 
     const [schemaName, setSchemaName] = useState<string>(placeholderText);
+    const { loading, create } = useCreateEntity();
     const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
-    const postCaMaCallback = useCaMaCallback("http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ function CreateEntity() {
                                 <NgsiLDForm
                                     type={schemaName}
                                     onSubmit={(object) => {
-                                        postCaMaCallback.makeRequest(object).then(res1 => {
+                                        create(object).then(() => {
                                             enqueueSnackbar("DLTtxReceipt created", {
                                                 variant: "success"
                                             })
@@ -62,7 +62,7 @@ function CreateEntity() {
                                             })
                                         }).catch(e1 => {
                                             console.log(e1)
-                                            enqueueSnackbar("Failed to create DLTtxReceipt", {
+                                            enqueueSnackbar(e1, {
                                                 variant: "error"
                                             })
                                         })

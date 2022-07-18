@@ -12,6 +12,8 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
+    "@ensdomains/ens-contracts": "0.0.11",
+    "@ethersproject/providers": "^5.6.8",
     "@jsonforms/core": "3.0.0-beta.2",
     "@jsonforms/material-renderers": "3.0.0-beta.2",
     "@jsonforms/react": "3.0.0-beta.2",
@@ -23,11 +25,13 @@
     "@rjsf/core": "^4.2.0",
     "@rjsf/material-ui": "^4.2.0",
     "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.2.9",
     "axios": "^0.27.2",
     "chart.js": "2.9.4",
     "clsx": "1.1.1",
     "date-fns": "2.28.0",
+    "ethers": "^5.6.9",
     "history": "5.3.0",
     "jsonld": "^5.2.0",
     "notistack": "^2.0.5",
@@ -48,8 +52,7 @@
     "vis-data": "^7.1.4",
     "vis-network": "^9.1.2",
     "vis-util": "^5.0.3",
-    "web-vitals": "2.1.4",
-    "web3": "^1.7.3"
+    "web-vitals": "2.1.4"
   },
   "scripts": {
     "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
