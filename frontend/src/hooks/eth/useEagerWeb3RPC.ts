@@ -18,7 +18,7 @@ export const useEagerWeb3RPC = () => {
                     console.log(ex)
                 });
         }
-    }, [])
+    }, [web3RPC.active, web3RPC.activate, enqueueSnackbar])
 
     return {
         ...web3RPC

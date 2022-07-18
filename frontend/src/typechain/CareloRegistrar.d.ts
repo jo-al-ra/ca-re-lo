@@ -39,6 +39,7 @@ interface CareloRegistrarInterface extends ethers.utils.Interface {
     "ownerOf(uint256)": FunctionFragment;
     "reclaim(uint256,address)": FunctionFragment;
     "register(uint256,address,uint256)": FunctionFragment;
+    "registerAddress(uint256,address,address,string)": FunctionFragment;
     "registerEntity(uint256,bytes,string)": FunctionFragment;
     "registerOnly(uint256,address,uint256)": FunctionFragment;
     "removeController(address)": FunctionFragment;
@@ -111,6 +112,10 @@ interface CareloRegistrarInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "register",
     values: [BigNumberish, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "registerAddress",
+    values: [BigNumberish, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "registerEntity",
@@ -214,6 +219,10 @@ interface CareloRegistrarInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "reclaim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "register", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "registerAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "registerEntity",
     data: BytesLike
@@ -467,6 +476,14 @@ export class CareloRegistrar extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    registerAddress(
+      id: BigNumberish,
+      resolver: string,
+      reverse: string,
+      name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     registerEntity(
       id: BigNumberish,
       contenthash: BytesLike,
@@ -643,6 +660,14 @@ export class CareloRegistrar extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  registerAddress(
+    id: BigNumberish,
+    resolver: string,
+    reverse: string,
+    name: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   registerEntity(
     id: BigNumberish,
     contenthash: BytesLike,
@@ -812,6 +837,14 @@ export class CareloRegistrar extends BaseContract {
       duration: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    registerAddress(
+      id: BigNumberish,
+      resolver: string,
+      reverse: string,
+      name: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     registerEntity(
       id: BigNumberish,
@@ -1156,6 +1189,14 @@ export class CareloRegistrar extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    registerAddress(
+      id: BigNumberish,
+      resolver: string,
+      reverse: string,
+      name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     registerEntity(
       id: BigNumberish,
       contenthash: BytesLike,
@@ -1348,6 +1389,14 @@ export class CareloRegistrar extends BaseContract {
       id: BigNumberish,
       owner: string,
       duration: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    registerAddress(
+      id: BigNumberish,
+      resolver: string,
+      reverse: string,
+      name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

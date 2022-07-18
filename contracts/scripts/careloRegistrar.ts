@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
-import { ENSRegistry, PublicResolver } from "../typechain";
+import { ENSRegistry, PublicResolver, ReverseRegistrar } from "../typechain";
 import { getAccounts, labelhash, namehash, ZERO_HASH } from "./utils";
 
-export const deployCareloRegistrar = async (ens: ENSRegistry, tld: string, resolver: PublicResolver) => {
+export const deployCareloRegistrar = async (ens: ENSRegistry, tld: string, resolver: PublicResolver, reverse: ReverseRegistrar) => {
     const owner = (await getAccounts())[0]
     const CareloRegistrar = await ethers.getContractFactory("CareloRegistrar")
     const careloRegistrar = await CareloRegistrar.deploy(ens.address, namehash(tld))
@@ -12,6 +12,7 @@ export const deployCareloRegistrar = async (ens: ENSRegistry, tld: string, resol
     await (await resolver["setAddr(bytes32,address)"](namehash(tld), careloRegistrar.address)).wait();
     await (await ens.setSubnodeOwner(ZERO_HASH, labelhash(tld), careloRegistrar.address)).wait();
     await (await careloRegistrar.addController((await getAccounts())[0])).wait()
+    await (await reverse.setController(careloRegistrar.address, true)).wait()
     // await (await careloRegistrar.renounceOwnership()).wait()
     console.log(`registered CareloRegistrar '${tld}' in ENS with address ${careloRegistrar.address}`)
 

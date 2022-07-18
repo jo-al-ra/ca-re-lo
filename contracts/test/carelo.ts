@@ -1,20 +1,23 @@
 import { expect } from "chai";
 import { BigNumberish } from "ethers";
-import { BytesLike, namehash } from "ethers/lib/utils";
+import { BytesLike, namehash, id } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 import { deployCareloRegistrar } from "../scripts/careloRegistrar";
 import { deployENSRegistry, deployResolver, setupResolver } from "../scripts/ens_base_public";
+import { deployReverseRegistrar } from "../scripts/reverseRegistrar";
 import { getAccounts, labelhash, ZERO_ADDRESS, ZERO_HASH } from "../scripts/utils";
-import { CareloRegistrar, ENSRegistry, PublicResolver } from "../typechain";
+import { CareloRegistrar, ENSRegistry, PublicResolver, ReverseRegistrar } from "../typechain";
 
 describe("Carelo - custom Registrar / Resolver contract", function () {
     let ens: ENSRegistry;
     let resolver: PublicResolver
     let careloRegistrar: CareloRegistrar
+    let reverseRegistrar: ReverseRegistrar
     beforeEach(async () => {
         ens = await deployENSRegistry()
         resolver = await deployResolver(ens)
-        careloRegistrar = await deployCareloRegistrar(ens, "test", resolver);
+        reverseRegistrar = await deployReverseRegistrar(ens, resolver)
+        careloRegistrar = await deployCareloRegistrar(ens, "test", resolver, reverseRegistrar);
         await setupResolver(ens, resolver)
         await (await ens.setOwner(ZERO_HASH, ZERO_ADDRESS)).wait() //check if this has impact
         // ens.setSubnodeOwner("te")
@@ -36,6 +39,9 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
         const resolverTldOwner_expected = resolver.address
         const resolverAddress_expected = resolver.address
         const resolverResolver_expected = resolver.address
+        const reverseRegistrarNodeOwner_expected = reverseRegistrar.address
+        const reverseResolver_expected = resolver.address
+        const reverseResolvedAddr_expected = reverseRegistrar.address
 
 
         const ensOwner_actual = await ens.owner(ZERO_HASH)
@@ -47,6 +53,9 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
         const resolverTldOwner_actual = await ens.owner(namehash("resolver"))
         const resolverAddress_actual = await resolver["addr(bytes32)"](namehash("resolver"))
         const resolverResolver_actual = await ens.resolver(namehash("resolver"))
+        const reverseRegistrarNodeOwner_actual = await ens.owner(namehash("addr.reverse"))
+        const reverseResolver_actual = await ens.resolver(namehash("addr.reverse"))
+        const reverseResolvedAddr_actual = await resolver["addr(bytes32)"](namehash("addr.reverse"))
 
         expect(ensOwner_actual).to.equal(ensOwner_expected)
         // expect(registrarOwner_actual).to.equal(registrarOwner_expected)
@@ -57,6 +66,9 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
         expect(resolverTldOwner_actual).to.equal(resolverTldOwner_expected)
         expect(resolverAddress_actual).to.equal(resolverAddress_expected)
         expect(resolverResolver_actual).to.equal(resolverResolver_expected)
+        expect(reverseRegistrarNodeOwner_actual).to.equal(reverseRegistrarNodeOwner_expected)
+        expect(reverseResolver_actual).to.equal(reverseResolver_expected)
+        expect(reverseResolvedAddr_actual).to.equal(reverseResolvedAddr_expected)
     })
 
     it("Should enable creation of new entities", async function () {
@@ -109,6 +121,63 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
         }
 
         expect(actual.newContentHash).to.equal(expected.hashFunc(newContent))
+    })
+
+    it("should enable setting a reverse record", async () => {
+        const account = (await getAccounts())[0]
+        const expected = {
+            nameLabel: "firstaccount",
+            canonicalName: "firstaccount.test",
+            addressOwner: reverseRegistrar.address,
+            reverseNode: namehash(`${account.substring(2)}.addr.reverse`),
+            resolver: resolver.address
+        }
+
+
+        await (await careloRegistrar.registerAddress(id(expected.nameLabel), resolver.address, reverseRegistrar.address, expected.canonicalName)).wait()
+
+        const actual = {
+            name: await resolver.name(expected.reverseNode),
+            addressOwner: await ens.owner(expected.reverseNode),
+            address: await resolver["addr(bytes32)"](namehash(expected.canonicalName)),
+            nameOwner: await ens.owner(namehash(expected.canonicalName)),
+            resolver: await ens.resolver(namehash(expected.canonicalName))
+        }
+
+        expect(actual.name).to.equal(expected.canonicalName)
+        expect(actual.addressOwner).to.equal(expected.addressOwner)
+        expect(actual.address).to.equal(account)
+        expect(actual.nameOwner).to.equal(account)
+        expect(actual.resolver).to.equal(expected.resolver)
+    })
+
+    it("should enable setting a reverse twice", async () => {
+        const account = (await getAccounts())[0]
+        const expected = {
+            nameLabel: "firstaccount",
+            canonicalName: "firstaccount.test",
+            addressOwner: reverseRegistrar.address,
+            reverseNode: namehash(`${account.substring(2)}.addr.reverse`),
+            resolver: resolver.address
+        }
+
+
+        await (await careloRegistrar.registerAddress(id("test"), resolver.address, reverseRegistrar.address, "test.test")).wait()
+        await (await careloRegistrar.registerAddress(id(expected.nameLabel), resolver.address, reverseRegistrar.address, expected.canonicalName)).wait()
+
+        const actual = {
+            name: await resolver.name(expected.reverseNode),
+            addressOwner: await ens.owner(expected.reverseNode),
+            address: await resolver["addr(bytes32)"](namehash(expected.canonicalName)),
+            nameOwner: await ens.owner(namehash(expected.canonicalName)),
+            resolver: await ens.resolver(namehash(expected.canonicalName))
+        }
+
+        expect(actual.name).to.equal(expected.canonicalName)
+        expect(actual.addressOwner).to.equal(expected.addressOwner)
+        expect(actual.address).to.equal(account)
+        expect(actual.nameOwner).to.equal(account)
+        expect(actual.resolver).to.equal(expected.resolver)
     })
 
 });

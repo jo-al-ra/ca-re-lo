@@ -61,29 +61,6 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const web3WithWallet = useWeb3MetaMask()
-  const [user, setUser] = useState({
-    name: "Dummy",
-    avatar: "Dummy",
-    ethAddress: "Dummy",
-    loaded: false
-  })
-
-  const fetchAccountDetails = async (ethAddress: string) => {
-    return ({
-      name: await web3WithWallet.library.lookupAddress(ethAddress) ?? "Unnamed User",
-      avatar: await web3WithWallet.library.getAvatar(ethAddress),
-      ethAddress: ethAddress,
-      loaded: true
-    })
-  }
-
-  useEffect(() => {
-    if (web3WithWallet.active && web3WithWallet.account) {
-      fetchAccountDetails(web3WithWallet.account).then(user => {
-        setUser(user)
-      })
-    }
-  }, [web3WithWallet.active, web3WithWallet.account])
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -112,12 +89,12 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={web3WithWallet.name} src={web3WithWallet.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{web3WithWallet.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.ethAddress}
+              {web3WithWallet.account ?? "missing address"}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -139,11 +116,11 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar variant="rounded" alt={web3WithWallet.name} src={web3WithWallet.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{web3WithWallet.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.ethAddress}
+              {web3WithWallet.account ?? "missing address"}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

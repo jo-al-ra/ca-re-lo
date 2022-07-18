@@ -21,14 +21,14 @@ export const useUpdateContenthash = () => {
             const updateTx = await careloRegistrar.setContenthash(ethers.utils.namehash(`${entity.id}.carelo`), contentHash)
             const updateReceipt = await updateTx.wait()
             console.log(updateReceipt)
-            setLoading(false)
+            // setLoading(false)
             return updateReceipt
         } catch (error) {
             console.log(error);
             setLoading(false)
             return Promise.reject("Unknown error occurred while trying to reach RPC Node")
         }
-    }, [web3WithWallet.active, web3WithWallet.account, web3WithWallet.library])
+    }, [web3WithWallet.active, web3WithWallet.library])
 
     return {
         loading,

@@ -166,9 +166,11 @@ function Canvas() {
                                 setSelectedNode={onSetSelectedNode} />
                         </Card>
                         <Button onClick={() => {
-                            const isInteger = checkIntegrity(selectedNode)
-                            const color = isInteger ? "green" : "red"
-                            nodes.update({ ...selectedNode, color: { border: color, highlight: { border: color } } })
+                            checkIntegrity(selectedNode).then(isInteger => {
+                                const color = isInteger ? "green" : "red"
+                                nodes.update({ ...selectedNode, color: { border: color, highlight: { border: color } } })
+                            })
+
                         }}>
                             Check integrity
                         </Button>

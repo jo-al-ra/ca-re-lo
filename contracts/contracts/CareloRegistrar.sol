@@ -4,7 +4,9 @@ import "@ensdomains/ens-contracts/contracts/registry/ENSRegistry.sol";
 import "@ensdomains/ens-contracts/contracts/resolvers/Multicallable.sol";
 import "@ensdomains/ens-contracts/contracts/resolvers/profiles/ContentHashResolver.sol";
 import "@ensdomains/ens-contracts/contracts/resolvers/profiles/TextResolver.sol";
+import "@ensdomains/ens-contracts/contracts/resolvers/PublicResolver.sol";
 import "./VirtualBaseRegistrar.sol";
+import "./VirtualReverseRegistrar.sol";
 
 contract CareloRegistrar is
     Multicallable,
@@ -26,6 +28,27 @@ contract CareloRegistrar is
     function isAuthorised(bytes32 node) internal view override returns (bool) {
         address owner = ens.owner(node);
         return owner == msg.sender || isApprovedForAll(owner, msg.sender);
+    }
+
+    function registerAddress(
+        uint256 id,
+        PublicResolver resolver,
+        VirtualReverseRegistrar reverse,
+        string memory name
+    ) public {
+        bytes32 node = keccak256(abi.encodePacked(baseNode, bytes32(id)));
+        _register(id, address(this), 60 * 60 * 24 * 365 * 100000, false);
+        ens.setSubnodeRecord(
+            baseNode,
+            bytes32(id),
+            address(this),
+            address(resolver),
+            0
+        );
+        resolver.setAddr(node, msg.sender);
+        reverse.setNameForAddr(msg.sender, address(reverse), name);
+        _safeTransfer(address(this), msg.sender, id, "");
+        ens.setSubnodeOwner(baseNode, bytes32(id), msg.sender);
     }
 
     function registerEntity(
@@ -84,6 +107,7 @@ contract CareloRegistrar is
         )
         returns (bool)
     {
+        // fix interface for base registrar
         return
             interfaceID == CARELO_CONTROLLER_ID ||
             interfaceID == type(IMulticallable).interfaceId ||

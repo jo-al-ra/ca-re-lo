@@ -33,6 +33,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FIFSRegistrar__factory>;
     getContractFactory(
+      name: "NameResolver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.NameResolver__factory>;
+    getContractFactory(
+      name: "ReverseRegistrar",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ReverseRegistrar__factory>;
+    getContractFactory(
       name: "IMulticallable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IMulticallable__factory>;
@@ -133,6 +141,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SupportsInterface__factory>;
     getContractFactory(
+      name: "Controllable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Controllable__factory>;
+    getContractFactory(
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
@@ -172,6 +184,10 @@ declare module "hardhat/types/runtime" {
       name: "VirtualBaseRegistrar",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VirtualBaseRegistrar__factory>;
+    getContractFactory(
+      name: "VirtualReverseRegistrar",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VirtualReverseRegistrar__factory>;
 
     getContractAt(
       name: "BaseRegistrar",
@@ -198,6 +214,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FIFSRegistrar>;
+    getContractAt(
+      name: "NameResolver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.NameResolver>;
+    getContractAt(
+      name: "ReverseRegistrar",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ReverseRegistrar>;
     getContractAt(
       name: "IMulticallable",
       address: string,
@@ -324,6 +350,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.SupportsInterface>;
     getContractAt(
+      name: "Controllable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Controllable>;
+    getContractAt(
       name: "Ownable",
       address: string,
       signer?: ethers.Signer
@@ -373,6 +404,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.VirtualBaseRegistrar>;
+    getContractAt(
+      name: "VirtualReverseRegistrar",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VirtualReverseRegistrar>;
 
     // default types
     getContractFactory(

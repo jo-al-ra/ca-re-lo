@@ -6,7 +6,6 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { usePostEntityAttrs as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntityAttrs';
-import { usePostEntityAttrs as useCaMaCallback } from 'src/hooks/api/canis-major/usePostEntityAttrs';
 import { useSnackbar } from 'notistack';
 import { useUpdateContenthash } from 'src/hooks/eth/ens/useUpdateContenthash';
 
