@@ -17,6 +17,9 @@ const Loader = (Component) => (props) => (
 
 
 const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
+const BiomassOverview = Loader(lazy(() => import('src/content/applications/Biomass/Overview')));
+const BiomassCreate = Loader(lazy(() => import('src/content/applications/Biomass/Create')));
+const ClaimCreate = Loader(lazy(() => import('src/content/applications/Claim/Create')));
 const CreateEntity = Loader(lazy(() => import('src/content/applications/CreateEntity')));
 const Canvas = Loader(lazy(() => import('src/content/applications/Canvas')));
 
@@ -127,6 +130,18 @@ const routes: RouteObject[] = [
       {
         path: 'assets',
         element: <Assets />
+      },
+      {
+        path: 'biomass',
+        element: <BiomassOverview />
+      },
+      {
+        path: 'biomass/create',
+        element: <BiomassCreate />
+      },
+      {
+        path: 'claim/create',
+        element: <ClaimCreate />
       },
       {
         path: 'create/entity',

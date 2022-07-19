@@ -1,3 +1,5 @@
+import { IncomingRelationshipParameter } from "src/content/applications/Canvas/types"
+
 const generateBaseSchema = (type: string) => ({
     "type": "object",
     "properties":
@@ -35,12 +37,14 @@ const generateBaseSchema = (type: string) => ({
 export interface FormConfigItem {
     relationshipKeys: string[],
     type: string,
-    schema: any
+    schema: any,
+    incomingRelationships: IncomingRelationshipParameter[]
 }
 
 export const formConfig: { [type: string]: FormConfigItem } = {
     "Asset": {
         relationshipKeys: ["producedVia", "consumedVia"],
+        incomingRelationships: [],
         type: "Asset",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -69,6 +73,30 @@ export const formConfig: { [type: string]: FormConfigItem } = {
                             "type": "string",
                             "format": "uri",
                             "description": "Reference to the entity, that documents the consumption of this entity"
+                        },
+                        "category": {
+                            "description": "Category of the Asset.",
+                            "type": "string",
+                            "enum": [
+                                "biochar",
+                                "biogas",
+                                "biomass",
+                                "energy",
+                                "CRC"
+                            ]
+                        },
+                        "hasClaims": {
+                            "type": "array",
+                            "description": "List of claims associated to this asset.",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "format": "uri",
+                                        "description": "Property. Identifier format of any NGSI entity"
+                                    }
+                                ]
+                            }
                         }
                     }
                 }]
@@ -76,6 +104,18 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     },
     "Activity": {
         relationshipKeys: [],
+        incomingRelationships: [
+            {
+                relationshipName: "producedVia",
+                type: "Asset",
+                context: "http://context/ngsi-context.jsonld"
+            },
+            {
+                relationshipName: "consumedVia",
+                type: "Asset",
+                context: "http://context/ngsi-context.jsonld"
+            },
+        ],
         type: "Activity",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -119,6 +159,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     "Safeguard": {
         relationshipKeys: ["refersTo"],
         type: "Safeguard",
+        incomingRelationships: [],
         schema: {
             "$schema": "http://json-schema.org/schema",
             "$schemaVersion": "0.0.1",
@@ -160,6 +201,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     },
     "Claim": {
         relationshipKeys: ["refersTo"],
+        incomingRelationships: [],
         type: "Claim",
         schema: {
             "$schema": "http://json-schema.org/schema",

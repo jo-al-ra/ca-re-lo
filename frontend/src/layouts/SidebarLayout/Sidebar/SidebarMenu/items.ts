@@ -44,6 +44,11 @@ const menuItems: MenuItems[] = [
     heading: 'Ca-re-lo',
     items: [
       {
+        name: 'Biomass',
+        link: '/carelo/biomass',
+        icon: BrightnessLowTwoToneIcon
+      },
+      {
         name: 'Assets',
         link: '/carelo/assets',
         icon: BrightnessLowTwoToneIcon

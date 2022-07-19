@@ -1,15 +1,11 @@
 ---
 components:
   schemas:
-    # This is the base definition of a DLTtxReceipt
-    DLTtxReceipt:
-      $ref: "https://raw.githubusercontent.com/smart-data-models/dataModel.DistributedLedgerTech/master/DLTtxReceipt/model.yaml#/DLTtxReceipt"
-
     Activity:
       $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Activity/model.yaml#/Activity"
 
     Asset:
-      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Asset/model.yaml#/Asset"
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/12-asset-templates/data-models/Asset/model.yaml#/Asset"
     Claim:
       $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Claim/model.yaml#/Claim"
 

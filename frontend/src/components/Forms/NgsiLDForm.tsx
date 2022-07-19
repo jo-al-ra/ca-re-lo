@@ -5,6 +5,7 @@ import { formConfig, FormConfigItem } from 'src/utils/ngsi-ld/config';
 import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import Text from '../Text';
+import { UiSchema } from '@rjsf/core';
 
 interface FormProps {
     className?: string;
@@ -12,6 +13,8 @@ interface FormProps {
     onSubmit: (ngsiLdObject: any) => void
     readonly?: boolean;
     initialNgsiObject?: any;
+    uiSchemaOverrides?: UiSchema;
+    defaultValues?: any
 }
 
 interface FormState {
@@ -21,7 +24,7 @@ interface FormState {
 }
 
 
-const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly }) => {
+const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly, uiSchemaOverrides, defaultValues }) => {
     const [state, setState] = useState<FormState>()
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
     useEffect(() => {
@@ -31,6 +34,7 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
             newState.unknownConfig = false
             resolveContextToSchema("http://context/ngsi-context.jsonld", type).then(async (res1) => {
                 newState.config.schema = res1;
+                newState.initialKeyValues = { ...defaultValues }
                 if (initialNgsiObject) {
                     const res2 = await makeRequest(initialNgsiObject.id, true)
                     let keyValueObject = { ...res2 };
@@ -65,7 +69,6 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
 
     return (
         <Form
-            // {...initialNgsiObject ?? { formData: state.initialKeyValues }}
             formData={state.initialKeyValues}
             readonly={readonly}
             schema={state.config.schema}
@@ -73,12 +76,13 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
                 let data = event.formData;
                 if (!initialNgsiObject) {
                     data["dateCreated"] = new Date().toISOString()
-                    data["dataProvider"] = "urn:ngsi-ld:Actor:Jonathan"
-                    data["owner"] = ["urn:ngsi-ld:Actor:Jonathan"]
+                    data["owner"] = ["urn:ngsi-ld:Actor:Jonathan"] //TODO
                     data["type"] = type
+                    data["id"] = data.id.toLowerCase()
                     data["source"] = process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/orion/ngsi-ld/v1' + `/entities/${data.id}`
                 }
                 data["dateModified"] = new Date().toISOString()
+                data["dataProvider"] = "urn:ngsi-ld:Actor:Jonathan" //TODO
                 let ngsiObject = normalize(event.formData, state.config.relationshipKeys)
                 onSubmit(ngsiObject)
             }}
@@ -90,7 +94,8 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
                         },
                         norender: readonly,
                         submitText: initialNgsiObject ? "Update" : "Create"
-                    }
+                    },
+                    ...uiSchemaOverrides
                 }} />
     )
 };
