@@ -1,0 +1,55 @@
+Attestation:
+  title: Attestation
+  description: >-
+    Attestation to verify, validate and challenge the representation of other
+    entities.
+  type: object
+  required:
+    - id
+    - type
+  allOf:
+    - $ref: >-
+        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons
+    - properties:
+        type:
+          type: string
+          enum:
+            - Attestation
+          description: Property. NSGI Entity Type. it has to be Attestation
+        refersTo:
+          type: array
+          description: Property. Array of the refered entities and their contenthash.
+          items:
+            type: object
+            properties:
+              object:
+                anyOf:
+                  - type: string
+                    minLength: 1
+                    maxLength: 256
+                    pattern: '^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$'
+                    description: Property. Identifier format of any NGSI entity
+                  - type: string
+                    format: uri
+                    description: Property. Identifier format of any NGSI entity
+                description: >-
+                  Relationship. Reference to the entity, that this attestation
+                  refers to
+              contenthash:
+                type: string
+                description: >-
+                  Property. contenthash derived using URDNA2015 on the expanded
+                  keyvalues (JSON-LD) object and the solidity keccak256 hash.
+            minitems: 1
+        category:
+          type: string
+          enum:
+            - validation
+            - verification
+            - challenge
+          description: "Property. Model:'https://schema.org/Text. Category of the attestation"
+      required:
+        - refersTo
+        - category
+  derivedFrom: ""
+  license: ""
