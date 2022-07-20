@@ -50,8 +50,7 @@
                                 "type": "string",
                                 "description": "Property. contenthash derived using URDNA2015 on the expanded keyvalues (JSON-LD) object and the solidity keccak256 hash."
                             }
-                        },
-                        "minitems": 1
+                        }
                     }
                 },
                 "category": {
