@@ -51,5 +51,3 @@ Attestation:
       required:
         - refersTo
         - category
-  derivedFrom: ""
-  license: ""
