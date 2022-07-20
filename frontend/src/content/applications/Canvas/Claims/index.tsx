@@ -68,7 +68,7 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
                         keyValuesObject={claim}
                         hideUndefined
                         loading={getEntitiesByQuery.loading}
-                        CustomSection={() => (
+                        customSection={(
                             <>
                                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                                     <Box pr={3} pb={2}>

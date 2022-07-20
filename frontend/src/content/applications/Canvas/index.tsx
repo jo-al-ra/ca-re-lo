@@ -15,6 +15,7 @@ import { useReadContentHash } from 'src/hooks/eth/ens/useReadContenthash';
 import { keyValues2contenthash } from 'src/utils/ngsi-ld/conversion';
 import { formConfig } from 'src/utils/ngsi-ld/config';
 import Claims from './Claims';
+import Attestations from './Attestations';
 
 
 interface LocationState {
@@ -159,19 +160,10 @@ function Canvas() {
                     </Grid>
                     <Grid item xs={6}>
                         <Claims
-                            // claims={[{
-                            //     id: "urn:ngsi-ld:claim:wasteMaterial1",
-                            //     category: "wasteMaterial",
-                            //     dataProvider: "me",
-                            //     owner: "me",
-                            //     type: "Claim",
-                            //     refersTo: "urn:ngsi-ld:asset:biomass2",
-                            //     dateCreated: new Date(Date.now()).toLocaleString(),
-                            //     dateModified: new Date(Date.now()).toLocaleString(),
-                            //     isWasteMaterial: true,
-                            //     included: true,
-                            //     description: "This biomass can not be directly consumed by humans."
-                            // }]}
+                            node={selectedNode} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Attestations
                             node={selectedNode} />
                     </Grid>
                 </Grid>

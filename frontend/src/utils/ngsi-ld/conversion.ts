@@ -9,9 +9,13 @@ export const normalized2keyValues = (normalizedEntity) => {
         console.log(normalizedEntity[key])
         try {
             const value = normalizedEntity[key]["value"]
+            const object = normalizedEntity[key]["object"]
             if (value !== undefined) {
                 keyValuesEntity[key] = value
-            } else {
+            } else if (object !== undefined) {
+                keyValuesEntity[key] = object
+            }
+            else {
                 keyValuesEntity[key] = normalizedEntity[key]
             }
         } catch (e) {
@@ -22,6 +26,7 @@ export const normalized2keyValues = (normalizedEntity) => {
 }
 
 export const keyValues2contenthash = async (keyValuesEntity, context) => {
+    console.log(keyValuesEntity)
     const expanded = await jsonld.expand({ ...keyValuesEntity, "@context": context })
     const canonized = await jsonld.canonize(expanded, {
         algorithm: "URDNA2015",

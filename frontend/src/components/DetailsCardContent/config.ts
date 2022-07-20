@@ -44,5 +44,24 @@ export const detailsCardConfig: { [type: string]: DetailsCardConfigItem } = {
         listedRelationships: [
             "refersTo"
         ]
+    },
+    "Attestation": {
+        listedProperties: [
+            "id",
+            "type",
+            "name",
+            "category",
+            "description",
+
+            "alternateName",
+            "dateCreated",
+            "dateModified",
+            "dataProvider",
+            "owner",
+            "source",
+            "seeAlso"
+        ],
+        listedRelationships: [
+        ]
     }
 }

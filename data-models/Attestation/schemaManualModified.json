@@ -28,6 +28,10 @@
                     "description": "Property. Array of the refered entities and their contenthash.",
                     "items": {
                         "type": "object",
+                        "required": [
+                            "object",
+                            "contenthash"
+                        ],
                         "properties": {
                             "object": {
                                 "anyOf": [

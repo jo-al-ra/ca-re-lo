@@ -1,20 +1,23 @@
 import { Box, Grid, Typography } from "@mui/material"
 import { FC } from "react"
 import Text from "src/components/Text"
-import { detailsCardConfig } from "./config";
+import { detailsCardConfig, DetailsCardConfigItem } from "./config";
 
 export interface DetailsListProps {
     keyValuesObject: any;
     loading: boolean;
     hideUndefined: boolean;
-    CustomSection: () => JSX.Element;
+    customSection?: JSX.Element;
+    config?: DetailsCardConfigItem
 }
 
-const DetailsCardContent: FC<DetailsListProps> = ({ keyValuesObject, loading, hideUndefined, CustomSection }) => {
+const DetailsCardContent: FC<DetailsListProps> = ({ keyValuesObject, loading, hideUndefined, customSection, config }) => {
 
     if (loading || !keyValuesObject) {
         return <Text>loading</Text>
     }
+
+    const usedConfig = config ? config : detailsCardConfig[keyValuesObject.type]
 
     const shouldHideUndefined = (keyValuesObject, key) => {
         return (hideUndefined && !keyValuesObject[key])
@@ -61,9 +64,9 @@ const DetailsCardContent: FC<DetailsListProps> = ({ keyValuesObject, loading, hi
     return (
         <Typography variant="subtitle2">
             <Grid container spacing={0}>
-                {detailsCardConfig[keyValuesObject.type].listedProperties.map(key => renderProperty(keyValuesObject, key))}
-                {detailsCardConfig[keyValuesObject.type].listedRelationships.map(key => renderRelationship(keyValuesObject, key))}
-                <CustomSection />
+                {usedConfig.listedProperties.map(key => renderProperty(keyValuesObject, key))}
+                {usedConfig.listedRelationships.map(key => renderRelationship(keyValuesObject, key))}
+                {customSection}
             </Grid>
         </Typography>
     )

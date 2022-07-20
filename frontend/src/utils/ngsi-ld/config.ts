@@ -156,17 +156,17 @@ export const formConfig: { [type: string]: FormConfigItem } = {
             ]
         }
     },
-    "Safeguard": {
+    "Attestation": {
         relationshipKeys: ["refersTo"],
-        type: "Safeguard",
+        type: "Attestation",
         incomingRelationships: [],
         schema: {
             "$schema": "http://json-schema.org/schema",
             "$schemaVersion": "0.0.1",
             "$id": "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Safeguard/schemaManualModified.json",
-            "title": "Safeguard",
+            "title": "Attestation",
             "modelTags": "",
-            "description": "Safeguard to verify, validate and challenge the representation of other entities.",
+            "description": "Attestation to verify, validate and challenge the representation of other entities.",
             "type": "object",
             "required": [
                 "id",
@@ -175,15 +175,32 @@ export const formConfig: { [type: string]: FormConfigItem } = {
             ],
             "allOf": [
                 {
-                    ...generateBaseSchema("Safeguard")
+                    ...generateBaseSchema("Attestation")
                 },
                 {
                     "properties":
                     {
                         "refersTo": {
-                            "type": "string",
-                            "format": "uri",
-                            "description": "Reference to the entity, that this safeguard refers to."
+                            "type": "array",
+                            "description": "The refered entities and their contenthash.",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "object",
+                                    "contenthash"
+                                ],
+                                "properties": {
+                                    "object": {
+                                        "type": "string",
+                                        "format": "uri",
+                                        "description": "Identifier format of any NGSI entity"
+                                    },
+                                    "contenthash": {
+                                        "type": "string",
+                                        "description": "Contenthash derived using URDNA2015 on the expanded keyvalues (JSON-LD) object and the solidity keccak256 hash."
+                                    }
+                                }
+                            }
                         },
                         "category": {
                             "type": "string",
@@ -192,7 +209,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
                                 "verification",
                                 "challenge"
                             ],
-                            "description": "Category of the safeguard"
+                            "description": "Category of the attestation"
                         }
                     }
                 }

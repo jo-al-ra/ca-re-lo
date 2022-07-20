@@ -7,7 +7,7 @@ components:
     Asset:
       $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/12-asset-templates/data-models/Asset/model.yaml#/Asset"
     Claim:
-      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Claim/model.yaml#/Claim"
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/12-asset-templates/data-models/Claim/model.yaml#/Claim"
 
     Actor:
       allOf:
@@ -22,8 +22,8 @@ components:
         publicKey:
           type: string
 
-    Safeguard:
-      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Safeguard/model.yaml#/Safeguard"
+    Attestation:
+      $ref: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/12-asset-templates/data-models/Attestation/model.yaml#/Attestation"
 
     # This is a defintion of a person.
     Person:
