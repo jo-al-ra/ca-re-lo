@@ -9,13 +9,13 @@ const PageHeader = () => {
   const navigate = useNavigate()
   const web3 = useWeb3MetaMask()
 
-  const subtitle = web3.active ? `${web3.name}, these are your recent biomass assets` : "These are all publicly available biomass assets. Login to filter the view or create new ones"
+  const subtitle = web3.active ? `${web3.name}, these are your recent energy assets` : "These are all publicly available energy assets. Login to filter the view or create new ones"
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Biomass
+          Energy
         </Typography>
         <Typography variant="subtitle2">
           {subtitle}
@@ -31,7 +31,7 @@ const PageHeader = () => {
           }}
           disabled={!web3.active}
         >
-          Create biomass
+          Create energy
         </Button>
       </Grid>
     </Grid>

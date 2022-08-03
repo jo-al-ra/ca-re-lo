@@ -6,22 +6,20 @@ import { usePostEntity as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostE
 import { useSnackbar } from 'notistack';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
-import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
-import PageHeader from './PageHeader';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
+import PageHeader from './PageHeader';
+import { useCreateEntity } from 'src/hooks/combined/useCreateEntity';
 
 
-function CreateBiomass() {
-    const { loading, create } = useCreateEntity();
-    const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+function CreateEnergy() {
+    const createEntity = useCreateEntity()
     const navigate = useNavigate();
     const web3 = useWeb3MetaMask()
 
     return (
         <>
             <Helmet>
-                <title>Create biomass</title>
+                <title>Create energy</title>
             </Helmet>
             <PageTitleWrapper>
                 <PageHeader />
@@ -45,7 +43,7 @@ function CreateBiomass() {
                                     consumedVia: {
                                         "ui:widget": "hidden",
                                     },
-                                    "ui:title": "Biomass",
+                                    "ui:title": "Energy",
                                     "ui:submitButtonOptions": {
                                         props: {
                                             disabled: !web3.active
@@ -54,36 +52,18 @@ function CreateBiomass() {
                                         norender: false
                                     }
                                 }}
-                                defaultValues={{ name: "Biomass #xxx", alternateName: "Biomasse #xxx", id: `urn:ngsi-ld:asset:biomass${Date.now()}` }}
+                                defaultValues={{ name: "Energy #xxx", alternateName: "Energie #xxx", id: `urn:ngsi-ld:asset:energy${Date.now()}` }}
                                 onSubmit={(object) => {
-                                    const biomass = {
+                                    const energy = {
                                         ...object,
                                         category: {
                                             type: "Property",
-                                            value: "biomass"
+                                            value: "energy"
                                         }
                                     }
-                                    create(biomass).then(() => {
-                                        enqueueSnackbar(`Saved contenthash for ${biomass.id}.carelo in carelo chain`, {
-                                            variant: "success"
-                                        })
-                                        postCoBrCallback.makeRequest(biomass).then(res2 => {
-                                            enqueueSnackbar(`${biomass.id} created in Context Broker`, {
-                                                variant: "success"
-                                            })
-                                            navigate(`/carelo/canvas?id=${object.id}`)
-                                        }).catch(e2 => {
-                                            console.log(e2)
-                                            enqueueSnackbar("Failed to create biomass in Context Broker", {
-                                                variant: "error"
-                                            })
-                                        })
-                                    }).catch(e1 => {
-                                        console.log(e1)
-                                        enqueueSnackbar(e1.message, {
-                                            variant: "error"
-                                        })
-                                    })
+                                    createEntity.makeRequests(energy).then(() =>
+                                        navigate(`/carelo/canvas?id=${object.id}`)
+                                    )
                                 }}
                             />
                         </Card>
@@ -95,4 +75,4 @@ function CreateBiomass() {
     );
 }
 
-export default CreateBiomass;
+export default CreateEnergy;

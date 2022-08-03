@@ -6,29 +6,23 @@ import { useMemo } from 'react';
 import { usePostEntity as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntity';
 import { useSnackbar } from 'notistack';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
-import { useLocation, useNavigate } from 'react-router';
 import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
 import PageHeader from './PageHeader';
-
-interface LocationState {
-    initialRefersTo: string;
-
-}
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function CreateClaim() {
     const { loading, create } = useCreateEntity();
     const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate();
-    const location = useLocation();
+    const [searchParams] = useSearchParams()
     const refersTo = useMemo(() => {
-        if (location.state) {
-            const { initialRefersTo } = location.state as LocationState;
-            return initialRefersTo
-        } else {
-            return "loading"
-        }
-    }, [location])
+        const refersToParam = searchParams.get("refersTo")
+        return refersToParam
+    }, [searchParams])
+
+    const name = "X Certificate"
+    const alternateName = "X Zertifikat"
 
     return (
         <>
@@ -50,11 +44,15 @@ function CreateClaim() {
                         <Card style={{ flex: 1, width: '100%', padding: 15 }}>
                             <NgsiLDForm
                                 type={"Claim"}
-                                defaultValues={{ refersTo: refersTo }}
+                                defaultValues={
+                                    {
+                                        refersTo: refersTo,
+                                        id: `urn:ngsi-ld:claim:claim${Date.now()}`,
+                                        name: name,
+                                        alternateName: alternateName
+                                    }
+                                }
                                 uiSchemaOverrides={{
-                                    refersTo: {
-                                        "ui:readonly": "true"
-                                    },
                                     "ui:title": "Claim",
                                 }}
                                 onSubmit={(object) => {

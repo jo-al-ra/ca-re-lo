@@ -6,6 +6,7 @@ import { resolveContextToSchema } from 'src/utils/ngsi-ld/resolveContextToSchema
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import Text from '../Text';
 import { UiSchema } from '@rjsf/core';
+import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 
 interface FormProps {
     className?: string;
@@ -27,6 +28,7 @@ interface FormState {
 const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly, uiSchemaOverrides, defaultValues }) => {
     const [state, setState] = useState<FormState>()
     const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const web3 = useWeb3MetaMask()
     useEffect(() => {
         let newState = { ...state }
         if (formConfig[type]) {
@@ -72,17 +74,24 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
             formData={state.initialKeyValues}
             readonly={readonly}
             schema={state.config.schema}
+            onChange={(e) => {
+                setState({
+                    ...state,
+                    initialKeyValues: e.formData
+                })
+            }}
             onSubmit={(event) => {
                 let data = event.formData;
+                const self = web3.name !== "Unnamed User" ? web3.name : web3.account
                 if (!initialNgsiObject) {
                     data["dateCreated"] = new Date().toISOString()
-                    data["owner"] = ["urn:ngsi-ld:Actor:Jonathan"] //TODO
+                    data["owner"] = [self]
                     data["type"] = type
                     data["id"] = data.id.toLowerCase()
                     data["source"] = process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/orion/ngsi-ld/v1' + `/entities/${data.id}`
                 }
                 data["dateModified"] = new Date().toISOString()
-                data["dataProvider"] = "urn:ngsi-ld:Actor:Jonathan" //TODO
+                data["dataProvider"] = self
                 let ngsiObject = normalize(event.formData, state.config.relationshipKeys)
                 onSubmit(ngsiObject)
             }}
@@ -90,7 +99,7 @@ const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly
                 {
                     "ui:submitButtonOptions": {
                         props: {
-                            disabled: readonly
+                            disabled: !web3.active
                         },
                         norender: readonly,
                         submitText: initialNgsiObject ? "Update" : "Create"

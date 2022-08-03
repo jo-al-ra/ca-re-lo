@@ -9,6 +9,7 @@ import { usePostEntityAttrs as useCoBrCallback } from 'src/hooks/api/ngsi-ld/use
 import { useSnackbar } from 'notistack';
 import { useUpdateContenthash } from 'src/hooks/eth/ens/useUpdateContenthash';
 import DetailsList from './DetailsList';
+import { useNavigate } from 'react-router';
 
 interface DetailsProps {
     className?: string;
@@ -27,6 +28,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     const { updateContenthash } = useUpdateContenthash();
     const postCoBrCallback = useCoBrCallback(node?.id as string, "http://context/ngsi-context.jsonld");
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (node) {
@@ -110,19 +112,31 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                     )}
                 <CardActions>
                     {inEditMode ?
-                        <Button size="small" onClick={() => {
+                        <Button size="small" variant="contained" onClick={() => {
                             setInEditMode(false)
                         }}>
                             Cancel
                         </Button>
                         :
-                        <Button size="small" onClick={() => {
+                        <Button size="small" variant="contained" onClick={() => {
                             setInEditMode(true)
                         }}>
                             Edit
                         </Button>
                     }
-
+                    <Button
+                        size="small"
+                        variant="contained"
+                        onClick={async () => {
+                            navigate("/carelo/activity/create", {
+                                state: {
+                                    initialConsumes: [node.ngsiObject.id]
+                                }
+                            })
+                        }}
+                    >
+                        Consume
+                    </Button>
                 </CardActions>
             </TabContext >
 

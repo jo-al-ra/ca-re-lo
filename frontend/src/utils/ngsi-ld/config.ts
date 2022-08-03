@@ -89,13 +89,9 @@ export const formConfig: { [type: string]: FormConfigItem } = {
                             "type": "array",
                             "description": "List of claims associated to this asset.",
                             "items": {
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "format": "uri",
-                                        "description": "Property. Identifier format of any NGSI entity"
-                                    }
-                                ]
+                                "type": "string",
+                                "format": "uri",
+                                "description": "Identifier format of any NGSI entity"
                             }
                         }
                     }
@@ -157,7 +153,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
         }
     },
     "Attestation": {
-        relationshipKeys: ["refersTo"],
+        relationshipKeys: [],
         type: "Attestation",
         incomingRelationships: [],
         schema: {

@@ -9,6 +9,8 @@ import { CustomNode } from "../types";
 import { useGetEntitiesByQuery } from "src/hooks/api/ngsi-ld/useGetEntitiesByQuery";
 import { Attestation } from "src/models/Attestation";
 import { DetailsCardConfigItem } from "src/components/DetailsCardContent/config";
+import { keyValues2contenthash } from "src/utils/ngsi-ld/conversion";
+import { useGetEntityById } from "src/hooks/api/ngsi-ld/useGetEntityById";
 
 interface AttestationsProps {
     node: CustomNode
@@ -17,6 +19,7 @@ interface AttestationsProps {
 const Attestations: FC<AttestationsProps> = ({ node }) => {
     const navigate = useNavigate()
     const getEntitiesByQuery = useGetEntitiesByQuery();
+    const getEntityById = useGetEntityById("https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
     const [attestations, setAttestations] = useState<Attestation[]>([
         {
             id: "urn:ngsi-ld:attestation:verification1",
@@ -65,17 +68,17 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
         listedRelationships: []
     }
 
-    // useEffect(() => {
-    //     if (node?.ngsiObject?.id) {
-    //         getEntitiesByQuery.makeRequest({
-    //             linkHeader: "http://context/ngsi-context.jsonld",
-    //             keyValues: true,
-    //             query: `refersTo=="${node.ngsiObject.id}"`,
-    //             type: "Attestation"
-    //         }).then((response) => setAttestations(response))
-    //     }
+    useEffect(() => {
+        if (node?.ngsiObject?.id) {
+            getEntitiesByQuery.makeRequest({
+                linkHeader: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
+                keyValues: true,
+                query: `refersTo[object]=="${node.ngsiObject.id}"`,
+                type: "Attestation"
+            }).then((response) => setAttestations(response))
+        }
 
-    // }, [node])
+    }, [node])
 
     const renderAttestation = (attestation: Attestation) => {
 
@@ -138,10 +141,14 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
                     sx={{ mt: { xs: 2, md: 0 } }}
                     variant="contained"
                     startIcon={<AddTwoToneIcon fontSize="small" />}
-                    onClick={() => {
+                    onClick={async () => {
+                        const refersTo = []
+                        const contenthash = await keyValues2contenthash(await getEntityById.makeRequest(node.ngsiObject.id, true), "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
+                        refersTo.push({ object: node.ngsiObject.id, contenthash: contenthash })
+                        refersTo.push({ object: "urn:ngsi-ld:claim:claim1658868907942", contenthash: "0x123" })
                         navigate("/carelo/attestation/create", {
                             state: {
-                                initialRefersTo: [{ object: node.ngsiObject.id, contenthash: "test" }]
+                                initialRefersTo: refersTo
                             }
                         })
                     }}

@@ -128,11 +128,7 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
                     startIcon={<AddTwoToneIcon fontSize="small" />}
                     onClick={() => {
                         console.log("navigating")
-                        navigate("/carelo/claim/create", {
-                            state: {
-                                initialRefersTo: node.ngsiObject.id
-                            }
-                        })
+                        navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
                     }}
                 >
                     Create Claim

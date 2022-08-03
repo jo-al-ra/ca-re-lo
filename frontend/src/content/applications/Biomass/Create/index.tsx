@@ -8,6 +8,7 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
 import PageHeader from './PageHeader';
+import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 
 
 function CreateBiomass() {
@@ -15,6 +16,7 @@ function CreateBiomass() {
     const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate();
+    const web3 = useWeb3MetaMask()
 
     return (
         <>
@@ -44,7 +46,15 @@ function CreateBiomass() {
                                         "ui:widget": "hidden",
                                     },
                                     "ui:title": "Biomass",
+                                    "ui:submitButtonOptions": {
+                                        props: {
+                                            disabled: !web3.active
+                                        },
+                                        submitText: "Create",
+                                        norender: false
+                                    }
                                 }}
+                                defaultValues={{ name: "Biomass #xxx", alternateName: "Biomasse #xxx", id: `urn:ngsi-ld:asset:biomass${Date.now()}` }}
                                 onSubmit={(object) => {
                                     const biomass = {
                                         ...object,
@@ -61,7 +71,7 @@ function CreateBiomass() {
                                             enqueueSnackbar(`${biomass.id} created in Context Broker`, {
                                                 variant: "success"
                                             })
-                                            navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
+                                            navigate(`/carelo/canvas?id=${object.id}`)
                                         }).catch(e2 => {
                                             console.log(e2)
                                             enqueueSnackbar("Failed to create biomass in Context Broker", {

@@ -26,7 +26,6 @@ export const normalized2keyValues = (normalizedEntity) => {
 }
 
 export const keyValues2contenthash = async (keyValuesEntity, context) => {
-    console.log(keyValuesEntity)
     const expanded = await jsonld.expand({ ...keyValuesEntity, "@context": context })
     const canonized = await jsonld.canonize(expanded, {
         algorithm: "URDNA2015",

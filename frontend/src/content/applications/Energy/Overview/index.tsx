@@ -3,7 +3,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PageHeader from './PageHeader';
-import BiomassDataGrid from './BiomassDataGrid';
+import EnergyDataGrid from './EnergyDataGrid';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 import { useEffect, useState } from 'react';
 import { Asset } from 'src/models/Asset';
@@ -15,7 +15,7 @@ const BiomassOverview = () => {
     const web3 = useWeb3MetaMask();
 
     useEffect(() => {
-        const query = web3.active ? `category=="biomass";owner=="${web3.name}","${web3.account}"` : `category=="biomass"`
+        const query = web3.active ? `category=="energy";owner=="${web3.name}","${web3.account}"` : `category=="energy"`
         makeRequest({
             linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
             keyValues: true,
@@ -29,7 +29,7 @@ const BiomassOverview = () => {
     return (
         <>
             <Helmet>
-                <title>Biomass - Overview</title>
+                <title>Energy - Overview</title>
             </Helmet>
             <PageTitleWrapper>
                 <PageHeader />
@@ -43,7 +43,7 @@ const BiomassOverview = () => {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        <BiomassDataGrid assets={biomasses} />
+                        <EnergyDataGrid assets={biomasses} />
                     </Grid>
                 </Grid>
             </Container>

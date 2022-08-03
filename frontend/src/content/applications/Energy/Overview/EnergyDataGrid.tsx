@@ -4,7 +4,6 @@ import {
     Card,
     CardHeader
 } from '@mui/material';
-import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
@@ -15,11 +14,11 @@ interface RecentOrdersTableProps {
 }
 
 
-const BiomassDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
+const EnergyDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
 
     const navigate = useNavigate();
 
-    const columns: GridColDef<BaseModel>[] = [
+    const columns: GridColDef<Asset>[] = [
         { field: 'id', headerName: 'ID', flex: 1 },
         {
             field: 'name',
@@ -39,7 +38,7 @@ const BiomassDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <CardHeader title="Biomass" />
+            <CardHeader title="Energy" />
             <Divider />
             <DataGrid
                 autoHeight
@@ -54,4 +53,4 @@ const BiomassDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     )
 };
 
-export default BiomassDataGrid;
+export default EnergyDataGrid;

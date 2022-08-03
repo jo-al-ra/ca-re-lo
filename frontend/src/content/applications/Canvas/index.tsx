@@ -10,17 +10,13 @@ import { CustomNode, IncomingRelationshipParameter } from './types';
 import { Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useReadContentHash } from 'src/hooks/eth/ens/useReadContenthash';
 import { keyValues2contenthash } from 'src/utils/ngsi-ld/conversion';
 import { formConfig } from 'src/utils/ngsi-ld/config';
 import Claims from './Claims';
 import Attestations from './Attestations';
 
-
-interface LocationState {
-    initialEntityId: string
-}
 
 function Canvas() {
     const { readContenthash } = useReadContentHash();
@@ -33,16 +29,14 @@ function Canvas() {
         return new DataSet<Edge>()
     }, [])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
-    const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        if (location.state) {
-            const { initialEntityId } = location.state as LocationState;
-            if (initialEntityId) {
-                loadEntityById(initialEntityId)
-            }
+        const initialId = searchParams.get("id")
+        if (initialId) {
+            loadEntityById(initialId)
         }
-    }, [location])
+    }, [searchParams])
 
     const loadEntityById = (entityId) => {
         makeRequest(entityId).then(data => {
