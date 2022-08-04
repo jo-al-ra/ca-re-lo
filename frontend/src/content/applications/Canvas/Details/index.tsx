@@ -8,6 +8,8 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { usePostEntityAttrs as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntityAttrs';
 import { useSnackbar } from 'notistack';
 import { useUpdateContenthash } from 'src/hooks/eth/ens/useUpdateContenthash';
+import DetailsList from './DetailsList';
+import { useNavigate } from 'react-router';
 
 interface DetailsProps {
     className?: string;
@@ -26,14 +28,15 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     const { updateContenthash } = useUpdateContenthash();
     const postCoBrCallback = useCoBrCallback(node?.id as string, "http://context/ngsi-context.jsonld");
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const navigate = useNavigate()
 
     useEffect(() => {
-        if (value === "2") {
+        if (node) {
             makeRequest(node.ngsiObject.id, true).then(res2 => {
                 setkeyValues(res2)
             })
         }
-    }, [value])
+    }, [node])
 
     if (!node) {
         return (
@@ -46,74 +49,98 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     return (
         <Card style={{ flex: 1, width: '100%', padding: 15 }}>
             <TabContext value={value}>
-                <CardHeader title="Details" action={
-                    <TabList variant="scrollable"
-                        scrollButtons="auto"
-                        textColor="primary"
-                        indicatorColor="primary" onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="NGSI-LD" value="1" />
-                        <Tab label="KeyValues" value="2" />
-                        <Tab label="Form" value="3" />
-                    </TabList>
-                } />
-                <CardContent>
-                    <TabPanel value={"1"}>
-                        <ReactJson src={node.ngsiObject} />
-                    </TabPanel>
-                    <TabPanel value={"2"}>
-                        <ReactJson src={keyValues} />
-                    </TabPanel>
-                    <TabPanel value={"3"}>
-                        <NgsiLDForm
-                            readonly={!inEditMode}
-                            type={node.ngsiObject.type}
-                            initialNgsiObject={node.ngsiObject}
-                            onSubmit={(object) => {
-                                updateContenthash(object).then(res1 => {
-                                    enqueueSnackbar("DLTtxReceipt created", {
-                                        variant: "success"
-                                    })
-                                    postCoBrCallback.makeRequest(object).then(res2 => {
-                                        enqueueSnackbar("Entity updated in Context Broker", {
-                                            variant: "success"
+                {inEditMode ?
+                    (
+                        <>
+                            <CardHeader title="Details" />
+                            <CardContent>
+                                <NgsiLDForm
+                                    type={node.ngsiObject.type}
+                                    initialNgsiObject={node.ngsiObject}
+                                    onSubmit={(object) => {
+                                        updateContenthash(object).then(res1 => {
+                                            enqueueSnackbar("DLTtxReceipt created", {
+                                                variant: "success"
+                                            })
+                                            postCoBrCallback.makeRequest(object).then(res2 => {
+                                                enqueueSnackbar("Entity updated in Context Broker", {
+                                                    variant: "success"
+                                                })
+                                                setInEditMode(false)
+                                                reload();
+                                            }).catch(e2 => {
+                                                console.log(e2)
+                                                enqueueSnackbar("Failed to update entity in Context Broker", {
+                                                    variant: "error"
+                                                })
+                                            })
+                                        }).catch(e1 => {
+                                            enqueueSnackbar(e1.message ?? "Failed to create DLTtxReceipt", {
+                                                variant: "error"
+                                            })
                                         })
-                                        setInEditMode(false)
-                                        reload();
-                                    }).catch(e2 => {
-                                        console.log(e2)
-                                        enqueueSnackbar("Failed to update entity in Context Broker", {
-                                            variant: "error"
-                                        })
-                                    })
-                                }).catch(e1 => {
-                                    enqueueSnackbar(e1.message ?? "Failed to create DLTtxReceipt", {
-                                        variant: "error"
-                                    })
-                                })
-                            }}
-                        />
-                    </TabPanel>
-                </CardContent>
+                                    }}
+                                />
+                            </CardContent>
+                        </>
+
+                    )
+                    :
+                    (
+                        <>
+                            <CardHeader title="Details" action={
+                                <TabList variant="scrollable"
+                                    scrollButtons="auto"
+                                    textColor="primary"
+                                    indicatorColor="primary"
+                                    onChange={handleChange}
+                                    aria-label="basic tabs example"
+                                >
+                                    <Tab label="Pretty" value="1" />
+                                    <Tab label="JSON" value="2" />
+                                </TabList>
+                            } />
+                            <CardContent>
+                                <TabPanel value={"1"}>
+                                    <DetailsList keyValuesObject={keyValues} loading={loading} />
+                                </TabPanel>
+                                <TabPanel value={"2"}>
+                                    <ReactJson src={keyValues} />
+                                </TabPanel>
+                            </CardContent>
+                        </>
+                    )}
                 <CardActions>
                     {inEditMode ?
-                        <Button size="small" onClick={() => {
+                        <Button size="small" variant="contained" onClick={() => {
                             setInEditMode(false)
                         }}>
                             Cancel
                         </Button>
                         :
-                        <Button size="small" onClick={() => {
-                            setValue("3")
+                        <Button size="small" variant="contained" onClick={() => {
                             setInEditMode(true)
                         }}>
                             Edit
                         </Button>
                     }
-
+                    <Button
+                        size="small"
+                        variant="contained"
+                        onClick={async () => {
+                            navigate("/carelo/activity/create", {
+                                state: {
+                                    initialConsumes: [node.ngsiObject.id]
+                                }
+                            })
+                        }}
+                    >
+                        Consume
+                    </Button>
                 </CardActions>
-            </TabContext>
+            </TabContext >
 
-        </Card>
+        </Card >
     );
 }
 

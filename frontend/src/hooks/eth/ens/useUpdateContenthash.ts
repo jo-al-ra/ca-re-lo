@@ -8,6 +8,9 @@ export const useUpdateContenthash = () => {
     const [loading, setLoading] = useState(false);
     const web3WithWallet = useWeb3MetaMask();
 
+    /**
+     * computes the contenthash from a normalized entity and updates the hash in the ens
+     */
     const updateContenthash = useCallback(async (entity: any) => {
         setLoading(true);
         try {

@@ -17,6 +17,20 @@ const Loader = (Component) => (props) => (
 
 
 const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
+const BiomassOverview = Loader(lazy(() => import('src/content/applications/Biomass/Overview')));
+const BiomassCreate = Loader(lazy(() => import('src/content/applications/Biomass/Create')));
+const BiogasOverview = Loader(lazy(() => import('src/content/applications/Biogas/Overview')));
+const BiogasCreate = Loader(lazy(() => import('src/content/applications/Biogas/Create')));
+const BiocharOverview = Loader(lazy(() => import('src/content/applications/Biochar/Overview')));
+const BiocharCreate = Loader(lazy(() => import('src/content/applications/Biochar/Create')));
+const CRCOverview = Loader(lazy(() => import('src/content/applications/CRC/Overview')));
+const CRCCreate = Loader(lazy(() => import('src/content/applications/CRC/Create')));
+const EnergyOverview = Loader(lazy(() => import('src/content/applications/Energy/Overview')));
+const EnergyCreate = Loader(lazy(() => import('src/content/applications/Energy/Create')));
+const ActivityCreate = Loader(lazy(() => import('src/content/applications/Activity/Create')));
+
+const ClaimCreate = Loader(lazy(() => import('src/content/applications/Claim/Create')));
+const AttestationCreate = Loader(lazy(() => import('src/content/applications/Attestation/Create')));
 const CreateEntity = Loader(lazy(() => import('src/content/applications/CreateEntity')));
 const Canvas = Loader(lazy(() => import('src/content/applications/Canvas')));
 
@@ -127,6 +141,58 @@ const routes: RouteObject[] = [
       {
         path: 'assets',
         element: <Assets />
+      },
+      {
+        path: 'biomass',
+        element: <BiomassOverview />
+      },
+      {
+        path: 'energy',
+        element: <EnergyOverview />
+      },
+      {
+        path: 'energy/create',
+        element: <EnergyCreate />
+      },
+      {
+        path: 'biogas',
+        element: <BiogasOverview />
+      },
+      {
+        path: 'biogas/create',
+        element: <BiogasCreate />
+      },
+      {
+        path: 'biochar',
+        element: <BiocharOverview />
+      },
+      {
+        path: 'biochar/create',
+        element: <BiocharCreate />
+      },
+      {
+        path: 'crc',
+        element: <CRCOverview />
+      },
+      {
+        path: 'crc/create',
+        element: <CRCCreate />
+      },
+      {
+        path: 'activity/create',
+        element: <ActivityCreate />
+      },
+      {
+        path: 'biomass/create',
+        element: <BiomassCreate />
+      },
+      {
+        path: 'claim/create',
+        element: <ClaimCreate />
+      },
+      {
+        path: 'attestation/create',
+        element: <AttestationCreate />
       },
       {
         path: 'create/entity',

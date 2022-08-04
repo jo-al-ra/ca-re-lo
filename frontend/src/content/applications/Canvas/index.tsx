@@ -6,19 +6,17 @@ import PageHeader from './PageHeader';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import VisNetwork from './Network';
-import Controls from './Controls';
 import { CustomNode, IncomingRelationshipParameter } from './types';
 import { Edge, DataSet } from "vis-network/standalone/esm/vis-network";
 import Details from './Details';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useReadContentHash } from 'src/hooks/eth/ens/useReadContenthash';
 import { keyValues2contenthash } from 'src/utils/ngsi-ld/conversion';
+import { formConfig } from 'src/utils/ngsi-ld/config';
+import Claims from './Claims';
+import Attestations from './Attestations';
 
-
-interface LocationState {
-    initialEntityId: string
-}
 
 function Canvas() {
     const { readContenthash } = useReadContentHash();
@@ -31,16 +29,14 @@ function Canvas() {
         return new DataSet<Edge>()
     }, [])
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
-    const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
-        if (location.state) {
-            const { initialEntityId } = location.state as LocationState;
-            if (initialEntityId) {
-                loadEntityById(initialEntityId)
-            }
+        const initialId = searchParams.get("id")
+        if (initialId) {
+            loadEntityById(initialId)
         }
-    }, [location])
+    }, [searchParams])
 
     const loadEntityById = (entityId) => {
         makeRequest(entityId).then(data => {
@@ -79,41 +75,28 @@ function Canvas() {
             arrows: { to: true }
         })
         for (let i = 0; i < outgoing.length; i++) {
-            const entity = await makeRequest(node.ngsiObject[outgoing[i]].object)
-            _nodes.push(createEntityNode(entity))
-            _nodes.push(createRelationshipNode(node.ngsiObject, outgoing[i]))
-            _edges.push(createEdge(node.id, `${node.id}_${outgoing[i]}`))
-            _edges.push(createEdge(`${node.id}_${outgoing[i]}`, entity.id))
+            if (node.ngsiObject[outgoing[i]]) {
+                const entity = await makeRequest(node.ngsiObject[outgoing[i]].object)
+                _nodes.push(createEntityNode(entity))
+                _nodes.push(createRelationshipNode(node.ngsiObject, outgoing[i]))
+                _edges.push(createEdge(node.id, `${node.id}_${outgoing[i]}`))
+                _edges.push(createEdge(`${node.id}_${outgoing[i]}`, entity.id))
+
+            }
         }
         //add incoming relationships
         for (let i = 0; i < incoming.length; i++) {
             const entities = await loadIncomingCallback.makeRequest({
                 linkHeader: incoming[i].context,
-                ...(incoming[i].type == "DLTtxReceipt") ? { ngsiLdTenant: "orion" } : {},
                 type: incoming[i].type,
                 query: `${incoming[i].relationshipName}=="${selectedNode.id}"`
             }
             )
-            let latestEntity;
             for (let j = 0; j < entities.length; j++) {
-                if (incoming[i].type == "DLTtxReceipt"
-                    && !(entities[j].TxReceipts.value.blockNumber < latestEntity?.value?.blockNumber)
-                    && entities[j].TxReceipts.value.statusOK
-                ) {
-                    latestEntity = entities[j]
-                } else if (incoming[i].type != "DLTtxReceipt") {
-                    latestEntity = undefined;
-                    _nodes.push(createEntityNode(entities[j]))
-                    _nodes.push(createRelationshipNode(entities[j], incoming[i].relationshipName))
-                    _edges.push(createEdge(entities[j].id, `${entities[j].id}_${incoming[i].relationshipName}`))
-                    _edges.push(createEdge(`${entities[j].id}_${incoming[i].relationshipName}`, node.id))
-                }
-            }
-            if (latestEntity) {
-                _nodes.push(createEntityNode(latestEntity))
-                _nodes.push(createRelationshipNode(latestEntity, incoming[i].relationshipName))
-                _edges.push(createEdge(latestEntity.id, `${latestEntity.id}_${incoming[i].relationshipName}`))
-                _edges.push(createEdge(`${latestEntity.id}_${incoming[i].relationshipName}`, node.id))
+                _nodes.push(createEntityNode(entities[j]))
+                _nodes.push(createRelationshipNode(entities[j], incoming[i].relationshipName))
+                _edges.push(createEdge(entities[j].id, `${entities[j].id}_${incoming[i].relationshipName}`))
+                _edges.push(createEdge(`${entities[j].id}_${incoming[i].relationshipName}`, node.id))
             }
         }
 
@@ -135,26 +118,14 @@ function Canvas() {
             <PageTitleWrapper>
                 <PageHeader onSubmit={(entityId) => loadEntityById(entityId)} />
             </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false}>
                 <Grid
                     container
                     direction="row"
-                    justifyContent="center"
+                    justifyContent="left"
                     alignItems="stretch"
                     spacing={3}
                 >
-
-                    <Grid item xs={12}>
-                        <Controls
-                            onLoadRelationships={(outgoing, incoming) => {
-                                return loadRelationships(selectedNode, outgoing, incoming)
-                            }}
-                            selectedNode={selectedNode}
-                            onLoadEntityById={(entityId => {
-                                loadEntityById(entityId)
-                            })}
-                        />
-                    </Grid>
                     <Grid item xs={6}>
                         <Details node={selectedNode} reload={() => { loadEntityById(selectedNode.id) }} />
                     </Grid>
@@ -174,6 +145,20 @@ function Canvas() {
                         }}>
                             Check integrity
                         </Button>
+                        <Button onClick={() => {
+                            const config = formConfig[selectedNode.ngsiObject.type]
+                            loadRelationships(selectedNode, config.relationshipKeys, config.incomingRelationships)
+                        }}>
+                            Load Relationships
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Claims
+                            node={selectedNode} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Attestations
+                            node={selectedNode} />
                     </Grid>
                 </Grid>
             </Container>

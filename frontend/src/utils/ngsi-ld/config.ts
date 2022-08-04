@@ -1,3 +1,5 @@
+import { IncomingRelationshipParameter } from "src/content/applications/Canvas/types"
+
 const generateBaseSchema = (type: string) => ({
     "type": "object",
     "properties":
@@ -35,12 +37,14 @@ const generateBaseSchema = (type: string) => ({
 export interface FormConfigItem {
     relationshipKeys: string[],
     type: string,
-    schema: any
+    schema: any,
+    incomingRelationships: IncomingRelationshipParameter[]
 }
 
 export const formConfig: { [type: string]: FormConfigItem } = {
     "Asset": {
         relationshipKeys: ["producedVia", "consumedVia"],
+        incomingRelationships: [],
         type: "Asset",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -69,6 +73,26 @@ export const formConfig: { [type: string]: FormConfigItem } = {
                             "type": "string",
                             "format": "uri",
                             "description": "Reference to the entity, that documents the consumption of this entity"
+                        },
+                        "category": {
+                            "description": "Category of the Asset.",
+                            "type": "string",
+                            "enum": [
+                                "biochar",
+                                "biogas",
+                                "biomass",
+                                "energy",
+                                "CRC"
+                            ]
+                        },
+                        "hasClaims": {
+                            "type": "array",
+                            "description": "List of claims associated to this asset.",
+                            "items": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "Identifier format of any NGSI entity"
+                            }
                         }
                     }
                 }]
@@ -76,6 +100,18 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     },
     "Activity": {
         relationshipKeys: [],
+        incomingRelationships: [
+            {
+                relationshipName: "producedVia",
+                type: "Asset",
+                context: "http://context/ngsi-context.jsonld"
+            },
+            {
+                relationshipName: "consumedVia",
+                type: "Asset",
+                context: "http://context/ngsi-context.jsonld"
+            },
+        ],
         type: "Activity",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -116,16 +152,17 @@ export const formConfig: { [type: string]: FormConfigItem } = {
             ]
         }
     },
-    "Safeguard": {
-        relationshipKeys: ["refersTo"],
-        type: "Safeguard",
+    "Attestation": {
+        relationshipKeys: [],
+        type: "Attestation",
+        incomingRelationships: [],
         schema: {
             "$schema": "http://json-schema.org/schema",
             "$schemaVersion": "0.0.1",
             "$id": "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/Safeguard/schemaManualModified.json",
-            "title": "Safeguard",
+            "title": "Attestation",
             "modelTags": "",
-            "description": "Safeguard to verify, validate and challenge the representation of other entities.",
+            "description": "Attestation to verify, validate and challenge the representation of other entities.",
             "type": "object",
             "required": [
                 "id",
@@ -134,15 +171,32 @@ export const formConfig: { [type: string]: FormConfigItem } = {
             ],
             "allOf": [
                 {
-                    ...generateBaseSchema("Safeguard")
+                    ...generateBaseSchema("Attestation")
                 },
                 {
                     "properties":
                     {
                         "refersTo": {
-                            "type": "string",
-                            "format": "uri",
-                            "description": "Reference to the entity, that this safeguard refers to."
+                            "type": "array",
+                            "description": "The refered entities and their contenthash.",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "object",
+                                    "contenthash"
+                                ],
+                                "properties": {
+                                    "object": {
+                                        "type": "string",
+                                        "format": "uri",
+                                        "description": "Identifier format of any NGSI entity"
+                                    },
+                                    "contenthash": {
+                                        "type": "string",
+                                        "description": "Contenthash derived using URDNA2015 on the expanded keyvalues (JSON-LD) object and the solidity keccak256 hash."
+                                    }
+                                }
+                            }
                         },
                         "category": {
                             "type": "string",
@@ -151,7 +205,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
                                 "verification",
                                 "challenge"
                             ],
-                            "description": "Category of the safeguard"
+                            "description": "Category of the attestation"
                         }
                     }
                 }
@@ -160,6 +214,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     },
     "Claim": {
         relationshipKeys: ["refersTo"],
+        incomingRelationships: [],
         type: "Claim",
         schema: {
             "$schema": "http://json-schema.org/schema",

@@ -13,14 +13,14 @@ export const useCreateEntity = () => {
         setLoading(true);
         try {
             if (!web3WithWallet.active) {
-                return Promise.reject("You have to log in first")
+                return Promise.reject(new Error("You have to log in first"))
             }
             const careloRegistrar = CareloRegistrar__factory.connect("carelo", web3WithWallet.library.getSigner())
             if (! await careloRegistrar.controllers(web3WithWallet.account)) {
-                return Promise.reject("You are not allowed to register new names in the Base Registrar")
+                return Promise.reject(new Error("You are not allowed to register new names in the Base Registrar"))
             }
             if (! await careloRegistrar.available(ethers.utils.id(entity.id))) {
-                return Promise.reject("Id is already in use")
+                return Promise.reject(new Error("Id is already in use"))
             }
             const keyValues = normalized2keyValues(entity)
             const contentHash = await keyValues2contenthash(keyValues, "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
@@ -31,7 +31,7 @@ export const useCreateEntity = () => {
             return registerReceipt
         } catch (error) {
             console.log(error);
-            return Promise.reject("Unknown error occurred while trying to reach RPC Node")
+            return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }, [web3WithWallet.active, web3WithWallet.account, web3WithWallet.library])
 

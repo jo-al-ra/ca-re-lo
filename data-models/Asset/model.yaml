@@ -8,8 +8,6 @@ Asset:
   allOf:
     - $ref: >-
         https://smart-data-models.github.io/data-models/common-schema.json#/definitions/GSMA-Commons
-    - $ref: >-
-        https://smart-data-models.github.io/data-models/common-schema.json#/definitions/Location-Commons
     - properties:
         type:
           type: string
@@ -42,3 +40,27 @@ Asset:
           description: >-
             Relationship. Reference to the entity, that documents the consumption
             of this entity
+        category:
+          description: >-
+            Property. Category of the Asset. Enum:'biochar, biogas, biomass,
+            energy, CRC'
+          type: string
+          enum:
+            - biochar
+            - biogas
+            - biomass
+            - energy
+            - CRC
+        hasClaims:
+          type: array
+          description: Property. List of claims associated to this asset.
+          items:
+            anyOf:
+              - type: string
+                minLength: 1
+                maxLength: 256
+                pattern: '^[\w\-\.\{\}\$\+\*\[\]`|~^@!,:\\]+$'
+                description: Property. Identifier format of any NGSI entity
+              - type: string
+                format: uri
+                description: Property. Identifier format of any NGSI entity
