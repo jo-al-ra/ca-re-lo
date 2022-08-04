@@ -55,7 +55,7 @@ const menuItems: MenuItems[] = [
       },
       {
         name: 'Biogas',
-        link: '/carelo/assets',
+        link: '/carelo/biogas',
         icon: BrightnessLowTwoToneIcon
       },
       {

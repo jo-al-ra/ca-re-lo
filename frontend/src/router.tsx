@@ -19,6 +19,8 @@ const Loader = (Component) => (props) => (
 const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
 const BiomassOverview = Loader(lazy(() => import('src/content/applications/Biomass/Overview')));
 const BiomassCreate = Loader(lazy(() => import('src/content/applications/Biomass/Create')));
+const BiogasOverview = Loader(lazy(() => import('src/content/applications/Biogas/Overview')));
+const BiogasCreate = Loader(lazy(() => import('src/content/applications/Biogas/Create')));
 const EnergyOverview = Loader(lazy(() => import('src/content/applications/Energy/Overview')));
 const EnergyCreate = Loader(lazy(() => import('src/content/applications/Energy/Create')));
 const ActivityCreate = Loader(lazy(() => import('src/content/applications/Activity/Create')));
@@ -147,6 +149,14 @@ const routes: RouteObject[] = [
       {
         path: 'energy/create',
         element: <EnergyCreate />
+      },
+      {
+        path: 'biogas',
+        element: <BiogasOverview />
+      },
+      {
+        path: 'biogas/create',
+        element: <BiogasCreate />
       },
       {
         path: 'activity/create',
