@@ -22,7 +22,7 @@ const CardCover = styled(Card)(
 );
 
 
-const PageHeader: FC<PageHeaderProps> = (props) => {
+const CreateEntityPageHeader: FC<PageHeaderProps> = (props) => {
     const navigate = useNavigate()
 
     return (
@@ -49,4 +49,4 @@ const PageHeader: FC<PageHeaderProps> = (props) => {
     );
 }
 
-export default PageHeader;
+export default CreateEntityPageHeader;

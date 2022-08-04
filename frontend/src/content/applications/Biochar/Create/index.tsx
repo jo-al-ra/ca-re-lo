@@ -22,13 +22,13 @@ function CreateBiogas() {
     return (
         <>
             <Helmet>
-                <title>Create biogas</title>
+                <title>Create biochar</title>
             </Helmet>
             <PageTitleWrapper>
                 <CreateEntityPageHeader
-                    categoryDescription='Biogas is a mixture of gases produced from organic matter, which can be used as fuel.'
-                    entityCategory='Biogas'
-                    image="/static/images/entities/Biogas.jpg"
+                    categoryDescription='Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
+                    entityCategory='Biochar'
+                    image="/static/images/entities/Biochar_2.jpg"
                 />
             </PageTitleWrapper>
             <Container>
@@ -50,7 +50,7 @@ function CreateBiogas() {
                                     consumedVia: {
                                         "ui:widget": "hidden",
                                     },
-                                    "ui:title": "Biogas",
+                                    "ui:title": "Biochar",
                                     "ui:submitButtonOptions": {
                                         props: {
                                             disabled: !web3.active
@@ -59,13 +59,13 @@ function CreateBiogas() {
                                         norender: false
                                     }
                                 }}
-                                defaultValues={{ name: "Biogas #xxx", alternateName: "Biogas #xxx", id: `urn:ngsi-ld:asset:biogas${Date.now()}` }}
+                                defaultValues={{ name: "Biochar #xxx", alternateName: "Biokohle #xxx", id: `urn:ngsi-ld:asset:biochar${Date.now()}` }}
                                 onSubmit={(object) => {
                                     const biogas = {
                                         ...object,
                                         category: {
                                             type: "Property",
-                                            value: "biogas"
+                                            value: "biochar"
                                         }
                                     }
                                     create(biogas).then(() => {
@@ -79,7 +79,7 @@ function CreateBiogas() {
                                             navigate(`/carelo/canvas?id=${object.id}`)
                                         }).catch(e2 => {
                                             console.log(e2)
-                                            enqueueSnackbar("Failed to create biogas in Context Broker", {
+                                            enqueueSnackbar("Failed to create biochar in Context Broker", {
                                                 variant: "error"
                                             })
                                         })

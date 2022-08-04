@@ -15,7 +15,7 @@ interface RecentOrdersTableProps {
 }
 
 
-const BiogasDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
+const BiocharDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
 
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const BiogasDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <CardHeader title="Biogas" />
+            <CardHeader title="Biochar" />
             <Divider />
             <DataGrid
                 autoHeight
@@ -54,4 +54,4 @@ const BiogasDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     )
 };
 
-export default BiogasDataGrid;
+export default BiocharDataGrid;

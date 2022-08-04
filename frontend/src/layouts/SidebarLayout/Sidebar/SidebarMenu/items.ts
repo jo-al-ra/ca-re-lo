@@ -60,7 +60,7 @@ const menuItems: MenuItems[] = [
       },
       {
         name: 'Biochar',
-        link: '/carelo/assets',
+        link: '/carelo/biochar',
         icon: BrightnessLowTwoToneIcon
       },
       {
