@@ -34,7 +34,16 @@ export const activityCategories: ActivityCategory[] = [
             { type: "Asset", category: "biochar" },
         ],
         outputs: [
-            { type: "Asset", category: "CRC" }
+            {
+                type: "Asset",
+                category: "CRC",
+                defaultValues: {
+                    name: "CRC #xxx",
+                    alternateName: "CRC #xxx",
+                    category: "CRC",
+                    id: `urn:ngsi-ld:asset:crc${Date.now()}`
+                }
+            }
         ]
 
     }

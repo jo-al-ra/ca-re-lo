@@ -23,6 +23,8 @@ const BiogasOverview = Loader(lazy(() => import('src/content/applications/Biogas
 const BiogasCreate = Loader(lazy(() => import('src/content/applications/Biogas/Create')));
 const BiocharOverview = Loader(lazy(() => import('src/content/applications/Biochar/Overview')));
 const BiocharCreate = Loader(lazy(() => import('src/content/applications/Biochar/Create')));
+const CRCOverview = Loader(lazy(() => import('src/content/applications/CRC/Overview')));
+const CRCCreate = Loader(lazy(() => import('src/content/applications/CRC/Create')));
 const EnergyOverview = Loader(lazy(() => import('src/content/applications/Energy/Overview')));
 const EnergyCreate = Loader(lazy(() => import('src/content/applications/Energy/Create')));
 const ActivityCreate = Loader(lazy(() => import('src/content/applications/Activity/Create')));
@@ -167,6 +169,14 @@ const routes: RouteObject[] = [
       {
         path: 'biochar/create',
         element: <BiocharCreate />
+      },
+      {
+        path: 'crc',
+        element: <CRCOverview />
+      },
+      {
+        path: 'crc/create',
+        element: <CRCCreate />
       },
       {
         path: 'activity/create',

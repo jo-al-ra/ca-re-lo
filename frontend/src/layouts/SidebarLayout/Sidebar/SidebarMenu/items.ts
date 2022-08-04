@@ -65,7 +65,7 @@ const menuItems: MenuItems[] = [
       },
       {
         name: 'CRCs',
-        link: '/carelo/assets',
+        link: '/carelo/crc',
         icon: BrightnessLowTwoToneIcon
       },
       // {
