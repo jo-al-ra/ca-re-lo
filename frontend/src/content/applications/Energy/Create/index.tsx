@@ -2,13 +2,11 @@ import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, Card } from '@mui/material';
 import Footer from 'src/components/Footer';
-import { usePostEntity as useCoBrCallback } from 'src/hooks/api/ngsi-ld/usePostEntity';
-import { useSnackbar } from 'notistack';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
-import PageHeader from './PageHeader';
 import { useCreateEntity } from 'src/hooks/combined/useCreateEntity';
+import CreateEntityPageHeader from 'src/components/PageHeaders/CreateEntityPageHeader';
 
 
 function CreateEnergy() {
@@ -22,7 +20,11 @@ function CreateEnergy() {
                 <title>Create energy</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader />
+                <CreateEntityPageHeader
+                    entityCategory='Energy'
+                    image="/static/images/entities/Energy.jpg"
+                    categoryDescription='An energy source is almost always required to perform activities. Energy can have various forms such as electrical, thermal or chemical energy.'
+                />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid

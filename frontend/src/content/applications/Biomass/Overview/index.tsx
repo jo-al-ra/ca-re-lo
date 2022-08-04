@@ -2,12 +2,12 @@ import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-import PageHeader from './PageHeader';
 import BiomassDataGrid from './BiomassDataGrid';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
 import { useEffect, useState } from 'react';
 import { Asset } from 'src/models/Asset';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
+import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 const BiomassOverview = () => {
     const { makeRequest, loading, error, responseStatus } = useGetEntitiesByQuery()
@@ -32,7 +32,11 @@ const BiomassOverview = () => {
                 <title>Biomass - Overview</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader />
+                <EntityOverviewPageHeader
+                    entityCategory='Biomass'
+                    image="/static/images/entities/Biomass.jpg"
+                    categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'
+                />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid

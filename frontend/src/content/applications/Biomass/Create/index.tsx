@@ -7,8 +7,8 @@ import { useSnackbar } from 'notistack';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
-import PageHeader from './PageHeader';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
+import CreateEntityPageHeader from 'src/components/PageHeaders/CreateEntityPageHeader';
 
 
 function CreateBiomass() {
@@ -24,7 +24,11 @@ function CreateBiomass() {
                 <title>Create biomass</title>
             </Helmet>
             <PageTitleWrapper>
-                <PageHeader />
+                <CreateEntityPageHeader
+                    entityCategory='Biomass'
+                    image="/static/images/entities/Biomass.jpg"
+                    categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'
+                />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid
