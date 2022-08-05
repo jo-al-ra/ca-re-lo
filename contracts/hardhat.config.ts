@@ -35,13 +35,30 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    local: {
+      url: "http://localhost:8545",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY, "a1c07f6078715fbeb482d3cf2646c5919880369f5688bf636a1d02aa1598dba4"] : [],
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      local: process.env.ETHERSCAN_API_KEY ?? "abc"
+    },
+    customChains: [
+      {
+        network: "local",
+        chainId: 1337,
+        urls: {
+          apiURL: "http://localhost:4000/api",
+          browserURL: "http://localhost:4000/"
+        }
+      }
+    ]
   },
 };
 

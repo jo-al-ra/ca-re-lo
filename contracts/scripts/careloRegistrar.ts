@@ -15,6 +15,7 @@ export const deployCareloRegistrar = async (ens: ENSRegistry, tld: string, resol
     await (await reverse.setController(careloRegistrar.address, true)).wait()
     // await (await careloRegistrar.renounceOwnership()).wait()
     console.log(`registered CareloRegistrar '${tld}' in ENS with address ${careloRegistrar.address}`)
+    console.log(`params for deployment are "${ens.address}" "${namehash(tld)}"`)
 
     return careloRegistrar
 }

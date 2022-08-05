@@ -7,6 +7,7 @@ export const deployReverseRegistrar = async (ens: ENSRegistry, resolver: PublicR
     const reverseRegistrar = await ReverseRegistrar.deploy(ens.address, resolver.address)
     await reverseRegistrar.deployed()
     console.log("ReverseRegistrar deployed to:", reverseRegistrar.address);
+    console.log(`params for deployment are "${ens.address}" "${resolver.address}"`)
     await (await ens.setSubnodeOwner(ZERO_HASH, labelhash("reverse"), (await getAccounts())[0])).wait();
     await (await ens.setSubnodeRecord(namehash("reverse"), labelhash("addr"), (await getAccounts())[0], resolver.address, 0)).wait();
     await (await resolver["setAddr(bytes32,address)"](namehash("addr.reverse"), reverseRegistrar.address)).wait();
