@@ -1,5 +1,5 @@
 cd ./contracts
-npx hardhat verify --network local 0xC3C5950E39EE9c8f4811B2669201fdc4E43b18b5
-npx hardhat verify --network local 0x22cf418C54ADd1795e98dADdF6B2A4f59D5418c6 "0xC3C5950E39EE9c8f4811B2669201fdc4E43b18b5" "0x0000000000000000000000000000000000000000"
-npx hardhat verify --network local 0x1698Cb74cbf0257E1D5a2860b40e85b426495F03 "0xC3C5950E39EE9c8f4811B2669201fdc4E43b18b5" "0x2a6593f35bce7cc7506acc61c4db41aeafcf19072e7ac26cbc169af1907c11ca"
-npx hardhat verify --contract @ensdomains/ens-contracts/contracts/registry/ReverseRegistrar.sol:ReverseRegistrar --network local 0x1F6F5591549dD5AaE594909e3a42e08576b81fA8 "0xC3C5950E39EE9c8f4811B2669201fdc4E43b18b5" "0x22cf418C54ADd1795e98dADdF6B2A4f59D5418c6"
+npx hardhat verify --network local 0x587e32dB64b9095607B3266D3Abf5748307fF621
+npx hardhat verify --network local 0x500F35EC7A17EF2634E76fe7F588947DdE6E2c91 "0x587e32dB64b9095607B3266D3Abf5748307fF621" "0x0000000000000000000000000000000000000000"
+npx hardhat verify --network local 0x22cf418C54ADd1795e98dADdF6B2A4f59D5418c6 "0x587e32dB64b9095607B3266D3Abf5748307fF621" "0x2a6593f35bce7cc7506acc61c4db41aeafcf19072e7ac26cbc169af1907c11ca"
+npx hardhat verify --contract @ensdomains/ens-contracts/contracts/registry/ReverseRegistrar.sol:ReverseRegistrar --network local 0x125cBc0Cd0c80086cebAbBBE82B4108396a68d25 "0x587e32dB64b9095607B3266D3Abf5748307fF621" "0x500F35EC7A17EF2634E76fe7F588947DdE6E2c91"
