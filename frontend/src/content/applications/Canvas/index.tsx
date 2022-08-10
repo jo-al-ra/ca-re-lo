@@ -33,17 +33,7 @@ function Canvas() {
     const [selectedNode, setSelectedNode] = useState<CustomNode>(undefined)
     const [searchParams, setSearchParams] = useSearchParams()
 
-    useEffect(() => {
-        const initialId = searchParams.get("id")
-        if (initialId) {
-            loadEntityById(initialId).then(node => {
-                nodes.update([node])
-                onSetSelectedNode(node)
-            })
-        }
-    }, [searchParams])
-
-    const loadEntityById: (entityId: string) => Promise<CustomNode> = (entityId) => {
+    const loadEntityById: (entityId: string) => Promise<CustomNode> = useCallback((entityId) => {
         return makeRequest(entityId).then(async data => {
             const latestContenthash = await findLatestContenthashTx.findTx(entityId)
             const computedContenthash = await keyValues2contenthash(
@@ -65,7 +55,17 @@ function Canvas() {
                 shape: "box",
             }
         })
-    }
+    }, [findLatestContenthashTx.findTx])
+
+    useEffect(() => {
+        const initialId = searchParams.get("id")
+        if (initialId) {
+            loadEntityById(initialId).then(node => {
+                nodes.update([node])
+                onSetSelectedNode(node)
+            })
+        }
+    }, [searchParams, loadEntityById])
 
     const onSetSelectedNode = useCallback((node: CustomNode) => {
         setSelectedNode(node)

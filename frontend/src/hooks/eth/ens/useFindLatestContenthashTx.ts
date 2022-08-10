@@ -24,10 +24,6 @@ export const useFindLatestContenthashTx = () => {
             })
             const contenthash = await careloRegistrar.contenthash(ensNode)
             const txHash = newest.transactionHash
-
-            //compute topic = namehash(entityId.carelo)
-            //check for event by topic
-            //get tx related to event
             return {
                 contenthash: contenthash,
                 txHash: txHash,
@@ -36,7 +32,7 @@ export const useFindLatestContenthashTx = () => {
 
         } catch (error) {
             console.log(error);
-            return Promise.reject("Unknown error occurred while trying to reach RPC Node")
+            return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }, [web3.active, web3.library])
 
