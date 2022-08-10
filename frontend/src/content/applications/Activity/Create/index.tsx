@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CategoryPicker from './CategoryPicker';
 import PickableInputTables from './PickableInputTables';
-import { activityCategories } from './config';
+import { getActivityCategories } from './config';
 import CreateOutputs from './CreateOutputs';
 import AuthorizeTransactions from './AuthorizeTransactions';
 
@@ -22,7 +22,7 @@ const stepNames = ['Select Category', 'Select Inputs', 'Create Outputs', 'Confir
 export default function CreateActivity() {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set<number>());
-    const categories = activityCategories
+    const categories = getActivityCategories()
     const [category, setCategory] = useState(categories[0])
     const activityId = useMemo(() => {
         return `urn:ngsi-ld:activity:${category.name}${Date.now()}`
