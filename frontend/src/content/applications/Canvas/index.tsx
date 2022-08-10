@@ -164,11 +164,8 @@ function Canvas() {
                                 </Grid>
                                 <Grid xs={6} sm={4} item>
                                     <OwnerCard
-                                        loading={!selectedNode?.txHash} //TODO
-                                        blockscoutLink={`http://localhost:4000/tx/${selectedNode?.txHash}`}
-                                        ownerName="farmer.carelo"
-                                        ownerAddress="0x6660C7d275995f1111C47dC181827Da73898b4C6"
-                                        ownerVerified={true}
+                                        id={selectedNode?.ngsiObject?.id}
+                                        listedOwner={selectedNode?.ngsiObject?.owner?.value}
                                         onClickTransfer={() => console.log("test")}
                                     />
                                 </Grid>
