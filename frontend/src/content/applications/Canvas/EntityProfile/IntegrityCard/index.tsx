@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
     Card,
     Grid,
@@ -11,19 +11,52 @@ import {
 import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
 import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
 import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
+import { useFindLatestContenthashTx } from "src/hooks/eth/ens/useFindLatestContenthashTx";
+import { keyValues2contenthash } from "src/utils/ngsi-ld/conversion";
+import { useGetEntityById } from "src/hooks/api/ngsi-ld/useGetEntityById";
 
 export interface IntegrityCardProps {
-    hash: string;
-    blockscoutLink: string;
-    verified: boolean;
+    id: string;
+    onIntegrityVerified: (integrityProven: boolean) => void;
+}
+
+interface IntegrityCardState {
+    contenthash?: string;
+    blockscoutLink?: string;
+    verified?: boolean;
     loading: boolean;
-    dataProvider: string
+    dataProvider?: string;
 }
 
 
 
 const IntegrityCard: FC<IntegrityCardProps> = (props) => {
-    if (props.loading) {
+    const findLatestContenthashTx = useFindLatestContenthashTx()
+    const { makeRequest, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const [state, setState] = useState<IntegrityCardState>({ loading: true })
+
+    const verifyIntegrity = async () => {
+        const latestContenthash = await findLatestContenthashTx.findTx(props.id)
+        const computedContenthash = await keyValues2contenthash(
+            await makeRequest(props.id, true),
+            "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
+        )
+        const integrityProven = computedContenthash === latestContenthash.contenthash
+        props.onIntegrityVerified(integrityProven)
+        setState({
+            contenthash: latestContenthash.contenthash,
+            blockscoutLink: `http://localhost:4000/tx/${latestContenthash?.txHash}`,
+            verified: computedContenthash === latestContenthash.contenthash,
+            loading: false,
+            dataProvider: latestContenthash.dataProvider
+        })
+    }
+
+    useEffect(() => {
+        verifyIntegrity()
+    }, [props.id, findLatestContenthashTx.findTx])
+
+    if (state.loading) {
         return (
             <Typography>
                 loading
@@ -36,12 +69,12 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                 <Grid container alignItems="center">
                     <Grid item md={10}>
                         <Typography variant="h3" noWrap>
-                            {props.verified ? "Integrity verified" : "Integrity violated"}
+                            {state.verified ? "Integrity verified" : "Integrity violated"}
                         </Typography>
                     </Grid>
                     <Grid item md={2}>
                         {
-                            props.verified ?
+                            state.verified ?
                                 <DoneAllTwoToneIcon color="success" fontSize="large" />
                                 :
                                 <ErrorTwoToneIcon color="error" fontSize="large" />
@@ -49,7 +82,7 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                     </Grid>
                 </Grid>
                 <Link
-                    href={props.blockscoutLink}
+                    href={state.blockscoutLink}
                     target="_blank"
                     rel="noreferrer noopener"
                 >
@@ -57,12 +90,12 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                 </Link>
                 <Box sx={{ pt: 3 }}>
                     <Typography variant="h5" gutterBottom noWrap>
-                        computed hash:
+                        data provider:
                     </Typography>
                     <Grid container alignItems="center">
                         <Grid item xs={11}>
                             <Typography variant="subtitle2" noWrap mr={1}>
-                                {props.hash}
+                                {state.dataProvider}
                             </Typography>
 
                         </Grid>
@@ -76,12 +109,12 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                 </Box>
                 <Box sx={{ pt: 3 }}>
                     <Typography variant="h5" gutterBottom noWrap>
-                        data provider:
+                        computed hash:
                     </Typography>
                     <Grid container alignItems="center">
                         <Grid item xs={11}>
                             <Typography variant="subtitle2" noWrap mr={1}>
-                                {props.dataProvider}
+                                {state.contenthash}
                             </Typography>
 
                         </Grid>

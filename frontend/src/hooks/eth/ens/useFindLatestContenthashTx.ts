@@ -24,10 +24,14 @@ export const useFindLatestContenthashTx = () => {
             })
             const contenthash = await careloRegistrar.contenthash(ensNode)
             const txHash = newest.transactionHash
+            const txReceipt = await newest.getTransactionReceipt()
+            const dataProviderAddress = txReceipt.from
+            const dataProviderName = await web3.library.lookupAddress(dataProviderAddress)
             return {
                 contenthash: contenthash,
                 txHash: txHash,
-                ensNode: ensNode
+                ensNode: ensNode,
+                dataProvider: dataProviderName ?? dataProviderAddress
             }
 
         } catch (error) {

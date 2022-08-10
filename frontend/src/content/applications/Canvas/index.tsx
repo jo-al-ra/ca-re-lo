@@ -35,21 +35,9 @@ function Canvas() {
 
     const loadEntityById: (entityId: string) => Promise<CustomNode> = useCallback((entityId) => {
         return makeRequest(entityId).then(async data => {
-            const latestContenthash = await findLatestContenthashTx.findTx(entityId)
-            const computedContenthash = await keyValues2contenthash(
-                await makeRequest(entityId, true),
-                "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
-            )
-            const integrityProven = computedContenthash === latestContenthash.contenthash
-            const color = integrityProven ? "green" : "red"
             return {
                 ngsiObject: data,
                 id: data.id,
-                contenthash: latestContenthash.contenthash,
-                ensNode: latestContenthash.ensNode,
-                txHash: latestContenthash.txHash,
-                integrityProven: computedContenthash === latestContenthash.contenthash,
-                color: { border: color, highlight: { border: color } },
                 label: data.id,
                 title: data.name,
                 shape: "box",
@@ -155,11 +143,18 @@ function Canvas() {
                             >
                                 <Grid xs={6} sm={4} item>
                                     <IntegrityCard
-                                        loading={!selectedNode?.txHash}
-                                        blockscoutLink={`http://localhost:4000/tx/${selectedNode?.txHash}`}
-                                        hash={selectedNode?.contenthash}
-                                        verified={selectedNode?.integrityProven}
-                                        dataProvider={"farmer.carelo"} //TODO
+                                        id={selectedNode?.ngsiObject?.id}
+                                        onIntegrityVerified={(integrityProven) => {
+                                            const color = integrityProven ? "green" : "red"
+                                            nodes.update(
+                                                {
+                                                    ...selectedNode,
+                                                    color: {
+                                                        border: color,
+                                                        highlight: { border: color }
+                                                    }
+                                                })
+                                        }}
                                     />
                                 </Grid>
                                 <Grid xs={6} sm={4} item>
@@ -172,7 +167,7 @@ function Canvas() {
 
                                 <Grid xs={6} sm={4} item>
                                     <RelationshipCard
-                                        loading={!selectedNode?.txHash} //TODO
+                                        loading={false} //TODO
                                         displayRelationshipState={{ consumedVia: true, producedVia: false, modifiedVia: false }}
                                         onToggleDisplayRelationship={(relationshipName) => console.log(relationshipName)}
                                     />
