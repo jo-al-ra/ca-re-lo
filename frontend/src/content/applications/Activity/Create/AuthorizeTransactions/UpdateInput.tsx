@@ -23,7 +23,7 @@ const UpdateInput: FC<UpdateInputProps> = ({ inputId, relationshipName, activity
                 setInput({ ...updatedEntity })
                 setLoading(false)
             }).catch(e => {
-                console.log(e)
+                console.error(e)
                 setLoading(false)
             })
     }, [])
@@ -43,7 +43,7 @@ const UpdateInput: FC<UpdateInputProps> = ({ inputId, relationshipName, activity
                                 setLoading(false)
                                 setUpdated(true)
                             }).catch(e => {
-                                console.log(e)
+                                console.error(e)
                                 setLoading(false)
                             })
                     }}>{loading ? "Loading" : updated ? "Updated" : "Authorize"}</Button>

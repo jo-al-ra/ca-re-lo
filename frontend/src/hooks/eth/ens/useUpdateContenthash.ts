@@ -23,11 +23,10 @@ export const useUpdateContenthash = () => {
 
             const updateTx = await careloRegistrar.setContenthash(ethers.utils.namehash(`${entity.id}.carelo`), contentHash)
             const updateReceipt = await updateTx.wait()
-            console.log(updateReceipt)
             // setLoading(false)
             return updateReceipt
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setLoading(false)
             return Promise.reject("Unknown error occurred while trying to reach RPC Node")
         }

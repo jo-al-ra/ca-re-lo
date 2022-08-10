@@ -35,7 +35,7 @@ export const useFindLatestContenthashTx = () => {
             }
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }, [web3.active, web3.library])

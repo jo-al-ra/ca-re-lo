@@ -38,9 +38,8 @@ export const useApiArrayEffect = (config: AxiosRequestConfig) => {
             loading: false,
           }));
         } catch (error: any) {
-          console.log(JSON.stringify(error));
 
-          console.log(error);
+          console.error(error);
           if (error.response)
             setState(s => ({
               ...s,

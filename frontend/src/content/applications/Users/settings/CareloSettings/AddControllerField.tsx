@@ -43,7 +43,7 @@ const AddControllerField: FC = () => {
                         try {
                             await setCareloController(name, true)
                         } catch (e) {
-                            console.log(e)
+                            console.error(e)
                         }
                     }}>
                     Add
@@ -56,7 +56,7 @@ const AddControllerField: FC = () => {
                         try {
                             await setCareloController(name, false)
                         } catch (e) {
-                            console.log(e)
+                            console.error(e)
                         }
                     }}>
                     Remove

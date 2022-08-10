@@ -66,13 +66,13 @@ function CreateClaim() {
                                             })
                                             navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
                                         }).catch(e2 => {
-                                            console.log(e2)
+                                            console.error(e2)
                                             enqueueSnackbar("Failed to create biomass in Context Broker", {
                                                 variant: "error"
                                             })
                                         })
                                     }).catch(e1 => {
-                                        console.log(e1)
+                                        console.error(e1)
                                         enqueueSnackbar(e1.message, {
                                             variant: "error"
                                         })

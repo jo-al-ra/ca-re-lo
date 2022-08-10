@@ -78,13 +78,13 @@ function CreateBiogas() {
                                             })
                                             navigate(`/carelo/canvas?id=${object.id}`)
                                         }).catch(e2 => {
-                                            console.log(e2)
+                                            console.error(e2)
                                             enqueueSnackbar("Failed to create biochar in Context Broker", {
                                                 variant: "error"
                                             })
                                         })
                                     }).catch(e1 => {
-                                        console.log(e1)
+                                        console.error(e1)
                                         enqueueSnackbar(e1.message, {
                                             variant: "error"
                                         })

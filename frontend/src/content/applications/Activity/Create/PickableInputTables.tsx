@@ -40,7 +40,6 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
             return response
         }))
             .then(values => {
-                console.log(values)
                 setAssets(values
                     .reduce((acc, current) => ({ ...acc, ...current }))
                 )

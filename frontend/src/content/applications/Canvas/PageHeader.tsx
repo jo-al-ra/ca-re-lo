@@ -32,7 +32,6 @@ const PageHeader: FC<PageHeaderProps> = ({ onSubmit }) => {
             <Grid item>
                 <Form schema={schema}
                     onSubmit={(event) => {
-                        console.log(event.formData);
                         onSubmit(event.formData)
                     }} />
             </Grid>

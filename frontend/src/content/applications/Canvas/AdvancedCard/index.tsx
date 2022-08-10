@@ -69,7 +69,7 @@ const AdvancedCard: FC<AdvancedCardProps> = ({ node, reload }) => {
                                                 setInEditMode(false)
                                                 reload();
                                             }).catch(e2 => {
-                                                console.log(e2)
+                                                console.error(e2)
                                                 enqueueSnackbar("Failed to update entity in Context Broker", {
                                                     variant: "error"
                                                 })

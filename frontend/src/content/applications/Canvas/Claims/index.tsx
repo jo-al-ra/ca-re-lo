@@ -73,8 +73,6 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
 
     }, [node])
 
-    console.log(includedClaims)
-
     const renderClaim = (claim: Claim) => {
         return (
             <Accordion>

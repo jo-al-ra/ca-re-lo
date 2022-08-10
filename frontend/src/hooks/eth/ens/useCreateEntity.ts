@@ -9,7 +9,6 @@ export const useCreateEntity = () => {
     const web3WithWallet = useWeb3MetaMask();
 
     const create = useCallback(async (entity: any) => {
-        console.log(entity)
         setLoading(true);
         try {
             if (!web3WithWallet.active) {
@@ -27,10 +26,9 @@ export const useCreateEntity = () => {
 
             const registerTx = await careloRegistrar.registerEntity(ethers.utils.id(entity.id), contentHash, entity.source.value)
             const registerReceipt = await registerTx.wait()
-            console.log(registerReceipt)
             return registerReceipt
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }, [web3WithWallet.active, web3WithWallet.account, web3WithWallet.library])

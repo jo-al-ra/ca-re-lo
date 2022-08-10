@@ -55,7 +55,7 @@ const SingleTextField: FC<SingleTextFieldProps> = ({ title, description, suffix,
                             try {
                                 await onSubmit(name)
                             } catch (e) {
-                                console.log(e)
+                                console.error(e)
                             }
                             setEditing(false)
                         }}>
