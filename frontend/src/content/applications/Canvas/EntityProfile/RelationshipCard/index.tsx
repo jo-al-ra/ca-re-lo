@@ -11,7 +11,7 @@ import HubTwoToneIcon from '@mui/icons-material/HubTwoTone';
 
 export interface RelationshipCardProps {
     displayRelationshipState: { [relationshipName: string]: boolean };
-    onToggleDisplayRelationship: (relationshipName) => void;
+    onToggleDisplayRelationship: (relationshipName: string, value: boolean) => void;
     loading: boolean;
 
 }
@@ -34,7 +34,7 @@ const RelationshipCard: FC<RelationshipCardProps> = (props) => {
                         <Switch
                             checked={props.displayRelationshipState[relationshipName]}
                             onChange={(event) => {
-                                props.onToggleDisplayRelationship(event.target.checked)
+                                props.onToggleDisplayRelationship(relationshipName, event.target.checked)
                             }}
                             inputProps={{ 'aria-label': 'controlled' }} />
                     </Grid>

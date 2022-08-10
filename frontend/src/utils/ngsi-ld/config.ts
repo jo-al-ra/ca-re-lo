@@ -1,5 +1,3 @@
-import { IncomingRelationshipParameter } from "src/content/applications/Canvas/types"
-
 const generateBaseSchema = (type: string) => ({
     "type": "object",
     "properties":
@@ -38,13 +36,11 @@ export interface FormConfigItem {
     relationshipKeys: string[],
     type: string,
     schema: any,
-    incomingRelationships: IncomingRelationshipParameter[]
 }
 
 export const formConfig: { [type: string]: FormConfigItem } = {
     "Asset": {
         relationshipKeys: ["producedVia", "consumedVia"],
-        incomingRelationships: [],
         type: "Asset",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -99,19 +95,7 @@ export const formConfig: { [type: string]: FormConfigItem } = {
         }
     },
     "Activity": {
-        relationshipKeys: [],
-        incomingRelationships: [
-            {
-                relationshipName: "producedVia",
-                type: "Asset",
-                context: "http://context/ngsi-context.jsonld"
-            },
-            {
-                relationshipName: "consumedVia",
-                type: "Asset",
-                context: "http://context/ngsi-context.jsonld"
-            },
-        ],
+        relationshipKeys: ["consumes", "produces"],
         type: "Activity",
         schema: {
             "$schema": "http://json-schema.org/schema",
@@ -153,9 +137,8 @@ export const formConfig: { [type: string]: FormConfigItem } = {
         }
     },
     "Attestation": {
-        relationshipKeys: [],
+        relationshipKeys: ["refersTo"],
         type: "Attestation",
-        incomingRelationships: [],
         schema: {
             "$schema": "http://json-schema.org/schema",
             "$schemaVersion": "0.0.1",
@@ -214,7 +197,6 @@ export const formConfig: { [type: string]: FormConfigItem } = {
     },
     "Claim": {
         relationshipKeys: ["refersTo"],
-        incomingRelationships: [],
         type: "Claim",
         schema: {
             "$schema": "http://json-schema.org/schema",

@@ -30,7 +30,7 @@ const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputId
         dateCreated: new Date().toISOString(),
         owner: [self],
     }
-    const activity = normalize(activityKeyValues, [])
+    const activity = normalize(activityKeyValues, ["produces", "consumes"])
 
     return (
         <ListItem
