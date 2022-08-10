@@ -109,10 +109,10 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1</VersionBadge>
+          <Tooltip title="Version 0.0.1" arrow placement="right">
+            <VersionBadge>0.0.1</VersionBadge>
           </Tooltip>
-          <LogoText>Tokyo Free White</LogoText>
+          <LogoText>CaReLo Dashboard</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>

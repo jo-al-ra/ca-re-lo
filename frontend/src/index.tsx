@@ -15,7 +15,7 @@ const Web3Wrapper = () => {
   const network = {
     chainId: 1337,
     name: "careloChain",
-    ensAddress: "0xA83a74cfecCFc53444f43258AD6D1804E6d150E1"
+    ensAddress: "0x587e32dB64b9095607B3266D3Abf5748307fF621"
   }
 
   return (

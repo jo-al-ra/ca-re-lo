@@ -35,7 +35,7 @@ export default function CreateActivity() {
     const [inputIds, setInputIds] = useState<string[]>([])
 
     const isStepOptional = (step: number) => {
-        return step === 1;
+        return step === 10;
     };
 
     const isStepSkipped = (step: number) => {
