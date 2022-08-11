@@ -31,15 +31,9 @@ const CRCOverview = () => {
             <Helmet>
                 <title>CRC - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
-                    entityCategory='Carbon Removal Credit (CRC)'
-                    image="/static/images/entities/CRC.jpg"
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

@@ -31,15 +31,9 @@ const BiomassOverview = () => {
             <Helmet>
                 <title>Energy - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    entityCategory='Energy'
-                    image="/static/images/entities/Energy.jpg"
-                    categoryDescription='An energy source is almost always required to perform activities. Energy can have various forms such as electrical, thermal or chemical energy.'
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

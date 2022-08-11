@@ -31,15 +31,9 @@ const BiocharOverview = () => {
             <Helmet>
                 <title>Biochar - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    categoryDescription='Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
-                    entityCategory='Biochar'
-                    image="/static/images/entities/Biochar_2.jpg"
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

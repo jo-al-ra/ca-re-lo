@@ -31,15 +31,9 @@ const BiomassOverview = () => {
             <Helmet>
                 <title>Biomass - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    entityCategory='Biomass'
-                    image="/static/images/entities/Biomass.jpg"
-                    categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

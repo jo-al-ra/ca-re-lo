@@ -18,7 +18,7 @@ const CardCover = styled(Card)(
       position: relative;
   
       .MuiCardMedia-root {
-        height: ${theme.spacing(26)};
+        height: ${theme.spacing(30)};
       }
   `
 );
@@ -43,16 +43,6 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
 
     return (
         <>
-            <Box display="flex" mb={3}>
-                <Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
-                        {`${props.entityCategory} Entities`}
-                    </Typography>
-                    <Typography variant="subtitle2">
-                        {props.categoryDescription}
-                    </Typography>
-                </Box>
-            </Box>
             <CardCover>
                 <CardMedia image={props.image} />
                 {web3.active ? (
@@ -72,8 +62,15 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
                 ) : undefined}
 
             </CardCover>
-            <Box py={2} pl={2}>
-                <Typography variant="subtitle2">{subtitle}</Typography>
+            <Box display="flex" mb={3} mt={1} ml={1}>
+                <Box>
+                    <Typography variant="h3" component="h3" gutterBottom>
+                        {`${props.entityCategory} Entities`}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                        {props.categoryDescription}
+                    </Typography>
+                </Box>
             </Box>
         </>
     );

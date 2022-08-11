@@ -8,6 +8,7 @@ import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
+import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 interface RecentOrdersTableProps {
     className?: string;
@@ -39,7 +40,11 @@ const CRCDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <CardHeader title="CRC" />
+            <EntityOverviewPageHeader
+                categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
+                entityCategory='Carbon Removal Credit (CRC)'
+                image="/static/images/entities/CRC.jpg"
+            />
             <Divider />
             <DataGrid
                 autoHeight

@@ -31,15 +31,9 @@ const BiogasOverview = () => {
             <Helmet>
                 <title>Biogas - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    categoryDescription='Biogas is a mixture of gases produced from organic matter, which can be used as fuel.'
-                    entityCategory='Biogas'
-                    image="/static/images/entities/Biogas.jpg"
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

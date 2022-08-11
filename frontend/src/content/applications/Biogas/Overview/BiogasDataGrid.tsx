@@ -8,6 +8,7 @@ import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
+import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 interface RecentOrdersTableProps {
     className?: string;
@@ -39,7 +40,11 @@ const BiogasDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <CardHeader title="Biogas" />
+            <EntityOverviewPageHeader
+                categoryDescription='Biogas is a mixture of gases produced from organic matter, which can be used as fuel.'
+                entityCategory='Biogas'
+                image="/static/images/entities/Biogas.jpg"
+            />
             <Divider />
             <DataGrid
                 autoHeight
