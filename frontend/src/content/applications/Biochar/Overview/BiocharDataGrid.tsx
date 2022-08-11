@@ -1,14 +1,12 @@
 import { FC } from 'react';
 import {
-    Divider,
-    Card,
-    CardHeader
+    Card
 } from '@mui/material';
 import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
-import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
+import EntityOverviewCardHeader from 'src/components/CardHeaders/EntityOverviewCardHeader';
 
 interface RecentOrdersTableProps {
     className?: string;
@@ -40,12 +38,11 @@ const BiocharDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <EntityOverviewPageHeader
+            <EntityOverviewCardHeader
                 categoryDescription='Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
                 entityCategory='Biochar'
                 image="/static/images/entities/Biochar_2.jpg"
             />
-            <Divider />
             <DataGrid
                 autoHeight
                 rows={assets}

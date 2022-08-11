@@ -1,13 +1,17 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { CustomNode } from '../types';
 import { Box, Card, CardMedia, Typography } from '@mui/material';
+import { categories } from 'src/config/categories';
 interface EntityProfileProps {
     className?: string;
     node: CustomNode;
     reload: () => void;
 }
 
-const EntityProfile: FC<EntityProfileProps> = ({ node, children }) => {
+const EntityProfile: FC<EntityProfileProps> = ({ node }) => {
+    const image = useMemo(() => {
+        return categories[node?.ngsiObject?.category?.value]?.image
+    }, [node?.ngsiObject])
 
     if (!node) {
         return (
@@ -20,7 +24,7 @@ const EntityProfile: FC<EntityProfileProps> = ({ node, children }) => {
     return (
         <Card>
             <CardMedia
-                image={"/static/images/entities/Biomass.jpg"}
+                image={image}
                 sx={{ height: 140 }}
             />
             <Box py={2} pl={2} mb={3}>

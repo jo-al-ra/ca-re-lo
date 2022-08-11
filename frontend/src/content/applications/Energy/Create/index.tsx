@@ -6,7 +6,7 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 import { useCreateEntity } from 'src/hooks/combined/useCreateEntity';
-import CreateEntityPageHeader from 'src/components/PageHeaders/CreateEntityPageHeader';
+import CreateEntityPageHeader from 'src/components/CardHeaders/CreateEntityPageHeader';
 
 
 function CreateEnergy() {

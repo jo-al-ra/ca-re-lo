@@ -140,28 +140,26 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
 
     return (
         <Card>
+            <CardMedia
+                image={"/static/images/entities/Claims.jpg"}
+                sx={{ height: 140 }}
+            />
             <CardHeader
                 title="Claims"
-            />
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Claims.jpg"} />
-                {web3.active ? (
-                    <CardCoverAction>
-                        <Button
-                            variant="contained"
-                            component="span"
-                            startIcon={<AddTwoToneIcon fontSize="small" />}
-                            onClick={() => {
-                                navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
-                            }}
-                            disabled={!web3.active}
-                        >
-                            {`Create Claim`}
-                        </Button>
-                    </CardCoverAction>
+                action={web3.active ? (
+                    <Button
+                        variant="contained"
+                        component="span"
+                        startIcon={<AddTwoToneIcon fontSize="small" />}
+                        onClick={() => {
+                            navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                        }}
+                        disabled={!web3.active}
+                    >
+                        {`Create Claim`}
+                    </Button>
                 ) : undefined}
-
-            </CardCover>
+            />
             <CardContent>
                 {claims.map((claim) => renderClaim(claim))}
             </CardContent>

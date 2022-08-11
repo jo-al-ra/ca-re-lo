@@ -157,28 +157,26 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
 
     return (
         <Card>
+            <CardMedia
+                image={"/static/images/entities/Attestation.jpg"}
+                sx={{ height: 140 }}
+            />
             <CardHeader
                 title="Attestations"
-            />
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Attestation.jpg"} />
-                {web3.active ? (
-                    <CardCoverAction>
-                        <Button
-                            variant="contained"
-                            component="span"
-                            startIcon={<AddTwoToneIcon fontSize="small" />}
-                            onClick={() => {
-                                navigate("create")
-                            }}
-                            disabled={!web3.active}
-                        >
-                            {`Create Claim`}
-                        </Button>
-                    </CardCoverAction>
+                action={web3.active ? (
+                    <Button
+                        variant="contained"
+                        component="span"
+                        startIcon={<AddTwoToneIcon fontSize="small" />}
+                        onClick={() => {
+                            navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                        }}
+                        disabled={!web3.active}
+                    >
+                        {`Create Claim`}
+                    </Button>
                 ) : undefined}
-
-            </CardCover>
+            />
             <CardContent>
                 <Accordion>
                     <AccordionSummary

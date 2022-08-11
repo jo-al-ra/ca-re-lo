@@ -1,7 +1,5 @@
-import { Typography, Box, Tooltip, IconButton, Card, CardMedia, Button } from '@mui/material';
+import { CardMedia, Button, CardHeader } from '@mui/material';
 import { FC } from 'react';
-import { styled } from '@mui/material/styles';
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { useNavigate } from 'react-router';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
@@ -12,24 +10,6 @@ interface PageHeaderProps {
     image: string;
     categoryDescription: string
 }
-
-const CardCover = styled(Card)(
-    ({ theme }) => `
-      position: relative;
-  
-      .MuiCardMedia-root {
-        height: ${theme.spacing(30)};
-      }
-  `
-);
-
-const CardCoverAction = styled(Box)(
-    ({ theme }) => `
-      position: absolute;
-      right: ${theme.spacing(2)};
-      bottom: ${theme.spacing(2)};
-  `
-);
 
 
 const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
@@ -43,10 +23,15 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
 
     return (
         <>
-            <CardCover>
-                <CardMedia image={props.image} />
-                {web3.active ? (
-                    <CardCoverAction>
+            <CardMedia
+                image={props.image}
+                sx={{ height: 180 }}
+            />
+            <CardHeader
+                title={`${props.entityCategory} Entities`}
+                subheader={props.categoryDescription}
+                action={
+                    web3.active ? (
                         <Button
                             variant="contained"
                             component="span"
@@ -58,20 +43,10 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
                         >
                             {`Create ${props.entityCategory}`}
                         </Button>
-                    </CardCoverAction>
-                ) : undefined}
+                    ) : undefined
+                }>
 
-            </CardCover>
-            <Box display="flex" py={2} pl={2} mb={3}>
-                <Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
-                        {`${props.entityCategory} Entities`}
-                    </Typography>
-                    <Typography variant="subtitle2">
-                        {props.categoryDescription}
-                    </Typography>
-                </Box>
-            </Box>
+            </CardHeader>
         </>
     );
 }

@@ -1,13 +1,11 @@
 import { FC } from 'react';
 import {
-    Divider,
     Card,
-    CardHeader
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
-import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
+import EntityOverviewCardHeader from 'src/components/CardHeaders/EntityOverviewCardHeader';
 
 interface RecentOrdersTableProps {
     className?: string;
@@ -39,12 +37,11 @@ const EnergyDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <EntityOverviewPageHeader
+            <EntityOverviewCardHeader
                 entityCategory='Energy'
                 image="/static/images/entities/Energy.jpg"
                 categoryDescription='An energy source is almost always required to perform activities. Energy can have various forms such as electrical, thermal or chemical energy.'
             />
-            <Divider />
             <DataGrid
                 autoHeight
                 rows={assets}
