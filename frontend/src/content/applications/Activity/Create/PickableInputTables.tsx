@@ -30,7 +30,7 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
         Promise.all(inputs.map(async input => {
             const query = `category=="${input.category}";owner=="${name}";!consumedVia`
             const possibleInputs = await makeRequest({
-                linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld",
                 keyValues: true,
                 query: query,
                 type: input.type

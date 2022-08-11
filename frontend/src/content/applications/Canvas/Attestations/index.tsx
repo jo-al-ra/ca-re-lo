@@ -42,7 +42,6 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     const web3 = useWeb3MetaMask()
     const navigate = useNavigate()
     const getEntitiesByQuery = useGetEntitiesByQuery();
-    const getEntityById = useGetEntityById("https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
     const [attestations, setAttestations] = useState<Attestation[]>([
         {
             id: "urn:ngsi-ld:attestation:verification1",
@@ -94,7 +93,7 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     useEffect(() => {
         if (node?.ngsiObject?.id) {
             getEntitiesByQuery.makeRequest({
-                linkHeader: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
                 keyValues: true,
                 query: `refersTo[object]=="${node.ngsiObject.id}"`,
                 type: "Attestation"

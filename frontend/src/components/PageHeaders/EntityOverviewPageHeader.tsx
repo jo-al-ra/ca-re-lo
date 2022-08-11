@@ -62,7 +62,7 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
                 ) : undefined}
 
             </CardCover>
-            <Box display="flex" mb={3} mt={1} ml={1}>
+            <Box display="flex" py={2} pl={2} mb={3}>
                 <Box>
                     <Typography variant="h3" component="h3" gutterBottom>
                         {`${props.entityCategory} Entities`}

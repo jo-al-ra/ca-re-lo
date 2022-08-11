@@ -58,7 +58,7 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
     useEffect(() => {
         if (node?.ngsiObject?.id) {
             getEntitiesByQuery.makeRequest({
-                linkHeader: "http://context/ngsi-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld",
                 keyValues: true,
                 query: `refersTo=="${node.ngsiObject.id}"`,
                 type: "Claim"

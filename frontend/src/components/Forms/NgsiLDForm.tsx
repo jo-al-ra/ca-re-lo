@@ -27,14 +27,14 @@ interface FormState {
 
 const NgsiLDForm: FC<FormProps> = ({ type, onSubmit, initialNgsiObject, readonly, uiSchemaOverrides, defaultValues }) => {
     const [state, setState] = useState<FormState>()
-    const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const { makeRequest, loading, error, responseStatus } = useGetEntityById(process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld")
     const web3 = useWeb3MetaMask()
     useEffect(() => {
         let newState = { ...state }
         if (formConfig[type]) {
             newState.config = formConfig[type]
             newState.unknownConfig = false
-            resolveContextToSchema("http://context/ngsi-context.jsonld", type).then(async (res1) => {
+            resolveContextToSchema(process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld", type).then(async (res1) => {
                 newState.config.schema = res1;
                 newState.initialKeyValues = { ...defaultValues }
                 if (initialNgsiObject) {

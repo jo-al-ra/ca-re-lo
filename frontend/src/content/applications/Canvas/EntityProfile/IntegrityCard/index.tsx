@@ -32,14 +32,14 @@ interface IntegrityCardState {
 
 const IntegrityCard: FC<IntegrityCardProps> = (props) => {
     const findLatestContenthashTx = useFindLatestContenthashTx()
-    const { makeRequest, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const { makeRequest, error, responseStatus } = useGetEntityById(process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld")
     const [state, setState] = useState<IntegrityCardState>({ loading: true })
 
     const verifyIntegrity = async () => {
         const latestContenthash = await findLatestContenthashTx.findTx(props.id)
         const computedContenthash = await keyValues2contenthash(
             await makeRequest(props.id, true),
-            "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
+            process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
         )
         const integrityProven = computedContenthash === latestContenthash.contenthash
         props.onIntegrityVerified(integrityProven)
@@ -109,7 +109,7 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                 </Box>
                 <Box sx={{ pt: 3 }}>
                     <Typography variant="h5" gutterBottom noWrap>
-                        computed hash:
+                        stored hash:
                     </Typography>
                     <Grid container alignItems="center">
                         <Grid item xs={11}>

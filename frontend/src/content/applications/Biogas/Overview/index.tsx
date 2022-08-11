@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
@@ -7,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { Asset } from 'src/models/Asset';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 import BiogasDataGrid from './BiogasDataGrid';
-import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 const BiogasOverview = () => {
     const { makeRequest, loading, error, responseStatus } = useGetEntitiesByQuery()
@@ -17,7 +15,7 @@ const BiogasOverview = () => {
     useEffect(() => {
         const query = web3.active ? `category=="biogas";owner=="${web3.name}","${web3.account}"` : `category=="biogas"`
         makeRequest({
-            linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
+            linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/ngsi-context.jsonld",
             keyValues: true,
             query: query,
             type: "Asset"

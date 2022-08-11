@@ -18,7 +18,7 @@ import RelationshipCard from './EntityProfile/RelationshipCard';
 
 
 function Canvas() {
-    const { makeRequest, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const { makeRequest, error, responseStatus } = useGetEntityById(process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld")
     const nodes = useMemo(() => {
         return new DataSet<CustomNode>()
     }, [])
@@ -137,11 +137,9 @@ function Canvas() {
             <Helmet>
                 <title>Canvas</title>
             </Helmet>
-            {/* <PageTitleWrapper>
-                <PageHeader onSubmit={(entityId) => loadEntityById(entityId)} />
-            </PageTitleWrapper> */}
             <Container maxWidth={false}>
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="left"
@@ -149,56 +147,56 @@ function Canvas() {
                     spacing={3}
                 >
                     <Grid item xs={6}>
-                        <EntityProfile
-                            node={selectedNode}
-                            reload={() => { loadEntityById(selectedNode.id as string) }}
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="left"
+                            alignItems="stretch"
+                            spacing={3}
                         >
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="left"
-                                alignItems="stretch"
-                                spacing={3}
-                            >
-                                <Grid xs={6} sm={4} item>
-                                    <IntegrityCard
-                                        id={selectedNode?.ngsiObject?.id}
-                                        onIntegrityVerified={(integrityProven) => {
-                                            const color = integrityProven ? "green" : "red"
-                                            nodes.update(
-                                                {
-                                                    ...selectedNode,
-                                                    color: {
-                                                        border: color,
-                                                        highlight: { border: color }
-                                                    }
-                                                })
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid xs={6} sm={4} item>
-                                    <OwnerCard
-                                        id={selectedNode?.ngsiObject?.id}
-                                        listedOwner={selectedNode?.ngsiObject?.owner?.value}
-                                        onClickTransfer={() => console.log("test")}
-                                    />
-                                </Grid>
-
-                                <Grid xs={6} sm={4} item>
-                                    <RelationshipCard
-                                        loading={false} //TODO
-                                        displayRelationshipState={selectedNode?.displayedRelationships}
-                                        onToggleDisplayRelationship={(relationshipName, value) => {
-                                            onToggleDisplayRelationship(relationshipName, value)
-                                        }}
-                                    />
-                                </Grid>
+                            <Grid item xs={12}>
+                                <EntityProfile
+                                    node={selectedNode}
+                                    reload={() => { loadEntityById(selectedNode.id as string) }}
+                                />
+                            </Grid>
+                            <Grid xs={6} sm={6} item>
+                                <IntegrityCard
+                                    id={selectedNode?.ngsiObject?.id}
+                                    onIntegrityVerified={(integrityProven) => {
+                                        const color = integrityProven ? "green" : "red"
+                                        nodes.update(
+                                            {
+                                                ...selectedNode,
+                                                color: {
+                                                    border: color,
+                                                    highlight: { border: color }
+                                                }
+                                            })
+                                    }}
+                                />
+                            </Grid>
+                            <Grid xs={6} sm={6} item>
+                                <OwnerCard
+                                    id={selectedNode?.ngsiObject?.id}
+                                    listedOwner={selectedNode?.ngsiObject?.owner?.value}
+                                    onClickTransfer={() => console.log("test")}
+                                />
                             </Grid>
 
-                        </EntityProfile>
+                            <Grid xs={6} sm={6} item>
+                                <RelationshipCard
+                                    loading={false}
+                                    displayRelationshipState={selectedNode?.displayedRelationships}
+                                    onToggleDisplayRelationship={(relationshipName, value) => {
+                                        onToggleDisplayRelationship(relationshipName, value)
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Card style={{ flex: 1, width: '100%', height: 600, padding: 15 }}>
+                    <Grid item flex={1} xs={6}>
+                        <Card style={{ flex: 1, width: '100%', padding: 15 }}>
                             <VisNetwork
                                 nodes={nodes}
                                 edges={edges}

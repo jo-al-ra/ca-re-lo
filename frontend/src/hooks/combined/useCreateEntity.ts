@@ -4,7 +4,7 @@ import { usePostEntity } from 'src/hooks/api/ngsi-ld/usePostEntity';
 
 export const useCreateEntity = () => {
     const createEntityENS = useCreateEntityENS();
-    const createEntityContextBroker = usePostEntity("http://context/ngsi-context.jsonld")
+    const createEntityContextBroker = usePostEntity(process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const makeRequests = async (entity: any) => {

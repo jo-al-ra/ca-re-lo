@@ -63,7 +63,7 @@ const RelationshipCard: FC<RelationshipCardProps> = (props) => {
                         <HubTwoToneIcon color="info" fontSize="large" />
                     </Grid>
                 </Grid>
-                {Object.keys(props.displayRelationshipState).map(key => renderRelationshipSwitch(key))}
+                {Object.keys(props.displayRelationshipState ?? {}).map(key => renderRelationshipSwitch(key))}
             </CardContent>
         </Card>
     )

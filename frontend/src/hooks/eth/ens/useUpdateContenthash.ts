@@ -19,7 +19,7 @@ export const useUpdateContenthash = () => {
             }
             const careloRegistrar = CareloRegistrar__factory.connect("carelo", web3WithWallet.library.getSigner())
             const keyValues = normalized2keyValues(entity)
-            const contentHash = await keyValues2contenthash(keyValues, "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
+            const contentHash = await keyValues2contenthash(keyValues, process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
 
             const updateTx = await careloRegistrar.setContenthash(ethers.utils.namehash(`${entity.id}.carelo`), contentHash)
             const updateReceipt = await updateTx.wait()

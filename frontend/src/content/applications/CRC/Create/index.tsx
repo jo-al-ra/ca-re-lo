@@ -14,7 +14,7 @@ import CreateEntityPageHeader from 'src/components/PageHeaders/CreateEntityPageH
 
 function CreateCRC() {
     const { loading, create } = useCreateEntity();
-    const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
+    const postCoBrCallback = useCoBrCallback(process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate();
     const web3 = useWeb3MetaMask()

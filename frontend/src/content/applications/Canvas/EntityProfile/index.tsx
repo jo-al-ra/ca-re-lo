@@ -1,16 +1,6 @@
 import { FC } from 'react';
 import { CustomNode } from '../types';
 import { Box, Card, CardMedia, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-const CardCover = styled(Card)(
-    ({ theme }) => `
-      position: relative;
-  
-      .MuiCardMedia-root {
-        height: ${theme.spacing(26)};
-      }
-  `
-);
 interface EntityProfileProps {
     className?: string;
     node: CustomNode;
@@ -28,19 +18,19 @@ const EntityProfile: FC<EntityProfileProps> = ({ node, children }) => {
     }
 
     return (
-
-        <>
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Biomass.jpg"} />
-            </CardCover>
+        <Card>
+            <CardMedia
+                image={"/static/images/entities/Biomass.jpg"}
+                sx={{ height: 140 }}
+            />
             <Box py={2} pl={2} mb={3}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h3" component="h3">
                     {node?.ngsiObject?.name?.value}
                 </Typography>
                 <Typography variant="subtitle2">{node?.ngsiObject?.description?.value}</Typography>
             </Box>
-            {children}
-        </>);
+        </Card>
+    );
 }
 
 export default EntityProfile;
