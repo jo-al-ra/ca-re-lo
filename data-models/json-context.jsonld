@@ -11,6 +11,7 @@
         "Asset": "fiware:Asset",
         "Attestation": "fiware:Attestation",
         "Claim": "fiware:Claim",
+        "Evidence": "fiware:Evidence",
         "Test": "fiware:Test",
         "address": "fiware:address",
         "alternateName": {
@@ -37,6 +38,10 @@
             "@id": "fiware:consumes",
             "@type": "xsd:array"
         },
+        "contenthash": {
+            "@id": "fiware:contenthash",
+            "@type": "xsd:string"
+        },
         "dataProvider": {
             "@id": "fiware:dataProvider",
             "@type": "xsd:string"
@@ -56,6 +61,14 @@
         "hasClaims": {
             "@id": "fiware:hasClaims",
             "@type": "xsd:array"
+        },
+        "hasEvidence": {
+            "@id": "fiware:hasEvidence",
+            "@type": "xsd:array"
+        },
+        "hasObject": {
+            "@id": "fiware:hasObject",
+            "@type": "xsd:undefined"
         },
         "isWasteMaterial": {
             "@id": "fiware:isWasteMaterial",
@@ -162,13 +175,32 @@
             "rdfs:comment": [
                 {
                     "@language": "en",
-                    "@value": "Activity performed within a business process to achieve a business goal."
+                    "@value": "Attestation to verify, validate and challenge the representation of other entities."
                 }
             ],
             "rdfs:label": [
                 {
                     "@language": "en",
                     "@value": "Test"
+                }
+            ],
+            "rdfs:subClassOf": {
+                "@id": "schema:Thing"
+            }
+        },
+        {
+            "@id": "fiware:Evidence",
+            "@type": "rdfs:Class",
+            "rdfs:comment": [
+                {
+                    "@language": "en",
+                    "@value": "Attestation to verify, validate and challenge the representation of other entities."
+                }
+            ],
+            "rdfs:label": [
+                {
+                    "@language": "en",
+                    "@value": "Evidence"
                 }
             ],
             "rdfs:subClassOf": {
