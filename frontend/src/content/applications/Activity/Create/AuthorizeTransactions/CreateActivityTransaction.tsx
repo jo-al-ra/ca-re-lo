@@ -1,6 +1,6 @@
 import { Avatar, Button, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import FolderIcon from '@mui/icons-material/Folder';
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useCreateEntity } from "src/hooks/combined/useCreateEntity";
 import { useWeb3MetaMask } from "src/hooks/eth/useWeb3MetaMask";
 import { normalize } from "src/utils/ngsi-ld/normalize";
@@ -30,7 +30,7 @@ const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputId
         dateCreated: new Date().toISOString(),
         owner: [self],
     }
-    const activity = normalize(activityKeyValues, [])
+    const activity = normalize(activityKeyValues, ["produces", "consumes"])
 
     return (
         <ListItem
@@ -44,7 +44,7 @@ const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputId
                                 setLoading(false)
                                 setCreated(true)
                             }).catch(e => {
-                                console.log(e)
+                                console.error(e)
                                 setLoading(false)
                             })
                     }}>{loading ? "Loading" : created ? "Created" : "Authorize"}</Button>

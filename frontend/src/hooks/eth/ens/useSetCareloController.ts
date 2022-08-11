@@ -27,7 +27,7 @@ export const useSetCareloController = () => {
                 return removeControllerReceipt
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setLoading(false)
             return Promise.reject("Unknown error occurred while trying to reach RPC Node")
         }

@@ -18,7 +18,7 @@ const PageHeader: FC<PageHeaderProps> = () => {
                     Consume assets via a new activity
                 </Typography>
                 <Typography variant="subtitle2">
-                    {user.name}, select the type of entity using the picker and fill out the form.
+                    {/* {user.name}, select the type of entity using the picker and fill out the form. */}
                 </Typography>
             </Grid>
         </Grid>

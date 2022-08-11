@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, CardHeader, Divider, Grid, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, CardHeader, CardMedia, Divider, Grid, Typography } from "@mui/material"
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FC, useEffect, useState } from "react";
 import DetailsCardContent from "src/components/DetailsCardContent";
@@ -9,7 +9,28 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { useNavigate } from "react-router";
 import { CustomNode } from "../types";
 import { useGetEntitiesByQuery } from "src/hooks/api/ngsi-ld/useGetEntitiesByQuery";
+import { useWeb3MetaMask } from "src/hooks/eth/useWeb3MetaMask";
+import { styled } from '@mui/material/styles';
 
+
+
+const CardCover = styled(Card)(
+    ({ theme }) => `
+      position: relative;
+  
+      .MuiCardMedia-root {
+        height: ${theme.spacing(26)};
+      }
+  `
+);
+
+const CardCoverAction = styled(Box)(
+    ({ theme }) => `
+      position: absolute;
+      right: ${theme.spacing(2)};
+      bottom: ${theme.spacing(2)};
+  `
+);
 interface ClaimsProps {
     node: CustomNode
 }
@@ -28,6 +49,7 @@ interface Claim {
     description?: string;
 }
 const Claims: FC<ClaimsProps> = ({ node }) => {
+    const web3 = useWeb3MetaMask()
     const navigate = useNavigate()
     const getEntitiesByQuery = useGetEntitiesByQuery();
     const [claims, setClaims] = useState<Claim[]>([])
@@ -50,8 +72,6 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
         }
 
     }, [node])
-
-    console.log(includedClaims)
 
     const renderClaim = (claim: Claim) => {
         return (
@@ -122,19 +142,26 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
         <Card>
             <CardHeader
                 title="Claims"
-                action={<Button
-                    sx={{ mt: { xs: 2, md: 0 } }}
-                    variant="contained"
-                    startIcon={<AddTwoToneIcon fontSize="small" />}
-                    onClick={() => {
-                        console.log("navigating")
-                        navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
-                    }}
-                >
-                    Create Claim
-                </Button>}
             />
-            <Divider />
+            <CardCover>
+                <CardMedia image={"/static/images/entities/Claims.jpg"} />
+                {web3.active ? (
+                    <CardCoverAction>
+                        <Button
+                            variant="contained"
+                            component="span"
+                            startIcon={<AddTwoToneIcon fontSize="small" />}
+                            onClick={() => {
+                                navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                            }}
+                            disabled={!web3.active}
+                        >
+                            {`Create Claim`}
+                        </Button>
+                    </CardCoverAction>
+                ) : undefined}
+
+            </CardCover>
             <CardContent>
                 {claims.map((claim) => renderClaim(claim))}
             </CardContent>

@@ -24,7 +24,6 @@ export const useApiCallback = () => {
                     //   Authorization: `Bearer ${accessToken}`,
                 },
             });
-            console.log(response.status, typeof response.status);
             setState({
                 ...state,
                 error: null,

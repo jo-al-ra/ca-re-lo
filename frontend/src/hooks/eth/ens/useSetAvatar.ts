@@ -20,11 +20,10 @@ export const useSetAvatar = () => {
             const resolver = PublicResolver__factory.connect(resolverAddr, web3WithWallet.library.getSigner())
             const setTextTx = await resolver.setText(ethers.utils.namehash(web3WithWallet.name), "avatar", avatar)
             const setTextReceipt = await setTextTx.wait()
-            console.log(setTextReceipt)
 
             return setTextReceipt
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }, [web3WithWallet.active, web3WithWallet.library, web3WithWallet.name])

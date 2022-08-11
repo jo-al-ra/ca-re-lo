@@ -15,6 +15,7 @@ export const deployResolver = async (ens: ENSRegistry) => {
     const resolver = await PublicResolver.deploy(ens.address, ZERO_ADDRESS);
     await resolver.deployed()
     console.log("PublicResolver deployed to:", resolver.address);
+    console.log(`params for deployment are "${ens.address}" "${ZERO_ADDRESS}"`)
     return resolver
 }
 

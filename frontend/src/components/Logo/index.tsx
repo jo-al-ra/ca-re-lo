@@ -92,7 +92,7 @@ const VersionBadge = styled(Box)(
 
 const LogoText = styled(Box)(
   ({ theme }) => `
-        font-size: ${theme.typography.pxToRem(15)};
+        font-size: ${theme.typography.pxToRem(18)};
         font-weight: ${theme.typography.fontWeightBold};
 `
 );
@@ -109,10 +109,7 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1</VersionBadge>
-          </Tooltip>
-          <LogoText>Tokyo Free White</LogoText>
+          <LogoText>CaReLo Dashboard</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>

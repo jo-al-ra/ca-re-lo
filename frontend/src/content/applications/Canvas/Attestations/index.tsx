@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, CardHeader, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, CardHeader, CardMedia, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FC, useEffect, useState } from "react";
 import DetailsCardContent from "src/components/DetailsCardContent";
@@ -12,11 +12,34 @@ import { DetailsCardConfigItem } from "src/components/DetailsCardContent/config"
 import { keyValues2contenthash } from "src/utils/ngsi-ld/conversion";
 import { useGetEntityById } from "src/hooks/api/ngsi-ld/useGetEntityById";
 
+import { useWeb3MetaMask } from "src/hooks/eth/useWeb3MetaMask";
+import { styled } from '@mui/material/styles';
+
+
+
+const CardCover = styled(Card)(
+    ({ theme }) => `
+      position: relative;
+  
+      .MuiCardMedia-root {
+        height: ${theme.spacing(26)};
+      }
+  `
+);
+
+const CardCoverAction = styled(Box)(
+    ({ theme }) => `
+      position: absolute;
+      right: ${theme.spacing(2)};
+      bottom: ${theme.spacing(2)};
+  `
+);
 interface AttestationsProps {
     node: CustomNode
 }
 
 const Attestations: FC<AttestationsProps> = ({ node }) => {
+    const web3 = useWeb3MetaMask()
     const navigate = useNavigate()
     const getEntitiesByQuery = useGetEntitiesByQuery();
     const getEntityById = useGetEntityById("https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
@@ -137,26 +160,26 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
         <Card>
             <CardHeader
                 title="Attestations"
-                action={<Button
-                    sx={{ mt: { xs: 2, md: 0 } }}
-                    variant="contained"
-                    startIcon={<AddTwoToneIcon fontSize="small" />}
-                    onClick={async () => {
-                        const refersTo = []
-                        const contenthash = await keyValues2contenthash(await getEntityById.makeRequest(node.ngsiObject.id, true), "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
-                        refersTo.push({ object: node.ngsiObject.id, contenthash: contenthash })
-                        refersTo.push({ object: "urn:ngsi-ld:claim:claim1658868907942", contenthash: "0x123" })
-                        navigate("/carelo/attestation/create", {
-                            state: {
-                                initialRefersTo: refersTo
-                            }
-                        })
-                    }}
-                >
-                    Create Attestation
-                </Button>}
             />
-            <Divider />
+            <CardCover>
+                <CardMedia image={"/static/images/entities/Attestation.jpg"} />
+                {web3.active ? (
+                    <CardCoverAction>
+                        <Button
+                            variant="contained"
+                            component="span"
+                            startIcon={<AddTwoToneIcon fontSize="small" />}
+                            onClick={() => {
+                                navigate("create")
+                            }}
+                            disabled={!web3.active}
+                        >
+                            {`Create Claim`}
+                        </Button>
+                    </CardCoverAction>
+                ) : undefined}
+
+            </CardCover>
             <CardContent>
                 <Accordion>
                     <AccordionSummary

@@ -15,7 +15,7 @@ export const useEagerWeb3RPC = () => {
                     enqueueSnackbar("Connected to DLT in read-mode")
                 })
                 .catch(ex => {
-                    console.log(ex)
+                    console.error(ex)
                 });
         }
     }, [web3RPC.active, web3RPC.activate, enqueueSnackbar])

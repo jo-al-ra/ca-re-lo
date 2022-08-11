@@ -8,7 +8,6 @@ export const useRegisterReverse = () => {
     const web3WithWallet = useWeb3MetaMask();
 
     const registerAddress = async (name: string) => {
-        console.log(name)
         setLoading(true);
         try {
             if (!web3WithWallet.active) {
@@ -21,11 +20,10 @@ export const useRegisterReverse = () => {
                 "addr.reverse",
                 `${name}.carelo`)
             const registerNameReceipt = await registerNameTx.wait()
-            console.log(registerNameReceipt)
 
             return registerNameReceipt
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return Promise.reject(new Error("Unknown error occurred while trying to reach RPC Node"))
         }
     }

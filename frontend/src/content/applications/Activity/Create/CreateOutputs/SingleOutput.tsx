@@ -14,8 +14,6 @@ const SingleOutput: FC<SingleOutputProps> = ({ output, activityId, onSubmit }) =
     const [outputDefined, setOutputDefined] = useState(false)
     const web3 = useWeb3MetaMask()
 
-    console.log(outputDefined)
-
     if (outputDefined) {
         return (
             <>

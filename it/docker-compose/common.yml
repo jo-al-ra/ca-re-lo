@@ -67,7 +67,7 @@ services:
       - PRIVATE_KEY=${PRIVATE_KEY}
 
   ganache-cli:
-    image: trufflesuite/ganache-cli:latest
+    image: trufflesuite/ganache:latest
     hostname: ganache-cli
     networks:
       - default
@@ -75,7 +75,7 @@ services:
       - "8545:8545"
     volumes:
       - ./ganache_data:/ganache_data
-    command: "ganache-cli -i 1337 -l 90071992547409 --gasPrice 0 --account 0x509a822d698f01b0344a02841767350ba121bfb6a2027c5e2f7b99c23a2d4b97,100000000000000000000 -n --db=/ganache_data"
+    command: "-i 1337 --wallet.accounts 0x509a822d698f01b0344a02841767350ba121bfb6a2027c5e2f7b99c23a2d4b97,100000000000000000000 -n --database.dbPath=/ganache_data"
 
 networks:
   default:

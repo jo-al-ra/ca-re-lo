@@ -1,4 +1,4 @@
-export const activityCategories: ActivityCategory[] = [
+export const getActivityCategories: () => ActivityCategory[] = () => [
     {
         name: "pyrolysis",
         inputs: [

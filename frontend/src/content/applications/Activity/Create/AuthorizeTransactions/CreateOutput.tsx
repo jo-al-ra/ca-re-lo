@@ -19,13 +19,12 @@ const CreateOutput: FC<CreateOutputProps> = ({ output }) => {
                     disabled={loading || created}
                     onClick={() => {
                         setLoading(true)
-                        console.log(output)
                         createEntity.makeRequests(output)
                             .then(() => {
                                 setLoading(false)
                                 setCreated(true)
                             }).catch(e => {
-                                console.log(e)
+                                console.error(e)
                                 setLoading(false)
                             })
                     }}>{loading ? "Loading" : created ? "Created" : "Authorize"}</Button>

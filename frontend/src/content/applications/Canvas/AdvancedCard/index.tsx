@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { CustomNode } from '../types';
 import ReactJson from 'react-json-view'
-import { Button, Card, CardActions, CardContent, CardHeader, Tab } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Tab, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useGetEntityById } from 'src/hooks/api/ngsi-ld/useGetEntityById';
 import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
@@ -11,13 +11,13 @@ import { useUpdateContenthash } from 'src/hooks/eth/ens/useUpdateContenthash';
 import DetailsList from './DetailsList';
 import { useNavigate } from 'react-router';
 
-interface DetailsProps {
+interface AdvancedCardProps {
     className?: string;
     node: CustomNode;
     reload: () => void;
 }
 
-const Details: FC<DetailsProps> = ({ node, reload }) => {
+const AdvancedCard: FC<AdvancedCardProps> = ({ node, reload }) => {
     const [value, setValue] = useState("1");
     const handleChange = (event: SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -52,7 +52,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                 {inEditMode ?
                     (
                         <>
-                            <CardHeader title="Details" />
+                            <CardHeader title="Advanced" />
                             <CardContent>
                                 <NgsiLDForm
                                     type={node.ngsiObject.type}
@@ -69,7 +69,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                                                 setInEditMode(false)
                                                 reload();
                                             }).catch(e2 => {
-                                                console.log(e2)
+                                                console.error(e2)
                                                 enqueueSnackbar("Failed to update entity in Context Broker", {
                                                     variant: "error"
                                                 })
@@ -88,7 +88,7 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
                     :
                     (
                         <>
-                            <CardHeader title="Details" action={
+                            <CardHeader title="Advanced" action={
                                 <TabList variant="scrollable"
                                     scrollButtons="auto"
                                     textColor="primary"
@@ -144,4 +144,4 @@ const Details: FC<DetailsProps> = ({ node, reload }) => {
     );
 }
 
-export default Details;
+export default AdvancedCard;
