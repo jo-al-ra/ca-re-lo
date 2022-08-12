@@ -45,8 +45,9 @@ function Canvas() {
     }, [searchParams, loadEntityById])
 
     const onSetSelectedNode = useCallback((node: CustomNode) => {
-        setSelectedNode(node)
-
+        if (node?.shape === "box") {
+            setSelectedNode(node)
+        }
     }, [])
 
 
