@@ -21,7 +21,8 @@ export interface IntegrityCardProps {
 }
 
 interface IntegrityCardState {
-    contenthash?: string;
+    storedContenthash?: string;
+    computedContenthash?: string;
     blockscoutLink?: string;
     verified?: boolean;
     loading: boolean;
@@ -44,7 +45,8 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
         const integrityProven = computedContenthash === latestContenthash.contenthash
         props.onIntegrityVerified(integrityProven)
         setState({
-            contenthash: latestContenthash.contenthash,
+            storedContenthash: latestContenthash.contenthash,
+            computedContenthash: computedContenthash,
             blockscoutLink: `http://localhost:4000/tx/${latestContenthash?.txHash}`,
             verified: computedContenthash === latestContenthash.contenthash,
             loading: false,
@@ -109,12 +111,12 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                 </Box>
                 <Box sx={{ pt: 3 }}>
                     <Typography variant="h5" gutterBottom noWrap>
-                        stored hash:
+                        computed hash:
                     </Typography>
                     <Grid container alignItems="center">
                         <Grid item xs={11}>
                             <Typography variant="subtitle2" noWrap mr={1}>
-                                {state.contenthash}
+                                {state.computedContenthash}
                             </Typography>
 
                         </Grid>
