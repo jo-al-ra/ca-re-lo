@@ -5,9 +5,10 @@ import { useCreateEntity } from "src/hooks/combined/useCreateEntity";
 
 export interface CreateOutputProps {
     output: any
+    onSuccess: () => void;
 }
 
-const CreateOutput: FC<CreateOutputProps> = ({ output }) => {
+const CreateOutput: FC<CreateOutputProps> = ({ output, onSuccess }) => {
     const createEntity = useCreateEntity()
     const [loading, setLoading] = useState(false)
     const [created, setCreated] = useState(false)
@@ -23,6 +24,7 @@ const CreateOutput: FC<CreateOutputProps> = ({ output }) => {
                             .then(() => {
                                 setLoading(false)
                                 setCreated(true)
+                                onSuccess()
                             }).catch(e => {
                                 console.error(e)
                                 setLoading(false)

@@ -39,6 +39,7 @@ const CRCDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     return (
         <Card style={{ width: '100%' }}>
             <EntityOverviewCardHeader
+                categoryId='CRC'
                 categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
                 entityCategory='Carbon Removal Credit (CRC)'
                 image="/static/images/entities/CRC.jpg"

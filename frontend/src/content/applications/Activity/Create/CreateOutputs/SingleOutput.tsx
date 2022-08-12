@@ -1,8 +1,10 @@
-import { Button, Divider, Grid, Typography } from "@mui/material"
+import { Box, Button, Divider, Grid, Typography } from "@mui/material"
 import { FC, useState } from "react"
+import CreateEntityCardHeader from "src/components/CardHeaders/CreateEntityCardHeader";
 import NgsiLDForm from "src/components/Forms/NgsiLDForm"
 import { useWeb3MetaMask } from "src/hooks/eth/useWeb3MetaMask";
 import { ActivityCategoryOutput } from "../config"
+import { categories } from 'src/config/categories';
 
 export interface SingleOutputProps {
     output: ActivityCategoryOutput;
@@ -16,7 +18,8 @@ const SingleOutput: FC<SingleOutputProps> = ({ output, activityId, onSubmit }) =
 
     if (outputDefined) {
         return (
-            <>
+            <Box pt={2}>
+                <CreateEntityCardHeader image={categories[output.category]?.image} />
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item>
                         <Typography variant="h3" component="h3" gutterBottom>
@@ -37,46 +40,49 @@ const SingleOutput: FC<SingleOutputProps> = ({ output, activityId, onSubmit }) =
                     </Grid>
                 </Grid>
                 <Divider />
-            </>
+            </Box>
         )
     }
     return (
-        <Grid item xs={12} pb={5}>
-            <NgsiLDForm
-                type={output.type}
-                uiSchemaOverrides={{
-                    category: {
-                        "ui:widget": "hidden",
-                    },
-                    consumedVia: {
-                        "ui:widget": "hidden",
-                    },
-                    producedVia: {
-                        "ui:disabled": true
-                    },
-                    "ui:title": output.category,
-                    "ui:submitButtonOptions": {
-                        props: {
-                            disabled: !web3.active
-                        },
-                        submitText: "Confirm",
-                        norender: false
-                    }
-                }}
-                defaultValues={{ ...output.defaultValues, producedVia: activityId }}
-                onSubmit={(object) => {
-                    const producedAsset = {
-                        ...object,
+        <Box pt={2}>
+            <CreateEntityCardHeader image={categories[output.category]?.image} />
+            <Grid item xs={12} pb={5}>
+                <NgsiLDForm
+                    type={output.type}
+                    uiSchemaOverrides={{
                         category: {
-                            type: "Property",
-                            value: output.category
+                            "ui:widget": "hidden",
+                        },
+                        consumedVia: {
+                            "ui:widget": "hidden",
+                        },
+                        producedVia: {
+                            "ui:disabled": true
+                        },
+                        "ui:title": output.category,
+                        "ui:submitButtonOptions": {
+                            props: {
+                                disabled: !web3.active
+                            },
+                            submitText: "Confirm",
+                            norender: false
                         }
-                    }
-                    setOutputDefined(true)
-                    onSubmit(producedAsset, output)
-                }}
-            />
-        </Grid>)
+                    }}
+                    defaultValues={{ ...output.defaultValues, producedVia: activityId }}
+                    onSubmit={(object) => {
+                        const producedAsset = {
+                            ...object,
+                            category: {
+                                type: "Property",
+                                value: output.category
+                            }
+                        }
+                        setOutputDefined(true)
+                        onSubmit(producedAsset, output)
+                    }}
+                />
+            </Grid>
+        </Box>)
 }
 
 export default SingleOutput

@@ -39,6 +39,7 @@ const BiogasDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     return (
         <Card style={{ width: '100%' }}>
             <EntityOverviewCardHeader
+                categoryId='biogas'
                 categoryDescription='Biogas is a mixture of gases produced from organic matter, which can be used as fuel.'
                 entityCategory='Biogas'
                 image="/static/images/entities/Biogas.jpg"

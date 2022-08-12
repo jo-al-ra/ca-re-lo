@@ -38,6 +38,7 @@ const EnergyDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     return (
         <Card style={{ width: '100%' }}>
             <EntityOverviewCardHeader
+                categoryId='energy'
                 entityCategory='Energy'
                 image="/static/images/entities/Energy.jpg"
                 categoryDescription='An energy source is almost always required to perform activities. Energy can have various forms such as electrical, thermal or chemical energy.'

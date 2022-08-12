@@ -4,7 +4,8 @@ export const categories = {
         image: "/static/images/entities/Biomass.jpg",
         categoryName: "Biomass",
         producingActivityCategories: [],
-        consumingActivityCategories: ["pyrolysis"]
+        consumingActivityCategories: ["pyrolysis"],
+        description: 'Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
     },
     "energy": {
         type: "Asset",
@@ -22,7 +23,7 @@ export const categories = {
     },
     "biochar": {
         type: "Asset",
-        image: "/static/images/entities/Biochar.jpg",
+        image: "/static/images/entities/Biochar_2.jpg",
         categoryName: "Biochar",
         producingActivityCategories: ["pyrolysis"],
         consumingActivityCategories: ["sequestration"]

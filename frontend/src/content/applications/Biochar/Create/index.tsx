@@ -8,7 +8,7 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
-import CreateEntityPageHeader from 'src/components/CardHeaders/CreateEntityPageHeader';
+import CreateEntityPageHeader from 'src/components/CardHeaders/CreateEntityCardHeader';
 
 
 
@@ -26,8 +26,6 @@ function CreateBiogas() {
             </Helmet>
             <PageTitleWrapper>
                 <CreateEntityPageHeader
-                    categoryDescription='Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
-                    entityCategory='Biochar'
                     image="/static/images/entities/Biochar_2.jpg"
                 />
             </PageTitleWrapper>

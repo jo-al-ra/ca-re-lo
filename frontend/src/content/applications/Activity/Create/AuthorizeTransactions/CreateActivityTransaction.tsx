@@ -10,9 +10,10 @@ export interface CreateActivityTransactionProps {
     outputIds: string[];
     activityId: string;
     category: string;
+    onSuccess: () => void;
 }
 
-const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputIds, outputIds, activityId, category }) => {
+const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputIds, outputIds, activityId, category, onSuccess }) => {
     const createEntity = useCreateEntity()
     const [loading, setLoading] = useState(false)
     const [created, setCreated] = useState(false)
@@ -43,6 +44,7 @@ const CreateActivityTransaction: FC<CreateActivityTransactionProps> = ({ inputId
                             .then(() => {
                                 setLoading(false)
                                 setCreated(true)
+                                onSuccess()
                             }).catch(e => {
                                 console.error(e)
                                 setLoading(false)

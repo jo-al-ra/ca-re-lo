@@ -8,9 +8,10 @@ export interface UpdateInputProps {
     inputId: string;
     activityId: string;
     relationshipName: string;
+    onSuccess: () => void;
 }
 
-const UpdateInput: FC<UpdateInputProps> = ({ inputId, relationshipName, activityId }) => {
+const UpdateInput: FC<UpdateInputProps> = ({ inputId, relationshipName, activityId, onSuccess }) => {
 
     const getEntityById = useGetEntityById(process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld")
     const [input, setInput] = useState()
@@ -42,6 +43,7 @@ const UpdateInput: FC<UpdateInputProps> = ({ inputId, relationshipName, activity
                             .then(() => {
                                 setLoading(false)
                                 setUpdated(true)
+                                onSuccess()
                             }).catch(e => {
                                 console.error(e)
                                 setLoading(false)

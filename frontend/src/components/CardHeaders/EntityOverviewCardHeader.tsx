@@ -3,16 +3,18 @@ import { FC } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { useNavigate } from 'react-router';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
+import { categories } from 'src/config/categories';
 
 interface PageHeaderProps {
     className?: string;
+    categoryId: string;
     entityCategory: string;
     image: string;
     categoryDescription: string
 }
 
 
-const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
+const EntityOverviewCardHeader: FC<PageHeaderProps> = (props) => {
     const web3 = useWeb3MetaMask()
     const navigate = useNavigate()
 
@@ -37,7 +39,12 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
                             component="span"
                             startIcon={<AddTwoToneIcon fontSize="small" />}
                             onClick={() => {
-                                navigate("create")
+                                const producingC = categories[props.categoryId]?.producingActivityCategories
+                                if (producingC?.length !== 0) {
+                                    navigate(`/carelo/activity/create?producedAssetCategory=${props.categoryId}`)
+                                } else {
+                                    navigate("create")
+                                }
                             }}
                             disabled={!web3.active}
                         >
@@ -51,4 +58,4 @@ const EntityOverviewPageHeader: FC<PageHeaderProps> = (props) => {
     );
 }
 
-export default EntityOverviewPageHeader;
+export default EntityOverviewCardHeader;

@@ -39,6 +39,7 @@ const BiomassDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     return (
         <Card style={{ width: '100%' }}>
             <EntityOverviewCardHeader
+                categoryId='biomass'
                 entityCategory='Biomass'
                 image="/static/images/entities/Biomass.jpg"
                 categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'

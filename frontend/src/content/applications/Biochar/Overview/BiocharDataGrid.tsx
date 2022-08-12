@@ -39,6 +39,7 @@ const BiocharDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     return (
         <Card style={{ width: '100%' }}>
             <EntityOverviewCardHeader
+                categoryId='biochar'
                 categoryDescription='Biochar is a solid material created via a thermochemical conversion of biomass with limited presence of oxygen. It can be used as a renewable fuel or to sequester carbon.'
                 entityCategory='Biochar'
                 image="/static/images/entities/Biochar_2.jpg"
