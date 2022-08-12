@@ -5,7 +5,10 @@ import {
     Box,
     CardContent,
     Typography,
-    Link
+    Link,
+    CardActions,
+    Button,
+    Tooltip
 } from '@mui/material';
 
 import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
@@ -121,6 +124,16 @@ const OwnerCard: FC<OwnerCardProps> = (props) => {
                     </Grid>
                 </Box>
             </CardContent>
+            <CardActions>
+                <Tooltip title="not implemented yet">
+                    <Button
+                        variant="contained"
+                        component="span"
+                    >
+                        Transfer
+                    </Button>
+                </Tooltip>
+            </CardActions>
         </Card>
     )
 }

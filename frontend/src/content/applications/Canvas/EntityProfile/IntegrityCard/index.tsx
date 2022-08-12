@@ -5,7 +5,10 @@ import {
     Box,
     CardContent,
     Typography,
-    Link
+    Link,
+    Button,
+    CardActions,
+    Tooltip
 } from '@mui/material';
 
 import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
@@ -129,6 +132,16 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                     </Grid>
                 </Box>
             </CardContent>
+            <CardActions>
+                <Tooltip title="not implemented yet">
+                    <Button
+                        variant="contained"
+                        component="span"
+                    >
+                        Edit
+                    </Button>
+                </Tooltip>
+            </CardActions>
         </Card>
     )
 }
