@@ -12,6 +12,7 @@ import { categories } from 'src/config/categories';
 export interface PickableInputTablesProps {
     category: ActivityCategory;
     onChange: (inputIds: string[], sufficientInputs: boolean) => void;
+    inputIds: string[]; //TODO
 }
 
 
@@ -25,7 +26,6 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
     const [assets, setAssets] = useState<{ [input: string]: Asset[] }>(initialEmptyState)
     const web3 = useWeb3MetaMask();
     const [selectionModel, setSelectionModel] = useState<{ [input: string]: GridSelectionModel }>(initialEmptyState);
-    console.log(selectionModel)
 
     const loadAvailableInputs = (inputs, name) => {
         Promise.all(inputs.map(async input => {
@@ -94,7 +94,6 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
                     setSelectionModel(newSelection)
                     const keys = Object.keys(newSelection)
                     const sufficientInputs = keys.every(key => newSelection[key].length > 0)
-                    console.log(sufficientInputs)
                     onChange(keys.reduce((acc, key) => {
                         return [...acc, ...newSelection[key]]
                     }, []), sufficientInputs)

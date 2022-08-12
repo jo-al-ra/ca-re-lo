@@ -38,6 +38,12 @@ export default function CreateActivity() {
     const [outputs, setOutputs] = useState<{ [key: string]: any }>({})
     const [inputIds, setInputIds] = useState<string[]>([])
     useEffect(() => {
+        const preselectedInputId = searchParams.get("inputId")
+        if (preselectedInputId) {
+            setInputIds([preselectedInputId])
+        }
+    }, [searchParams])
+    useEffect(() => {
         if (activeStep === 0) {
             if (category) {
                 setNextDisabled(false)
@@ -82,9 +88,12 @@ export default function CreateActivity() {
                 availableCategories={
                     categories
                         .filter(c => {
-                            const target = searchParams.get("producedAssetCategory")
-                            if (target) {
-                                return c.outputs.some(output => output.category === target)
+                            const producedTarget = searchParams.get("producedAssetCategory")
+                            const consumedTarget = searchParams.get("consumedAssetCategory")
+                            if (producedTarget) {
+                                return c.outputs.some(output => output.category === producedTarget)
+                            } else if (consumedTarget) {
+                                return c.inputs.some(input => input.category === consumedTarget)
                             } else {
                                 return true
                             }
@@ -97,6 +106,7 @@ export default function CreateActivity() {
         } else if (activeStep === 1) {
             return <PickableInputTables
                 category={category}
+                inputIds={inputIds}
                 onChange={((inputIds, sufficientInputs) => {
                     setInputIds(inputIds)
                     setSufficientInputs(sufficientInputs)

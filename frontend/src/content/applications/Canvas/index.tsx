@@ -187,7 +187,6 @@ function Canvas() {
 
                             <Grid xs={6} sm={6} item>
                                 <RelationshipCard
-                                    loading={false}
                                     displayRelationshipState={selectedNode?.displayedRelationships}
                                     onToggleDisplayRelationship={(relationshipName, value) => {
                                         onToggleDisplayRelationship(relationshipName, value)
