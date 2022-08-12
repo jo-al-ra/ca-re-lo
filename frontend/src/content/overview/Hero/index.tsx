@@ -112,7 +112,6 @@ function Hero() {
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 0.0.1</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             CaReLo Dashboard
           </TypographyH1>

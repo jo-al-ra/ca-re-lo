@@ -33,7 +33,7 @@ const VisNetwork: React.FC<VisNetworkProps> = ({ nodes, edges, setSelectedNode }
     }, [visJsRef, nodes, edges]);
 
     return (
-        <div style={{ height: 570 }}
+        <div style={{ flex: 1, minHeight: 500, height: 700 }}
             ref={visJsRef}
         />
     );

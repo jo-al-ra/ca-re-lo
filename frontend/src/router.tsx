@@ -16,7 +16,6 @@ const Loader = (Component) => (props) => (
 //Ca-re-lo
 
 
-const Assets = Loader(lazy(() => import('src/content/applications/Assets')));
 const BiomassOverview = Loader(lazy(() => import('src/content/applications/Biomass/Overview')));
 const BiomassCreate = Loader(lazy(() => import('src/content/applications/Biomass/Create')));
 const BiogasOverview = Loader(lazy(() => import('src/content/applications/Biogas/Overview')));
@@ -44,8 +43,6 @@ const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 
 // Applications
 
-const Messenger = Loader(lazy(() => import('src/content/applications/Messenger')));
-const Transactions = Loader(lazy(() => import('src/content/applications/Transactions')));
 const UserProfile = Loader(lazy(() => import('src/content/applications/Users/profile')));
 const UserSettings = Loader(lazy(() => import('src/content/applications/Users/settings')));
 
@@ -139,10 +136,6 @@ const routes: RouteObject[] = [
         )
       },
       {
-        path: 'assets',
-        element: <Assets />
-      },
-      {
         path: 'biomass',
         element: <BiomassOverview />
       },
@@ -222,10 +215,6 @@ const routes: RouteObject[] = [
       {
         path: 'crypto',
         element: <Crypto />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
       }
     ]
   },
@@ -243,10 +232,6 @@ const routes: RouteObject[] = [
             replace
           />
         )
-      },
-      {
-        path: 'transactions',
-        element: <Transactions />
       },
       {
         path: 'profile',

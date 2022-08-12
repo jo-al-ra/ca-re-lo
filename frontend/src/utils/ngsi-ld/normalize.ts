@@ -7,8 +7,8 @@ export const normalize = (data: any, relationshipKeys: string[]) => {
         if (key === "id" || key === "type") {
             normalizedEntity[`${key}`] = data[`${key}`]
         } else if (relationshipKeys.includes(key)) {
-            if (Array.isArray(data[key])) {
-                //this is an array of relationships
+            //this is an array of relationships
+            if (Array.isArray(data[key]) && data[key].length !== 1) {
                 normalizedEntity[`${key}`] = [
                     ...data[key].map((ref, index) => ({
                         type: "Relationship",

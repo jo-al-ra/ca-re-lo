@@ -58,7 +58,7 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
     useEffect(() => {
         if (node?.ngsiObject?.id) {
             getEntitiesByQuery.makeRequest({
-                linkHeader: "http://context/ngsi-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld",
                 keyValues: true,
                 query: `refersTo=="${node.ngsiObject.id}"`,
                 type: "Claim"
@@ -140,28 +140,26 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
 
     return (
         <Card>
+            <CardMedia
+                image={"/static/images/entities/Claims.jpg"}
+                sx={{ height: 140 }}
+            />
             <CardHeader
                 title="Claims"
-            />
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Claims.jpg"} />
-                {web3.active ? (
-                    <CardCoverAction>
-                        <Button
-                            variant="contained"
-                            component="span"
-                            startIcon={<AddTwoToneIcon fontSize="small" />}
-                            onClick={() => {
-                                navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
-                            }}
-                            disabled={!web3.active}
-                        >
-                            {`Create Claim`}
-                        </Button>
-                    </CardCoverAction>
+                action={web3.active ? (
+                    <Button
+                        variant="contained"
+                        component="span"
+                        startIcon={<AddTwoToneIcon fontSize="small" />}
+                        onClick={() => {
+                            navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                        }}
+                        disabled={!web3.active}
+                    >
+                        {`Create Claim`}
+                    </Button>
                 ) : undefined}
-
-            </CardCover>
+            />
             <CardContent>
                 {claims.map((claim) => renderClaim(claim))}
             </CardContent>

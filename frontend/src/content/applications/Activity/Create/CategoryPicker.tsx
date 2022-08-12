@@ -21,7 +21,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({ availableCategories, selected
                 </Typography>
             </Grid>
             <Grid item>
-                <FormControl fullWidth>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -29,9 +29,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({ availableCategories, selected
                         value={selectedCategory}
                         label="category"
                         onChange={(event) => handleChangeCategory(event.target.value)}
-
                     >
-                        <MenuItem value={"Select category"}>Select category</MenuItem>
                         {availableCategories.map((category) => (<MenuItem value={category}>{category}</MenuItem>))}
                     </Select>
                 </FormControl>

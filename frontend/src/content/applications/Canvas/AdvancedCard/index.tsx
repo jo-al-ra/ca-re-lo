@@ -24,9 +24,9 @@ const AdvancedCard: FC<AdvancedCardProps> = ({ node, reload }) => {
     };
     const [keyValues, setkeyValues] = useState<any>();
     const [inEditMode, setInEditMode] = useState<boolean>(false)
-    const { makeRequest, loading, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const { makeRequest, loading, error, responseStatus } = useGetEntityById(process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld")
     const { updateContenthash } = useUpdateContenthash();
-    const postCoBrCallback = useCoBrCallback(node?.id as string, "http://context/ngsi-context.jsonld");
+    const postCoBrCallback = useCoBrCallback(node?.id as string, process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld");
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate()
 

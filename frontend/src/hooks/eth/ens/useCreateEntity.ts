@@ -22,7 +22,7 @@ export const useCreateEntity = () => {
                 return Promise.reject(new Error("Id is already in use"))
             }
             const keyValues = normalized2keyValues(entity)
-            const contentHash = await keyValues2contenthash(keyValues, "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
+            const contentHash = await keyValues2contenthash(keyValues, process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
 
             const registerTx = await careloRegistrar.registerEntity(ethers.utils.id(entity.id), contentHash, entity.source.value)
             const registerReceipt = await registerTx.wait()

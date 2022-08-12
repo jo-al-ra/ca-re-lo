@@ -8,13 +8,13 @@ import NgsiLDForm from 'src/components/Forms/NgsiLDForm';
 import { useNavigate } from 'react-router';
 import { useCreateEntity } from 'src/hooks/eth/ens/useCreateEntity';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
-import CreateEntityPageHeader from 'src/components/PageHeaders/CreateEntityPageHeader';
+import CreateEntityPageHeader from 'src/components/CardHeaders/CreateEntityCardHeader';
 
 
 
 function CreateCRC() {
     const { loading, create } = useCreateEntity();
-    const postCoBrCallback = useCoBrCallback("http://context/ngsi-context.jsonld")
+    const postCoBrCallback = useCoBrCallback(process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld")
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const navigate = useNavigate();
     const web3 = useWeb3MetaMask()
@@ -26,8 +26,8 @@ function CreateCRC() {
             </Helmet>
             <PageTitleWrapper>
                 <CreateEntityPageHeader
-                    categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
-                    entityCategory='CRC'
+                    // categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
+                    // entityCategory='CRC'
                     image="/static/images/entities/CRC.jpg"
                 />
             </PageTitleWrapper>

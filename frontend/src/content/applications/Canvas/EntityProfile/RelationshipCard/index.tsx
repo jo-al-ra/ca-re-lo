@@ -12,8 +12,6 @@ import HubTwoToneIcon from '@mui/icons-material/HubTwoTone';
 export interface RelationshipCardProps {
     displayRelationshipState: { [relationshipName: string]: boolean };
     onToggleDisplayRelationship: (relationshipName: string, value: boolean) => void;
-    loading: boolean;
-
 }
 
 
@@ -42,14 +40,6 @@ const RelationshipCard: FC<RelationshipCardProps> = (props) => {
             </Box>
         )
     }
-
-    if (props.loading) {
-        return (
-            <Typography>
-                loading
-            </Typography>
-        )
-    }
     return (
         <Card sx={{ px: 1 }}>
             <CardContent>
@@ -63,7 +53,7 @@ const RelationshipCard: FC<RelationshipCardProps> = (props) => {
                         <HubTwoToneIcon color="info" fontSize="large" />
                     </Grid>
                 </Grid>
-                {Object.keys(props.displayRelationshipState).map(key => renderRelationshipSwitch(key))}
+                {Object.keys(props.displayRelationshipState ?? {}).map(key => renderRelationshipSwitch(key))}
             </CardContent>
         </Card>
     )

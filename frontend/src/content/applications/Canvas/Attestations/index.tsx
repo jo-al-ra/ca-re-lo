@@ -42,7 +42,6 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     const web3 = useWeb3MetaMask()
     const navigate = useNavigate()
     const getEntitiesByQuery = useGetEntitiesByQuery();
-    const getEntityById = useGetEntityById("https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld")
     const [attestations, setAttestations] = useState<Attestation[]>([
         {
             id: "urn:ngsi-ld:attestation:verification1",
@@ -94,7 +93,7 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     useEffect(() => {
         if (node?.ngsiObject?.id) {
             getEntitiesByQuery.makeRequest({
-                linkHeader: "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
                 keyValues: true,
                 query: `refersTo[object]=="${node.ngsiObject.id}"`,
                 type: "Attestation"
@@ -158,28 +157,26 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
 
     return (
         <Card>
+            <CardMedia
+                image={"/static/images/entities/Attestation.jpg"}
+                sx={{ height: 140 }}
+            />
             <CardHeader
                 title="Attestations"
-            />
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Attestation.jpg"} />
-                {web3.active ? (
-                    <CardCoverAction>
-                        <Button
-                            variant="contained"
-                            component="span"
-                            startIcon={<AddTwoToneIcon fontSize="small" />}
-                            onClick={() => {
-                                navigate("create")
-                            }}
-                            disabled={!web3.active}
-                        >
-                            {`Create Claim`}
-                        </Button>
-                    </CardCoverAction>
+                action={web3.active ? (
+                    <Button
+                        variant="contained"
+                        component="span"
+                        startIcon={<AddTwoToneIcon fontSize="small" />}
+                        onClick={() => {
+                            navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                        }}
+                        disabled={!web3.active}
+                    >
+                        {`Create Claim`}
+                    </Button>
                 ) : undefined}
-
-            </CardCover>
+            />
             <CardContent>
                 <Accordion>
                     <AccordionSummary

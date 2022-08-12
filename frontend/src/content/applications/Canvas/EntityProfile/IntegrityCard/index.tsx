@@ -5,7 +5,10 @@ import {
     Box,
     CardContent,
     Typography,
-    Link
+    Link,
+    Button,
+    CardActions,
+    Tooltip
 } from '@mui/material';
 
 import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
@@ -21,7 +24,8 @@ export interface IntegrityCardProps {
 }
 
 interface IntegrityCardState {
-    contenthash?: string;
+    storedContenthash?: string;
+    computedContenthash?: string;
     blockscoutLink?: string;
     verified?: boolean;
     loading: boolean;
@@ -32,19 +36,20 @@ interface IntegrityCardState {
 
 const IntegrityCard: FC<IntegrityCardProps> = (props) => {
     const findLatestContenthashTx = useFindLatestContenthashTx()
-    const { makeRequest, error, responseStatus } = useGetEntityById("http://context/ngsi-context.jsonld")
+    const { makeRequest, error, responseStatus } = useGetEntityById(process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld")
     const [state, setState] = useState<IntegrityCardState>({ loading: true })
 
     const verifyIntegrity = async () => {
         const latestContenthash = await findLatestContenthashTx.findTx(props.id)
         const computedContenthash = await keyValues2contenthash(
             await makeRequest(props.id, true),
-            "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
+            process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld"
         )
         const integrityProven = computedContenthash === latestContenthash.contenthash
         props.onIntegrityVerified(integrityProven)
         setState({
-            contenthash: latestContenthash.contenthash,
+            storedContenthash: latestContenthash.contenthash,
+            computedContenthash: computedContenthash,
             blockscoutLink: `http://localhost:4000/tx/${latestContenthash?.txHash}`,
             verified: computedContenthash === latestContenthash.contenthash,
             loading: false,
@@ -114,7 +119,7 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                     <Grid container alignItems="center">
                         <Grid item xs={11}>
                             <Typography variant="subtitle2" noWrap mr={1}>
-                                {state.contenthash}
+                                {state.computedContenthash}
                             </Typography>
 
                         </Grid>
@@ -127,6 +132,16 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
                     </Grid>
                 </Box>
             </CardContent>
+            <CardActions>
+                <Tooltip title="not implemented yet">
+                    <Button
+                        variant="contained"
+                        component="span"
+                    >
+                        Edit
+                    </Button>
+                </Tooltip>
+            </CardActions>
         </Card>
     )
 }

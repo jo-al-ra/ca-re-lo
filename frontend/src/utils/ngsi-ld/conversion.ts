@@ -8,16 +8,24 @@ export const normalized2keyValues = (normalizedEntity) => {
     for (let key in normalizedEntity) {
         console.log(normalizedEntity[key])
         try {
-            const value = normalizedEntity[key]["value"]
-            const object = normalizedEntity[key]["object"]
-            if (value !== undefined) {
-                keyValuesEntity[key] = value
-            } else if (object !== undefined) {
-                keyValuesEntity[key] = object
+            const getFlattenedValue = (entityFragment) => {
+                const value = entityFragment["value"]
+                const object = entityFragment["object"]
+                if (value !== undefined) {
+                    return value
+                } else if (object !== undefined) {
+                    return object
+                }
+                else if (Array.isArray(entityFragment)) {
+                    return entityFragment.map(value => {
+                        return getFlattenedValue(value)
+                    })
+                }
+                else {
+                    return entityFragment
+                }
             }
-            else {
-                keyValuesEntity[key] = normalizedEntity[key]
-            }
+            keyValuesEntity[key] = getFlattenedValue(normalizedEntity[key])
         } catch (e) {
             console.error(e)
         }

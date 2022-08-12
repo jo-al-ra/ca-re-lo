@@ -1,13 +1,12 @@
 import { FC } from 'react';
 import {
-    Divider,
     Card,
-    CardHeader
 } from '@mui/material';
 import { BaseModel } from 'src/models/BaseModel';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router';
 import { Asset } from 'src/models/Asset';
+import EntityOverviewCardHeader from 'src/components/CardHeaders/EntityOverviewCardHeader';
 
 interface RecentOrdersTableProps {
     className?: string;
@@ -39,8 +38,12 @@ const BiomassDataGrid: FC<RecentOrdersTableProps> = ({ assets }) => {
     ]
     return (
         <Card style={{ width: '100%' }}>
-            <CardHeader title="Biomass" />
-            <Divider />
+            <EntityOverviewCardHeader
+                categoryId='biomass'
+                entityCategory='Biomass'
+                image="/static/images/entities/Biomass.jpg"
+                categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'
+            />
             <DataGrid
                 autoHeight
                 rows={assets}

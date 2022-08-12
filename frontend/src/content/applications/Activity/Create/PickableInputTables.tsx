@@ -4,13 +4,15 @@ import { Asset } from 'src/models/Asset';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
 import { ActivityCategory } from './config';
-import { CardHeader, Divider, Typography } from '@mui/material';
+import { Box, CardHeader, Divider } from '@mui/material';
+import EntityOverviewCardHeader from 'src/components/CardHeaders/EntityOverviewCardHeader';
+import { categories } from 'src/config/categories';
 
 
 export interface PickableInputTablesProps {
     category: ActivityCategory;
-    onChange: (inputIds: string[]) => void;
-
+    onChange: (inputIds: string[], sufficientInputs: boolean) => void;
+    inputIds: string[]; //TODO
 }
 
 
@@ -25,12 +27,11 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
     const web3 = useWeb3MetaMask();
     const [selectionModel, setSelectionModel] = useState<{ [input: string]: GridSelectionModel }>(initialEmptyState);
 
-
     const loadAvailableInputs = (inputs, name) => {
         Promise.all(inputs.map(async input => {
             const query = `category=="${input.category}";owner=="${name}";!consumedVia`
             const possibleInputs = await makeRequest({
-                linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
+                linkHeader: process.env.REACT_APP_CARELO_NGSI_CONTEXT ?? "http://context/ngsi-context.jsonld",
                 keyValues: true,
                 query: query,
                 type: input.type
@@ -71,10 +72,14 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
     ]
 
     const renderInputTable = (inputType) => {
-        return (<>
-            <CardHeader title={inputType.category} />
-            <Divider />
+        return (<Box pt={2}>
+            <EntityOverviewCardHeader
+                categoryId={inputType.category}
+                categoryDescription={categories[inputType.category].description}
+                entityCategory={categories[inputType.category]?.categoryName}
+                image={categories[inputType.category]?.image}
 
+            />
             <DataGrid
                 key={"data-grid-input-category" + inputType.category}
                 autoHeight
@@ -88,12 +93,15 @@ const PickableInputTables: FC<PickableInputTablesProps> = ({ category, onChange 
                     newSelection[inputType.category] = selection
                     setSelectionModel(newSelection)
                     const keys = Object.keys(newSelection)
+                    const sufficientInputs = keys.every(key => newSelection[key].length > 0)
                     onChange(keys.reduce((acc, key) => {
                         return [...acc, ...newSelection[key]]
-                    }, []))
+                    }, []), sufficientInputs)
                 }}
                 selectionModel={selectionModel[inputType.category]}
-            /></>)
+            />
+        </Box>
+        )
     }
 
     return (

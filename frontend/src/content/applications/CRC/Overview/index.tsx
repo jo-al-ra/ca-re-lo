@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQuery';
@@ -7,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { Asset } from 'src/models/Asset';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
 import BiocharDataGrid from './CRCDataGrid';
-import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 const CRCOverview = () => {
     const { makeRequest, loading, error, responseStatus } = useGetEntitiesByQuery()
@@ -17,7 +15,7 @@ const CRCOverview = () => {
     useEffect(() => {
         const query = web3.active ? `category=="CRC";owner=="${web3.name}","${web3.account}"` : `category=="CRC"`
         makeRequest({
-            linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
+            linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld",
             keyValues: true,
             query: query,
             type: "Asset"
@@ -31,15 +29,9 @@ const CRCOverview = () => {
             <Helmet>
                 <title>CRC - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    categoryDescription='Carbon Removal Credits (CRCs) are issued for removing greenhouse gases from the atmosphere and preventing leakage of the captured gases for a long time.'
-                    entityCategory='Carbon Removal Credit (CRC)'
-                    image="/static/images/entities/CRC.jpg"
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

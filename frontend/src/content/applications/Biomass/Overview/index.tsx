@@ -7,7 +7,6 @@ import { useGetEntitiesByQuery } from 'src/hooks/api/ngsi-ld/useGetEntitiesByQue
 import { useEffect, useState } from 'react';
 import { Asset } from 'src/models/Asset';
 import { useWeb3MetaMask } from 'src/hooks/eth/useWeb3MetaMask';
-import EntityOverviewPageHeader from 'src/components/PageHeaders/EntityOverviewPageHeader';
 
 const BiomassOverview = () => {
     const { makeRequest, loading, error, responseStatus } = useGetEntitiesByQuery()
@@ -17,7 +16,7 @@ const BiomassOverview = () => {
     useEffect(() => {
         const query = web3.active ? `category=="biomass";owner=="${web3.name}","${web3.account}"` : `category=="biomass"`
         makeRequest({
-            linkHeader: process.env.CONTEXT ?? "http://context/ngsi-context.jsonld",
+            linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "http://context/json-context.jsonld",
             keyValues: true,
             query: query,
             type: "Asset"
@@ -31,15 +30,9 @@ const BiomassOverview = () => {
             <Helmet>
                 <title>Biomass - Overview</title>
             </Helmet>
-            <PageTitleWrapper>
-                <EntityOverviewPageHeader
-                    entityCategory='Biomass'
-                    image="/static/images/entities/Biomass.jpg"
-                    categoryDescription='Biomass is plant based or waste material from other biological origins. It is a common input material for various activities. If not treated, raw biomass decays over time.'
-                />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} >
                 <Grid
+                    mt={1}
                     container
                     direction="row"
                     justifyContent="center"

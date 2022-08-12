@@ -1,23 +1,19 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { CustomNode } from '../types';
-import { Box, Card, CardMedia, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-const CardCover = styled(Card)(
-    ({ theme }) => `
-      position: relative;
-  
-      .MuiCardMedia-root {
-        height: ${theme.spacing(26)};
-      }
-  `
-);
+import { Box, Button, Card, CardActions, CardMedia, Typography } from '@mui/material';
+import { categories } from 'src/config/categories';
+import { useNavigate } from 'react-router';
 interface EntityProfileProps {
     className?: string;
     node: CustomNode;
     reload: () => void;
 }
 
-const EntityProfile: FC<EntityProfileProps> = ({ node, children }) => {
+const EntityProfile: FC<EntityProfileProps> = ({ node }) => {
+    const navigate = useNavigate()
+    const image = useMemo(() => {
+        return categories[node?.ngsiObject?.category?.value]?.image
+    }, [node?.ngsiObject])
 
     if (!node) {
         return (
@@ -27,20 +23,37 @@ const EntityProfile: FC<EntityProfileProps> = ({ node, children }) => {
         )
     }
 
-    return (
+    const renderConsumeButton = () => {
+        if (node?.ngsiObject?.type === "Asset" && !node?.ngsiObject?.consumedVia) {
+            return (
+                <CardActions>
+                    <Button
+                        variant="contained"
+                        component="span"
+                        onClick={() =>
+                            navigate(`/carelo/activity/create?consumedAssetCategory=${node?.ngsiObject?.category?.value}&inputId=${node?.ngsiObject?.id}`)}
+                    >
+                        Consume
+                    </Button>
+                </CardActions>)
+        }
+    }
 
-        <>
-            <CardCover>
-                <CardMedia image={"/static/images/entities/Biomass.jpg"} />
-            </CardCover>
-            <Box py={2} pl={2} mb={3}>
-                <Typography gutterBottom variant="h4">
+    return (
+        <Card>
+            <CardMedia
+                image={image}
+                sx={{ height: 140 }}
+            />
+            <Box py={2} pl={2}>
+                <Typography gutterBottom variant="h3" component="h3">
                     {node?.ngsiObject?.name?.value}
                 </Typography>
                 <Typography variant="subtitle2">{node?.ngsiObject?.description?.value}</Typography>
             </Box>
-            {children}
-        </>);
+            {renderConsumeButton()}
+        </Card>
+    );
 }
 
 export default EntityProfile;
