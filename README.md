@@ -56,6 +56,10 @@ The bytecode of the deployed Smart Contracts should be verified to enable transa
 
 If you are starting with a completely new chain, you do not have to modify the variables and can just run:
 
+### Requirements
+
+npm version 6.13.4 or above
+
 ```
 ./verifyContracts.sh
 ```
