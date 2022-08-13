@@ -55,7 +55,6 @@ services:
       interval: 5s
 
   #DLT setup
-  # aei and eth
   ens-contract-deployment:
     image: ens:0.0.1
     hostname: ens-contract-deployment

@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: frontend-prod
+    image: frontend-prod
+    environment:
+      - REACT_APP_CARELO_JSON_CONTEXT=${REACT_APP_CARELO_JSON_CONTEXT}
+      - REACT_APP_CARELO_NGSI_CONTEXT=${REACT_APP_CARELO_NGSI_CONTEXT}
+      - REACT_APP_CONTEXT_BROKER_BASE_URL=${REACT_APP_CONTEXT_BROKER_BASE_URL}
+    build:
+      context: .
+      target: production

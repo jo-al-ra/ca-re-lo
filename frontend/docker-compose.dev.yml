@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: frontend-dev
+    image: frontend-dev
+    environment:
+      - REACT_APP_CARELO_JSON_CONTEXT=${REACT_APP_CARELO_JSON_CONTEXT}
+      - REACT_APP_CARELO_NGSI_CONTEXT=${REACT_APP_CARELO_NGSI_CONTEXT}
+      - REACT_APP_CONTEXT_BROKER_BASE_URL=${REACT_APP_CONTEXT_BROKER_BASE_URL}
+    build:
+      target: development
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
