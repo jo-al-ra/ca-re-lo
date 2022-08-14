@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim as hardhat
+FROM node:16-alpine as hardhat
 
 RUN mkdir -p /home/app
 WORKDIR /home/app
