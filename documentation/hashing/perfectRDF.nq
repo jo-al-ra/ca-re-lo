@@ -5,17 +5,17 @@
 <urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#hasClaims> _:urn:datasetid:124 .
 <urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#name> _:name .
 <urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#producedVia> _:producedVia .
+_:dataProvider <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
+_:dataProvider <https://uri.etsi.org/ngsi-ld/hasValue> "farmer.carelo" .
+_:dateCreated <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
+_:dateCreated <https://uri.etsi.org/ngsi-ld/hasValue> "2022-08-03T08:26:33.979Z" .
+_:name <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
+_:name <https://uri.etsi.org/ngsi-ld/hasValue> "Biomass #123" .
 _:producedVia <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Relationship> .
 _:producedVia <https://uri.etsi.org/ngsi-ld/hasObject> <urn:ngsi-ld:activity:stableCleaning123> .
 _:urn:datasetid:123 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Relationship> .
 _:urn:datasetid:123 <https://uri.etsi.org/ngsi-ld/datasetId> <urn:datasetid:123> .
 _:urn:datasetid:123 <https://uri.etsi.org/ngsi-ld/hasObject> <urn:ngsi-ld:claim:solidCarbonContent123> .
-_:dateCreated <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
-_:dateCreated <https://uri.etsi.org/ngsi-ld/hasValue> "2022-08-03T08:26:33.979Z" .
-_:dataProvider <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
-_:dataProvider <https://uri.etsi.org/ngsi-ld/hasValue> "farmer.carelo" .
-_:name <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
-_:name <https://uri.etsi.org/ngsi-ld/hasValue> "Biomass #123" .
 _:urn:datasetid:124 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Relationship> .
 _:urn:datasetid:124 <https://uri.etsi.org/ngsi-ld/datasetId> <urn:datasetid:124> .
 _:urn:datasetid:124 <https://uri.etsi.org/ngsi-ld/hasObject> <urn:ngsi-ld:claim:wasteMaterial123> .
