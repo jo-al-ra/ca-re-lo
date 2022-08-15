@@ -1,1 +1,4 @@
 /ganache_data
+/postgres-data
+/mongo-config
+/mongo-db

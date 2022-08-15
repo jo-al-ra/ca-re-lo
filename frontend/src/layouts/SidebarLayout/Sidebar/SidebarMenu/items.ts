@@ -34,14 +34,14 @@ const menuItems: MenuItems[] = [
     heading: '',
     items: [
       {
-        name: 'Overview',
-        link: '/overview',
-        icon: DesignServicesTwoToneIcon
+        name: 'Canvas',
+        link: '/carelo/canvas',
+        icon: TableChartTwoToneIcon
       }
     ]
   },
   {
-    heading: 'Ca-re-lo',
+    heading: 'Assets',
     items: [
       {
         name: 'Biomass',
@@ -67,16 +67,6 @@ const menuItems: MenuItems[] = [
         name: 'CRCs',
         link: '/carelo/crc',
         icon: BrightnessLowTwoToneIcon
-      },
-      // {
-      //   name: 'Create Entity',
-      //   link: '/carelo/create/entity',
-      //   icon: BrightnessLowTwoToneIcon
-      // },
-      {
-        name: 'Canvas',
-        link: '/carelo/canvas',
-        icon: TableChartTwoToneIcon
       }
     ]
   },

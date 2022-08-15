@@ -34,5 +34,11 @@ export const categories = {
         categoryName: "Carbon Removal Credit (CRC)",
         producingActivityCategories: ["sequestration"],
         consumingActivityCategories: []
+    },
+    "sequestration": {
+        image: "https://images.pexels.com/photos/1238864/pexels-photo-1238864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    "pyrolysis": {
+        image: "https://images.pexels.com/photos/2253595/pexels-photo-2253595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
 }

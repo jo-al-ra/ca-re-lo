@@ -7,6 +7,7 @@ export interface ContextBrokerParams {
     linkHeader: string;
     keyValues?: boolean;
     ngsiLdTenant?: string;
+    id?: string;
 }
 
 export const useGetEntitiesByQuery = (): {
@@ -26,6 +27,7 @@ export const useGetEntitiesByQuery = (): {
                 params: {
                     ...requestParams.type && { type: requestParams.type },
                     ...requestParams.query && { q: requestParams.query },
+                    ...requestParams.id && { id: requestParams.id },
                     ...requestParams.keyValues && { options: "keyValues" }
                 },
                 headers: {
