@@ -1,0 +1,33 @@
+{
+    "@context": "https://carbonRemovalContext.com/ngsi-context.jsonld",
+    "id": "urn:ngsi-ld:asset:biomass123",
+    "type": "Asset",
+    "name": {
+        "type": "Property",
+        "value": "Biomass #123"
+    },
+    "dateCreated": {
+        "type": "Property",
+        "value": "2022-08-03T08:26:33.979Z"
+    },
+    "dataProvider": {
+        "type": "Property",
+        "value": "farmer.carelo"
+    },
+    "producedVia": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:activity:stableCleaning123"
+    },
+    "hasClaims": [
+        {
+            "type": "Relationship",
+            "object": "urn:ngsi-ld:claim:solidCarbonContent123",
+            "datasetId": "urn:datasetid:123"
+        },
+        {
+            "type": "Relationship",
+            "object": "urn:ngsi-ld:claim:wasteMaterial123",
+            "datasetId": "urn:datasetid:124"
+        }
+    ]
+}
