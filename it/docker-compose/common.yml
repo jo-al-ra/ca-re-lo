@@ -46,8 +46,8 @@ services:
     networks:
       - default
     volumes:
-      - mongo-db:/data/db
-      - mongo-config:/data/configdb
+      - ./mongo-db:/data/db
+      - ./mongo-config:/data/configdb
     healthcheck:
       test: |
         host=`hostname --ip-address || echo '127.0.0.1'`; 

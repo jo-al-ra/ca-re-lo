@@ -88,7 +88,7 @@ function Hero() {
         size="large"
         variant="contained"
         onClick={() => {
-          navigate("/dashboards/crypto")
+          navigate("/carelo/canvas")
         }}
       >
         Proceed with MetaMask
@@ -99,7 +99,7 @@ function Hero() {
         variant="contained"
         onClick={() => {
           web3WithWallet.activate().then(() => {
-            navigate("/dashboards/crypto")
+            navigate("/carelo/canvas")
           })
         }}
       >
@@ -132,7 +132,7 @@ function Hero() {
               if (web3WithWallet.active) {
                 web3WithWallet.deactivate()
               }
-              navigate("/dashboards/crypto")
+              navigate("/carelo/canvas")
             }}
           >
             View as Guest

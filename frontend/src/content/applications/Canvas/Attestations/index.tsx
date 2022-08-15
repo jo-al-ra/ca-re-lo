@@ -11,9 +11,12 @@ import { Attestation } from "src/models/Attestation";
 import { DetailsCardConfigItem } from "src/components/DetailsCardContent/config";
 import { keyValues2contenthash } from "src/utils/ngsi-ld/conversion";
 import { useGetEntityById } from "src/hooks/api/ngsi-ld/useGetEntityById";
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
+import CloseTwoTone from "@mui/icons-material/CloseTwoTone";
 
 import { useWeb3MetaMask } from "src/hooks/eth/useWeb3MetaMask";
 import { styled } from '@mui/material/styles';
+import Label from "src/components/Label";
 
 
 
@@ -44,21 +47,25 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     const getEntitiesByQuery = useGetEntitiesByQuery();
     const [attestations, setAttestations] = useState<Attestation[]>([
         {
-            id: "urn:ngsi-ld:attestation:verification1",
-            category: "verification",
+            id: "urn:ngsi-ld:attestation:challenge12",
+            category: "challenge",
             type: "Attestation",
+            valid: false,
+            dataprovider: "consumer.carelo",
             refersTo: [
-                { object: "urn:ngsi-ld:asset:biomass2", contenthash: "test" },
-                { object: "urn:ngsi-ld:asset:bioenergy2", contenthash: "test" }
+                { object: "urn:ngsi-ld:asset:crc1660497493346", contenthash: "test" },
+                { object: "urn:ngsi-ld:claim:claim1660497927423", contenthash: "test" }
             ],
-            description: "Formally correct representation according to axioms defined by Standards Corp"
+            description: "The claim urn:ngsi-ld:claim:claim1660497927423 is heavily overestimated. Maybe this was a typo?"
         },
         {
-            id: "urn:ngsi-ld:attestation:challenge",
+            id: "urn:ngsi-ld:attestation:verification",
             type: "Attestation",
-            category: "challenge",
-            refersTo: [{ object: "urn:ngsi-ld:asset:biomass2", contenthash: "test" }],
-            description: "The listed claim urn:ngsi-ld:claim:wasteclaim2 is invalid. I've seen the farmer mixing corn produced for energy purposes into the biomass."
+            category: "verification",
+            dataprovider: "verifier.carelo",
+            valid: true,
+            refersTo: [{ object: "urn:ngsi-ld:asset:crc1660497493346", contenthash: "test" }],
+            description: "All values in this representation of the value chain are sound and are within the likely range according to the biochar methodology."
         }
     ])
 
@@ -91,14 +98,14 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
     }
 
     useEffect(() => {
-        if (node?.ngsiObject?.id) {
-            getEntitiesByQuery.makeRequest({
-                linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
-                keyValues: true,
-                query: `refersTo[object]=="${node.ngsiObject.id}"`,
-                type: "Attestation"
-            }).then((response) => setAttestations(response))
-        }
+        // if (node?.ngsiObject?.id) {
+        //     getEntitiesByQuery.makeRequest({
+        //         linkHeader: process.env.REACT_APP_CARELO_JSON_CONTEXT ?? "https://raw.githubusercontent.com/jo-al-ra/ca-re-lo/main/data-models/json-context.jsonld",
+        //         keyValues: true,
+        //         query: `refersTo[object]=="${node.ngsiObject.id}"`,
+        //         type: "Attestation"
+        //     }).then((response) => setAttestations(response))
+        // }
 
     }, [node])
 
@@ -136,18 +143,41 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
                         loading={getEntitiesByQuery.loading}
                         customSection={
 
-                            <Grid container alignItems={"center"}>
+                            <>
+                                <Grid container alignItems={"center"}>
+                                    <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                                        <Box pr={3} pb={2} pt={2}>
+                                            refers to:
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8} md={9}>
+                                        <List>
+                                            {renderRefersToRows()}
+                                        </List>
+                                    </Grid>
+                                </Grid>
+
                                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                                    <Box pr={3} pb={2} pt={2}>
-                                        refers to:
+                                    <Box pr={3} pb={2}>
+                                        status:
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={8} md={9}>
-                                    <List>
-                                        {renderRefersToRows()}
-                                    </List>
+                                    {attestation.valid ? (
+                                        <Label color="success">
+                                            <DoneTwoToneIcon fontSize="small" />
+                                            <b>valid</b>
+                                        </Label>
+                                    )
+                                        :
+                                        (
+                                            <Label color="error">
+                                                <CloseTwoTone fontSize="small" />
+                                                <b>expired</b>
+                                            </Label>
+                                        )}
                                 </Grid>
-                            </Grid>
+                            </>
                         }
                     />
                 </AccordionDetails>
@@ -169,11 +199,11 @@ const Attestations: FC<AttestationsProps> = ({ node }) => {
                         component="span"
                         startIcon={<AddTwoToneIcon fontSize="small" />}
                         onClick={() => {
-                            navigate(`/carelo/claim/create?refersTo=${node.ngsiObject.id}`)
+                            navigate(`/carelo/attestations/create?refersTo=${node.ngsiObject.id}`)
                         }}
                         disabled={!web3.active}
                     >
-                        {`Create Claim`}
+                        {`Create Attestation`}
                     </Button>
                 ) : undefined}
             />

@@ -15,6 +15,7 @@ import EntityProfile from './EntityProfile';
 import AdvancedCard from './AdvancedCard';
 import OwnerCard from './EntityProfile/OwnerCard';
 import RelationshipCard from './EntityProfile/RelationshipCard';
+import EmptyCanvas from './EmptyCanvas';
 
 
 function Canvas() {
@@ -131,6 +132,17 @@ function Canvas() {
         setSelectedNode(updatedSelectedNode)
         nodes.update(_nodes)
         edges.update(_edges)
+    }
+
+    if (!searchParams.get("id")) {
+        return (
+            <>
+                <Helmet>
+                    <title>Canvas</title>
+                </Helmet>
+                <EmptyCanvas />
+            </>
+        )
     }
 
     return (

@@ -23,8 +23,8 @@ export const detailsCardConfig: { [type: string]: DetailsCardConfigItem } = {
     },
     "Claim": {
         listedProperties: [
-            "id",
-            "type",
+            // "id",
+            // "type",
             "name",
             "category",
             "description",
@@ -34,12 +34,12 @@ export const detailsCardConfig: { [type: string]: DetailsCardConfigItem } = {
             "location",
 
             "alternateName",
-            "dateCreated",
-            "dateModified",
-            "dataProvider",
+            // "dateCreated",
+            // "dateModified",
+            // "dataProvider",
             "owner",
-            "source",
-            "seeAlso"
+            // "source",
+            // "seeAlso"
         ],
         listedRelationships: [
             "refersTo"

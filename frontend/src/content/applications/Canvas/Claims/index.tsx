@@ -73,6 +73,33 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
 
     }, [node])
 
+    const renderIsWasteMaterial = (claim) => {
+        return (typeof claim?.isWasteMaterial === "boolean") ? (
+            <>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                    <Box pr={3} pb={2}>
+                        waste status:
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                    {claim.isWasteMaterial ? (
+                        <Label color="success">
+                            <DoneTwoToneIcon fontSize="small" />
+                            <b>waste material</b>
+                        </Label>
+                    )
+                        :
+                        (
+                            <Label color="error">
+                                <CloseTwoTone fontSize="small" />
+                                <b>no waste material</b>
+                            </Label>
+                        )}
+                </Grid>
+            </>
+        ) : null
+    }
+
     const renderClaim = (claim: Claim) => {
         return (
             <Accordion>
@@ -90,26 +117,7 @@ const Claims: FC<ClaimsProps> = ({ node }) => {
                         loading={getEntitiesByQuery.loading}
                         customSection={(
                             <>
-                                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                                    <Box pr={3} pb={2}>
-                                        waste status:
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} sm={8} md={9}>
-                                    {claim.isWasteMaterial ? (
-                                        <Label color="success">
-                                            <DoneTwoToneIcon fontSize="small" />
-                                            <b>waste material</b>
-                                        </Label>
-                                    )
-                                        :
-                                        (
-                                            <Label color="error">
-                                                <CloseTwoTone fontSize="small" />
-                                                <b>no waste material</b>
-                                            </Label>
-                                        )}
-                                </Grid>
+                                {renderIsWasteMaterial(claim)}
                                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                                     <Box pr={3} pb={2}>
                                         included in reference:
