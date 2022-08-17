@@ -1,4 +1,5 @@
 
+import { getContextBrokerConnectionDetails } from 'src/config/contextBroker';
 import { useApiCallback } from '../useApiCallback';
 
 export interface ContextBrokerParams {
@@ -22,8 +23,9 @@ export const useGetEntitiesByQuery = (): {
         error: hook.error,
         loading: hook.loading,
         makeRequest: (requestParams: ContextBrokerParams) => {
+            const connectionDetails = getContextBrokerConnectionDetails(window.location.hostname)
             return hook.makeRequest({
-                url: (process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/orion/ngsi-ld/v1') + '/entities',
+                url: (connectionDetails.url) + '/entities',
                 params: {
                     ...requestParams.type && { type: requestParams.type },
                     ...requestParams.query && { q: requestParams.query },

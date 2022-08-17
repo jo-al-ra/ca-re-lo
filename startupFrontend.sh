@@ -1,1 +1,1 @@
-docker compose -f ./frontend/docker-compose.dev.yml --env-file ./frontend/.env.local up
+docker-compose -f ./frontend/docker-compose.dev.yml --env-file ./frontend/.env.local up --build -d
