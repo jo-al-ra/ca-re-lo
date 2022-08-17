@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { JsonRpcProvider } from '@ethersproject/providers';
+import { getEthConnectionDetails } from 'src/config/eth';
 
 export const useEagerWeb3RPC = () => {
     const web3RPC = useWeb3React<JsonRpcProvider>()
@@ -10,7 +11,8 @@ export const useEagerWeb3RPC = () => {
 
     useEffect(() => {
         if (!web3RPC.active) {
-            web3RPC.activate(new NetworkConnector({ urls: { 1337: "http://localhost:8545" } }))
+            const connectionDetails = getEthConnectionDetails(window.location.hostname)
+            web3RPC.activate(new NetworkConnector({ urls: { [connectionDetails.chainId]: connectionDetails.rpcURL } }))
                 .then(() => {
                     enqueueSnackbar("Connected to DLT in read-mode")
                 })

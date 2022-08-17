@@ -9,6 +9,7 @@ services:
       - REACT_APP_CARELO_NGSI_CONTEXT=${REACT_APP_CARELO_NGSI_CONTEXT}
       - REACT_APP_CONTEXT_BROKER_BASE_URL=${REACT_APP_CONTEXT_BROKER_BASE_URL}
     build:
+      context: .
       target: development
     volumes:
       - ./src:/app/src

@@ -1,4 +1,5 @@
 
+import { getContextBrokerConnectionDetails } from 'src/config/contextBroker';
 import { useApiCallback } from '../useApiCallback';
 
 export const usePostEntity = <EntityType,>(linkHeader: string): {
@@ -8,12 +9,13 @@ export const usePostEntity = <EntityType,>(linkHeader: string): {
     loading: boolean;
 } => {
     const hook = useApiCallback();
+    const connectionDetails = getContextBrokerConnectionDetails(window.location.hostname)
     return {
         responseStatus: hook.responseStatus,
         error: hook.error,
         loading: hook.loading,
         makeRequest: (data: EntityType) => hook.makeRequest({
-            url: (process.env.REACT_APP_CONTEXT_BROKER_BASE_URL ?? 'http://localhost/orion/ngsi-ld/v1') + '/entities',
+            url: connectionDetails.url + '/entities',
             headers: {
                 Link: `<${linkHeader}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"`
             },
