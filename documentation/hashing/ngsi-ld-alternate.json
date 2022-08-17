@@ -1,0 +1,33 @@
+{
+    "@context": "https://kohlenstoffEntnahmeKontext.de/ngsi-context.jsonld",
+    "datenAnbieter": {
+        "type": "Property",
+        "value": "farmer.carelo"
+    },
+    "erstelltAm": {
+        "type": "Property",
+        "value": "2022-08-03T08:26:33.979Z"
+    },
+    "hatBehauptungen": [
+        {
+            "type": "Relationship",
+            "object": "urn:ngsi-ld:claim:wasteMaterial123",
+            "datasetId": "urn:datasetid:124"
+        },
+        {
+            "type": "Relationship",
+            "object": "urn:ngsi-ld:claim:solidCarbonContent123",
+            "datasetId": "urn:datasetid:123"
+        }
+    ],
+    "id": "urn:ngsi-ld:asset:biomass123",
+    "name": {
+        "type": "Property",
+        "value": "Biomass #123"
+    },
+    "produziertDurch": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:activity:stableCleaning123"
+    },
+    "type": "Asset"
+}
