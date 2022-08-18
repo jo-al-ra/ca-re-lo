@@ -15,6 +15,7 @@ import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
 import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
 import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import { useFindLatestOwnerTx } from "src/hooks/eth/ens/useFindLatestOwnerTx";
+import { getBlockscoutConnectionDetails } from "src/config/blockscout";
 
 export interface OwnerCardProps {
     listedOwner: string;
@@ -43,13 +44,14 @@ const OwnerCard: FC<OwnerCardProps> = (props) => {
         findLatestOwnerTx
             .findTx(props.id)
             .then(latestOwner => {
+                const blockscoutBaseURL = getBlockscoutConnectionDetails(window.location.hostname).url
                 setState({
                     tokenId: latestOwner.tokenId.toString(),
                     ownerName: latestOwner.ownerName,
                     ownerAddress: latestOwner.ownerAddress,
                     ownerVerified: props.listedOwner === latestOwner.ownerName || props.listedOwner === latestOwner.ownerAddress,
                     loading: false,
-                    blockscoutLink: `http://localhost:4000/tx/${latestOwner.txHash}`
+                    blockscoutLink: `${blockscoutBaseURL}/tx/${latestOwner.txHash}`
                 })
             })
     }, [props.id, findLatestOwnerTx.findTx])

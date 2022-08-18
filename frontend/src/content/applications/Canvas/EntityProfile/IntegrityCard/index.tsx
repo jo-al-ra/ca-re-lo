@@ -17,6 +17,7 @@ import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import { useFindLatestContenthashTx } from "src/hooks/eth/ens/useFindLatestContenthashTx";
 import { keyValues2contenthash } from "src/utils/ngsi-ld/conversion";
 import { useGetEntityById } from "src/hooks/api/ngsi-ld/useGetEntityById";
+import { getBlockscoutConnectionDetails } from "src/config/blockscout";
 
 export interface IntegrityCardProps {
     id: string;
@@ -47,10 +48,11 @@ const IntegrityCard: FC<IntegrityCardProps> = (props) => {
         )
         const integrityProven = computedContenthash === latestContenthash.contenthash
         props.onIntegrityVerified(integrityProven)
+        const blockscoutBaseURL = getBlockscoutConnectionDetails(window.location.hostname).url
         setState({
             storedContenthash: latestContenthash.contenthash,
             computedContenthash: computedContenthash,
-            blockscoutLink: `http://localhost:4000/tx/${latestContenthash?.txHash}`,
+            blockscoutLink: `${blockscoutBaseURL}/tx/${latestContenthash?.txHash}`,
             verified: computedContenthash === latestContenthash.contenthash,
             loading: false,
             dataProvider: latestContenthash.dataProvider
