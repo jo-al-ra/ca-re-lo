@@ -64,7 +64,7 @@ function CreateClaim() {
                                             enqueueSnackbar(`${object.id} created in Context Broker`, {
                                                 variant: "success"
                                             })
-                                            navigate("/carelo/canvas", { state: { initialEntityId: object.id } })
+                                            navigate(`/carelo/canvas?id=${refersTo}`)
                                         }).catch(e2 => {
                                             console.error(e2)
                                             enqueueSnackbar("Failed to create biomass in Context Broker", {
