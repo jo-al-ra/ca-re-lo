@@ -1,0 +1,50 @@
+@startuml
+autonumber
+
+
+actor "Data Provider" as DP #white
+participant "Context Provider" as CP order 1 #F8CECC
+participant Wallet order 2 #white
+participant PEP order 3 #F8CECC
+participant "Identity Provider" as IP order 1 #F8CECC
+participant "Context Broker" as CB order 4 #F8CECC
+participant "RPC Node" as RPCNode order 5 #D5E8D4
+
+activate RPCNode
+
+
+DP -> "Context Provider" as CP : create entity
+activate CP
+CP -> IP : get access token
+activate IP
+IP --> CP : access token
+deactivate IP
+CP -> CP : compute contenthash
+CP -> Wallet : send Tx(name, URL, contenhash)
+activate Wallet
+Wallet -> DP : request signature
+DP --> Wallet : authorize
+Wallet -> RPCNode : send signed Tx(name, URL, contenhash)
+RPCNode -> RPCNode: name available?\nsender is controller?
+RPCNode --> Wallet : success
+Wallet --> CP: success
+deactivate Wallet
+
+CP -> PEP : create entity(clear text, access token)
+activate PEP
+PEP -> IP : get crypto material
+activate IP
+IP --> PEP : crypto material
+deactivate IP
+PEP -> PEP: check access policies
+PEP -> "Context Broker" as CB : create entity(clear text)
+activate CB
+CB --> PEP : success
+deactivate CB
+PEP --> CP: success
+deactivate PEP
+
+CP --> DP : success
+
+deactivate CP
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+autonumber
+
+
+actor "Seller" as S #F8CECC
+actor "Buyer" as B #DAE8FC
+participant "Application #S" as AS order 1 #F8CECC
+participant "Application #B" as AB order 2 #DAE8FC
+
+participant "Context Broker #1" as CB1 order 2 #F8CECC
+participant "Context Broker #2" as CB2 order 4 #DAE8FC
+participant "RPC Node" as RPCNode order 5 #D5E8D4
+
+activate RPCNode
+
+
+S -> B : offer entity
+B -> AB : read entity
+AB -> CB1 : read entity
+CB1 --> AB : entity
+AB -> RPCNode : call contenthash
+RPCNode --> AB : contenthash
+AB -> AB : verify integrity
+AB -> B : verified entity
+
+B -> S : accept offer
+
+S -> AS: transfer entity
+AS -> RPCNode : send signed Tx(from, to, id, newURL)
+RPCNode --> AS : success
+AS -> S : success
+
+S -> B: entity transferred
+
+B -> AB: verify transfer
+AB -> RPCNode: call contenthash
+RPCNode --> AB : contenthash
+AB -> RPCNode: call ownerOf
+RPCNode --> AB : owner
+AB -> AB : verify integrity\nverify owner
+AB --> B: transfer confirmed
+B -> S: transfer money
+
+
+AB -> CB2 : create entity
+CB2 --> AB : success
+AB --> B : entity moved
+
+@enduml
