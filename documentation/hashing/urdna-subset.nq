@@ -1,0 +1,15 @@
+<urn:ngsi-ld:asset:biomass123> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.fiware.org/ns/data-models#Asset> .
+<urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#dataProvider> _:c14n1 .
+<urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#hasClaims> _:c14n0 .
+<urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#hasClaims> _:c14n3 .
+<urn:ngsi-ld:asset:biomass123> <https://uri.fiware.org/ns/data-models#name> _:c14n2 .
+_:c14n0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Relationship> .
+_:c14n0 <https://uri.etsi.org/ngsi-ld/datasetId> <urn:datasetid:123> .
+_:c14n0 <https://uri.etsi.org/ngsi-ld/hasObject> <urn:ngsi-ld:claim:solidCarbonContent123> .
+_:c14n1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
+_:c14n1 <https://uri.etsi.org/ngsi-ld/hasValue> "farmer.carelo" .
+_:c14n2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Property> .
+_:c14n2 <https://uri.etsi.org/ngsi-ld/hasValue> "Biomass #123" .
+_:c14n3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://uri.etsi.org/ngsi-ld/Relationship> .
+_:c14n3 <https://uri.etsi.org/ngsi-ld/datasetId> <urn:datasetid:124> .
+_:c14n3 <https://uri.etsi.org/ngsi-ld/hasObject> <urn:ngsi-ld:claim:wasteMaterial123> .

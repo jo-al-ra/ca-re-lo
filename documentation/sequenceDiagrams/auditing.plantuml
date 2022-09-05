@@ -1,0 +1,50 @@
+@startuml
+autonumber
+
+
+actor "VVB" as DC #DAE8FC
+participant "Auditing Application" as CC order 1 #DAE8FC
+participant "Context Broker #1" as CB1 order 2 #F8CECC
+participant "Context Broker #2" as CB2 order 3 #F8CECC
+participant "Context Broker #3" as CB3 order 4 #DAE8FC
+participant "RPC Node" as RPCNode order 5 #D5E8D4
+
+activate RPCNode
+
+
+DC -> CC : read entity
+activate CC
+CC -> CB1 : read entity
+activate CB1
+CB1 --> CC : entity
+deactivate CB1
+CC -> RPCNode : call contenthash
+RPCNode --> CC : contenthash
+CC -> CC : verify integrity
+CC --> DC : verified entity
+
+loop each relationship
+ DC -> CC : read entity
+ CC -> CB2 : read entity
+ activate CB2
+ CB2 --> CC : entity
+ deactivate CB2
+ CC -> RPCNode : call contenthash
+ RPCNode --> CC : contenthash
+ CC -> CC : verify integrity
+ CC --> DC : verified entity
+end
+
+DC -> DC: examine evidence
+
+DC -> CC : create entity(attestation)
+CC -> RPCNode : send signed Tx(name, URL, contenthash)
+RPCNode --> CC : success
+CC -> CB3 : create entity (attestation)
+activate CB3
+CB3 --> CC : success
+deactivate CB3
+CC --> DC : success
+deactivate CC
+
+@enduml

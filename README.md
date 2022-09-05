@@ -59,6 +59,7 @@ If you are starting with a completely new chain, you do not have to modify the v
 ### Requirements
 
 npm version 6.13.4 or above
+node version 12.14.1 or higher subversion
 
 ```
 ./verifyContracts.sh

@@ -1,0 +1,59 @@
+@startuml
+autonumber
+
+
+actor "Data Consumer" as DC #DAE8FC
+participant "Context Consumer" as CC order 1 #DAE8FC
+participant "Context Broker" as CB order 4 #F8CECC
+participant "Vocabulary" as Voc order 2 #D5E8D4
+participant PEP order 3 #F8CECC
+participant "Identity Provider" as IP order 1 #DAE8FC
+participant "Context Broker" as CB order 4 #F8CECC
+participant "RPC Node" as RPCNode order 5 #D5E8D4
+
+activate RPCNode
+
+
+DC -> CC : read entity(id)
+activate CC
+CC -> CC : infer name from id
+CC -> RPCNode : call text(name, "url")
+RPCNode --> CC : URL
+CC -> CC : resolve URL
+CC -> IP : get access token
+activate IP
+IP --> CC : access token
+deactivate IP
+
+CC -> PEP : get entity(id, access token)
+activate PEP
+PEP -> IP : get crypto material
+activate IP
+IP --> PEP : crypto material
+deactivate IP
+PEP -> PEP: check access policies
+PEP -> CB: get entity with respect\nto selective disclosure
+activate CB
+CB --> PEP: entity
+deactivate CB
+PEP --> CC: entity
+deactivate PEP
+
+CC -> Voc : get context file
+activate Voc
+Voc --> CC: context.jsonld
+deactivate Voc
+
+CC -> CC: compute local contenthash
+CC -> RPCNode : call contenthash(name)
+RPCNode --> CC: stored contenthash
+CC -> CC: compare hashes
+
+CC -> RPCNode : call ownerOf(name)
+RPCNode --> CC : owner
+CC -> CC: verify owner from entity
+
+CC --> DC : verified entity
+deactivate CC
+
+@enduml
