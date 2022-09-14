@@ -26,7 +26,9 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
 
     const registerEntity = async (labelHash: BigNumberish, account: string, nameHash: BytesLike, contentHash: BytesLike, URL: string) => {
         const contract = careloRegistrar.connect(await ethers.getSigner(account))
-        await (await contract.registerEntity(labelHash, contentHash, URL)).wait
+        const registerTx = await contract.registerEntity(labelHash, contentHash, URL)
+        const registerReceipt = await registerTx.wait();
+        console.log(registerReceipt.gasUsed)
     }
 
     it("should lock all contracts after deployment", async () => {
@@ -117,7 +119,8 @@ describe("Carelo - custom Registrar / Resolver contract", function () {
         await (await careloRegistrar.setContenthash(expected.nameHash, expected.hashFunc(newContent))).wait()
 
         const actual = {
-            newContentHash: await careloRegistrar.contenthash(expected.nameHash)
+            newContentHash: await careloRegistrar.contenthash(expected.nameHash),
+            newURL: await careloRegistrar.text(expected.nameHash, "url")
         }
 
         expect(actual.newContentHash).to.equal(expected.hashFunc(newContent))

@@ -22,10 +22,10 @@ describe("Carelo - standard components", function () {
   })
 
   const registerEntity = async (labelHash: BigNumberish, account: string, nameHash: BytesLike, contentHash: BytesLike, URL: string) => {
-    await (await registrar.register(labelHash, account, 60 * 60 * 24 * 365 * 100)).wait()
+    console.log(await (await (await registrar.register(labelHash, account, 60 * 60 * 24 * 365 * 100)).wait()).gasUsed)
     await (await ens.setResolver(nameHash, resolver.address)).wait()
-    await (await resolver.setContenthash(nameHash, contentHash)).wait()
-    await (await resolver.setText(nameHash, "URL", URL)).wait()
+    console.log(await (await (await resolver.setContenthash(nameHash, contentHash)).wait()).gasUsed)
+    console.log(await (await (await resolver.setText(nameHash, "URL", URL)).wait()).gasUsed)
   }
 
   it("should lock all contracts after deployment", async () => {
@@ -84,7 +84,7 @@ describe("Carelo - standard components", function () {
 
     await registerEntity(expected.labelHash, expected.accounts[0], expected.nameHash, expected.hashFunc(expected.content), expected.initialURL)
     await (await registrar["safeTransferFrom(address,address,uint256)"](expected.accounts[0], expected.accounts[1], expected.labelHash)).wait()
-    await (await ens.setOwner(expected.nameHash, expected.accounts[1])).wait()
+    console.log(await (await (await ens.setOwner(expected.nameHash, expected.accounts[1])).wait()).gasUsed)
     await (await resolver_2.setText(expected.nameHash, "URL", newURL)).wait()
 
     const actual = {
