@@ -1,12 +1,23 @@
 # ca-re-lo
 Distributed Ledgers as Shared Audit Trails for Carbon Removal (Carbon Removal Log)
 
+`contracts` contains the used smart contracts maintained in a [hardhat](https://hardhat.org/) project
+
+`data models` contains the used data models and context files designed following the guidelines for [smart data models](https://smartdatamodels.org/)
+
+`documentation` contains figures
+
+`frontend` contains code for the CaReLo dashboard based on the [Tokyo Free White React Typescript Admin Dashboard](https://tokyo-free-white.bloomui.com/)
+
+`it` contains docker files used and storage locations for docker volumes
+
+`nginx` contains the nginx.conf to add CORS support to the context broker
 
 # Deployment
 
 ## Requirements
 
-Docker version 20.10.1, build 831ebea or above
+Docker version 20.10.18, build b40c2f6 or above
 
 ## Building images for each component
 
