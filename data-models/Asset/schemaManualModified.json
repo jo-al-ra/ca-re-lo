@@ -70,7 +70,7 @@
         },
         "hasClaims": {
           "type": "array",
-          "description": "Property. List of claims associated to this asset.",
+          "description": "Relationship. List of claims associated to this asset.",
           "items": {
             "anyOf": [
               {
